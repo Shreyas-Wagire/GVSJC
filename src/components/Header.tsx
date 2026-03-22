@@ -33,7 +33,7 @@ const Header = () => {
       {/* Top bar */}
       <div className="bg-primary text-primary-foreground text-xs py-1.5">
         <div className="container-school flex justify-between items-center">
-          <span>📞 +91 20 1234 5678 | ✉️ info@saraswatividyamandir.edu.in</span>
+          <span>📞 +91 70832 37878 / 97871 84476 | ✉️ gurukulvidyalay2485858@gmail.com</span>
           <div className="hidden sm:flex items-center gap-3">
             <Link to="/students" className="hover:underline">{t('nav.students')}</Link>
             <span>|</span>
@@ -49,8 +49,8 @@ const Header = () => {
             S
           </div>
           <div className="hidden sm:block">
-            <h1 className="text-base font-display font-bold text-foreground leading-tight">Saraswati Vidya Mandir</h1>
-            <p className="text-[10px] text-muted-foreground tracking-wider uppercase">सरस्वती विद्या मंदिर</p>
+            <h1 className="text-base font-display font-bold text-foreground leading-tight">Gurukul Vidyalay & Jr. College</h1>
+            <p className="text-[10px] text-muted-foreground tracking-wider uppercase">गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज</p>
           </div>
         </Link>
 
@@ -60,11 +60,10 @@ const Header = () => {
             <Link
               key={item.path}
               to={item.path}
-              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                location.pathname === item.path
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-foreground/70 hover:text-foreground hover:bg-muted'
-              }`}
+              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === item.path
+                ? 'bg-primary/10 text-primary'
+                : 'text-foreground/70 hover:text-foreground hover:bg-muted'
+                }`}
             >
               {item.label}
             </Link>
@@ -95,9 +94,8 @@ const Header = () => {
                   <button
                     key={lang.code}
                     onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors ${
-                      language === lang.code ? 'font-semibold text-primary' : ''
-                    }`}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors ${language === lang.code ? 'font-semibold text-primary' : ''
+                      }`}
                   >
                     {lang.label}
                   </button>
@@ -137,11 +135,10 @@ const Header = () => {
                 key={item.path}
                 to={item.path}
                 onClick={() => setMobileOpen(false)}
-                className={`px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                  location.pathname === item.path
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-foreground/70 hover:bg-muted'
-                }`}
+                className={`px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${location.pathname === item.path
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-foreground/70 hover:bg-muted'
+                  }`}
               >
                 {item.label}
               </Link>

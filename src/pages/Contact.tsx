@@ -47,7 +47,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-foreground text-sm">Phone</p>
-                    <p className="text-muted-foreground text-sm">+91 20 1234 5678 | +91 98765 43210</p>
+                    <p className="text-muted-foreground text-sm">+91 70832 37878 / 97871 84476 | +91 98765 43210</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -56,7 +56,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-foreground text-sm">Email</p>
-                    <p className="text-muted-foreground text-sm">info@saraswatividyamandir.edu.in</p>
+                    <p className="text-muted-foreground text-sm">gurukulvidyalay2485858@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -87,19 +87,19 @@ const Contact = () => {
               <form onSubmit={handleSubmit} className="bg-card rounded-xl p-6 border border-border shadow-sm space-y-5">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('contact.form.name')}</label>
-                  <input type="text" required value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  <input type="text" required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('contact.form.email')}</label>
-                  <input type="email" required value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('contact.form.phone')}</label>
-                  <input type="tel" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  <input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t('contact.form.message')}</label>
-                  <textarea rows={4} required value={form.message} onChange={e => setForm({...form, message: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
+                  <textarea rows={4} required value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
                 </div>
                 <Button type="submit" size="lg" className="w-full">{t('contact.form.send')}</Button>
               </form>

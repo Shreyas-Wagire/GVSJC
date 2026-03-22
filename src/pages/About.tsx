@@ -37,7 +37,7 @@ const About = () => {
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground">{t('about.history.title')}</h2>
           </div>
           <div className="prose prose-lg text-muted-foreground space-y-4">
-            <p>Founded in 1985 by Shri Ramesh Chandra Sharma, Saraswati Vidya Mandir began as a modest school with just 3 classrooms and 47 students in Pune's Kothrud area. Driven by the vision of providing quality education rooted in Indian values, the school has grown into one of the most respected educational institutions in Maharashtra.</p>
+            <p>Founded in 1985 by Shri Ramesh Chandra Sharma, Gurukul Vidyalay & Jr. College began as a modest school with just 3 classrooms and 47 students in Pune's Kothrud area. Driven by the vision of providing quality education rooted in Indian values, the school has grown into one of the most respected educational institutions in Maharashtra.</p>
             <p>Over the decades, we have expanded our campus to include modern facilities while maintaining our commitment to the holistic development of every child. Today, with over 2,800 students and 128 dedicated teachers, we continue to uphold the traditions of excellence that our founders envisioned.</p>
           </div>
         </div>
@@ -74,7 +74,7 @@ const About = () => {
                 DK
               </div>
               <div>
-                <p className="text-muted-foreground leading-relaxed mb-4">"At Saraswati Vidya Mandir, we believe that every child is unique and capable of achieving greatness. Our role as educators is to ignite the spark of curiosity, nurture their talents, and guide them towards becoming responsible citizens. We are committed to providing an environment where learning is joyful, values are lived, and dreams take flight."</p>
+                <p className="text-muted-foreground leading-relaxed mb-4">"At Gurukul Vidyalay & Jr. College, we believe that every child is unique and capable of achieving greatness. Our role as educators is to ignite the spark of curiosity, nurture their talents, and guide them towards becoming responsible citizens. We are committed to providing an environment where learning is joyful, values are lived, and dreams take flight."</p>
                 <p className="font-semibold text-foreground">Dr. Kavita Joshi</p>
                 <p className="text-sm text-muted-foreground">Principal, M.Ed., Ph.D. (Education)</p>
               </div>
@@ -89,7 +89,7 @@ const About = () => {
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground text-center mb-10">{t('about.infrastructure.title')}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {infrastructure.map((item, i) => (
-              <div key={item.title} className={`bg-card rounded-xl p-6 shadow-sm text-center ${infraVis ? `animate-reveal-up delay-${(i+1)*100}` : 'opacity-0'}`}>
+              <div key={item.title} className={`bg-card rounded-xl p-6 shadow-sm text-center ${infraVis ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'}`}>
                 <item.icon className="w-10 h-10 text-secondary mx-auto mb-3" />
                 <h3 className="font-display font-semibold text-foreground mb-2">{item.title}</h3>
                 <p className="text-muted-foreground text-sm">{item.desc}</p>

@@ -14,8 +14,8 @@ const Footer = () => {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground font-display font-bold">S</div>
               <div>
-                <h3 className="font-display font-bold text-lg">Saraswati Vidya Mandir</h3>
-                <p className="text-xs opacity-70">सरस्वती विद्या मंदिर</p>
+                <h3 className="font-display font-bold text-lg">Gurukul Vidyalay & Jr. College</h3>
+                <p className="text-xs opacity-70">गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज</p>
               </div>
             </div>
             <p className="text-sm opacity-80 leading-relaxed">{t('footer.desc')}</p>
@@ -57,11 +57,11 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 shrink-0" />
-                <span>+91 20 1234 5678</span>
+                <span>+91 70832 37878 / 97871 84476</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0" />
-                <span>info@saraswatividyamandir.edu.in</span>
+                <span>gurukulvidyalay2485858@gmail.com</span>
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@ const Footer = () => {
 
       <div className="border-t border-primary-foreground/10 py-5">
         <div className="container-school text-center text-sm opacity-60">
-          © 2025 Saraswati Vidya Mandir. {t('footer.rights')}
+          © 2025 Gurukul Vidyalay & Jr. College. {t('footer.rights')}
         </div>
       </div>
     </footer>

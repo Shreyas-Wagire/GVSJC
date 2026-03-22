@@ -39,7 +39,7 @@ const translations: Record<string, Record<Language, string>> = {
   'highlights.events': { en: '🏅 Annual Sports Day - March 2025', hi: '🏅 वार्षिक खेल दिवस - मार्च 2025', mr: '🏅 वार्षिक क्रीडा दिन - मार्च 2025' },
 
   'about.title': { en: 'About Our School', hi: 'हमारे विद्यालय के बारे में', mr: 'आमच्या शाळेबद्दल' },
-  'about.desc': { en: 'Saraswati Vidya Mandir has been a beacon of education in Maharashtra for nearly four decades. Our school combines traditional Indian values with modern teaching methodologies to create well-rounded individuals ready for the challenges of the 21st century.', hi: 'सरस्वती विद्या मंदिर लगभग चार दशकों से महाराष्ट्र में शिक्षा का केंद्र रहा है। हमारा विद्यालय पारंपरिक भारतीय मूल्यों को आधुनिक शिक्षण पद्धतियों के साथ जोड़ता है।', mr: 'सरस्वती विद्या मंदिर जवळजवळ चार दशकांपासून महाराष्ट्रातील शिक्षणाचा दीपस्तंभ आहे. आमची शाळा पारंपरिक भारतीय मूल्ये आणि आधुनिक शिक्षण पद्धतींचा मेळ घालते.' },
+  'about.desc': { en: 'Gurukul Vidyalay & Jr. College has been a beacon of education in Maharashtra for nearly four decades. Our school combines traditional Indian values with modern teaching methodologies to create well-rounded individuals ready for the challenges of the 21st century.', hi: 'गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज लगभग चार दशकों से महाराष्ट्र में शिक्षा का केंद्र रहा है। हमारा विद्यालय पारंपरिक भारतीय मूल्यों को आधुनिक शिक्षण पद्धतियों के साथ जोड़ता है।', mr: 'गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज जवळजवळ चार दशकांपासून महाराष्ट्रातील शिक्षणाचा दीपस्तंभ आहे. आमची शाळा पारंपरिक भारतीय मूल्ये आणि आधुनिक शिक्षण पद्धतींचा मेळ घालते.' },
 
   'testimonials.title': { en: 'What Parents & Students Say', hi: 'अभिभावक और छात्र क्या कहते हैं', mr: 'पालक आणि विद्यार्थी काय म्हणतात' },
 
@@ -56,7 +56,7 @@ const translations: Record<string, Record<Language, string>> = {
   'footer.rights': { en: 'All rights reserved.', hi: 'सर्वाधिकार सुरक्षित।', mr: 'सर्व हक्क राखीव.' },
 
   // About Page
-  'about.page.title': { en: 'About Saraswati Vidya Mandir', hi: 'सरस्वती विद्या मंदिर के बारे में', mr: 'सरस्वती विद्या मंदिर बद्दल' },
+  'about.page.title': { en: 'About Gurukul Vidyalay & Jr. College', hi: 'गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज के बारे में', mr: 'गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज बद्दल' },
   'about.history.title': { en: 'Our History', hi: 'हमारा इतिहास', mr: 'आमचा इतिहास' },
   'about.vision.title': { en: 'Vision & Mission', hi: 'दृष्टि और मिशन', mr: 'दृष्टी आणि ध्येय' },
   'about.principal.title': { en: "Principal's Message", hi: 'प्रधानाचार्य का संदेश', mr: 'मुख्याध्यापकांचा संदेश' },

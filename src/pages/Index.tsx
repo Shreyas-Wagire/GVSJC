@@ -33,7 +33,7 @@ const HeroSection = () => {
   const { t } = useLanguage();
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-      <img src={heroImg} alt="Saraswati Vidya Mandir campus" className="absolute inset-0 w-full h-full object-cover" />
+      <img src={heroImg} alt="Gurukul Vidyalay & Jr. College campus" className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0 bg-primary/70" />
       <div className="relative container-school py-24">
         <div className="max-w-2xl">
@@ -111,9 +111,8 @@ const FeaturesSection = () => {
           {features.map((f, i) => (
             <div
               key={f.title}
-              className={`bg-card rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow ${
-                isVisible ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'
-              }`}
+              className={`bg-card rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow ${isVisible ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'
+                }`}
             >
               <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-4">
                 <f.icon className="w-6 h-6 text-secondary" />
@@ -134,7 +133,7 @@ const TestimonialsSection = () => {
 
   const testimonials = [
     { name: 'Priya Deshpande', role: 'Parent of Class X Student', text: 'The teachers genuinely care about each student. My daughter has flourished both academically and personally since joining SVM.' },
-    { name: 'Rahul Patil', role: 'Alumni, Batch 2020', text: 'The values and discipline I learned at Saraswati Vidya Mandir helped me excel at IIT. Forever grateful to my teachers.' },
+    { name: 'Rahul Patil', role: 'Alumni, Batch 2020', text: 'The values and discipline I learned at Gurukul Vidyalay & Jr. College helped me excel at IIT. Forever grateful to my teachers.' },
     { name: 'Sunita Kulkarni', role: 'Parent of Class V Student', text: "The school's balanced approach to academics and extra-curricular activities is exactly what we wanted for our child." },
   ];
 
@@ -148,9 +147,8 @@ const TestimonialsSection = () => {
           {testimonials.map((item, i) => (
             <div
               key={item.name}
-              className={`bg-card rounded-xl p-6 shadow-sm border border-border ${
-                isVisible ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'
-              }`}
+              className={`bg-card rounded-xl p-6 shadow-sm border border-border ${isVisible ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'
+                }`}
             >
               <Quote className="w-8 h-8 text-secondary/40 mb-4" />
               <p className="text-foreground/80 leading-relaxed mb-6 text-sm">{item.text}</p>
@@ -201,7 +199,7 @@ const Index = () => {
       <AboutSection />
       <FeaturesSection />
       <TestimonialsSection />
-      <CTASection />
+      {/* <CTASection /> */}
     </Layout>
   );
 };
