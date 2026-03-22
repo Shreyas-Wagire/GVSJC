@@ -135,7 +135,7 @@ const TestimonialsSection = () => {
   const testimonials = [
     { name: 'Priya Deshpande', role: 'Parent of Class X Student', text: 'The teachers genuinely care about each student. My daughter has flourished both academically and personally since joining SVM.' },
     { name: 'Rahul Patil', role: 'Alumni, Batch 2020', text: 'The values and discipline I learned at Saraswati Vidya Mandir helped me excel at IIT. Forever grateful to my teachers.' },
-    { name: 'Sunita Kulkarni', role: 'Parent of Class V Student', text: 'The school's balanced approach to academics and extra-curricular activities is exactly what we wanted for our child.' },
+    { name: 'Sunita Kulkarni', role: 'Parent of Class V Student', text: "The school's balanced approach to academics and extra-curricular activities is exactly what we wanted for our child." },
   ];
 
   return (
