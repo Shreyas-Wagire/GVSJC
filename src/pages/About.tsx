@@ -19,10 +19,10 @@ const About = () => {
   const { ref: infraRef, isVisible: infraVis } = useScrollReveal();
 
   const infrastructure = [
-    { icon: BookOpen, title: 'Library', desc: 'Over 15,000 books, journals, and digital resources' },
+    { icon: BookOpen, title: 'Library', desc: 'Over 1500 books, journals, and digital resources' },
     { icon: Beaker, title: 'Science Labs', desc: 'Physics, Chemistry, Biology labs with modern equipment' },
-    { icon: Monitor, title: 'Computer Lab', desc: '60 computers with high-speed internet and latest software' },
-    { icon: Trees, title: 'Sports Grounds', desc: 'Cricket, football, basketball courts, and athletics track' },
+    { icon: Monitor, title: 'Computer Lab', desc: '20 computers with high-speed internet and latest software' },
+    { icon: Trees, title: 'Sports Grounds', desc: 'Cricket, football and athletics track' },
   ];
 
   return (
@@ -37,8 +37,8 @@ const About = () => {
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground">{t('about.history.title')}</h2>
           </div>
           <div className="prose prose-lg text-muted-foreground space-y-4">
-            <p>Founded in 1985 by Shri Ramesh Chandra Sharma, Gurukul Vidyalay & Jr. College began as a modest school with just 3 classrooms and 47 students in Pune's Kothrud area. Driven by the vision of providing quality education rooted in Indian values, the school has grown into one of the most respected educational institutions in Maharashtra.</p>
-            <p>Over the decades, we have expanded our campus to include modern facilities while maintaining our commitment to the holistic development of every child. Today, with over 2,800 students and 128 dedicated teachers, we continue to uphold the traditions of excellence that our founders envisioned.</p>
+            <p>Founded in 2016 by Shri Ramesh Chandra Mali, Gurukul Vidyalay & Jr. College began as a modest school with just 3 classrooms and 47 students in Kolhapur's Chokak area. Driven by the vision of providing quality education rooted in Indian values, the school has grown into one of the most respected educational institutions in Maharashtra.</p>
+            <p>Over the decades, we have expanded our campus to include modern facilities while maintaining our commitment to the holistic development of every child. Today, with over 1,200 students and 42 dedicated teachers, we continue to uphold the traditions of excellence that our founders envisioned.</p>
           </div>
         </div>
       </section>
@@ -75,8 +75,8 @@ const About = () => {
               </div>
               <div>
                 <p className="text-muted-foreground leading-relaxed mb-4">"At Gurukul Vidyalay & Jr. College, we believe that every child is unique and capable of achieving greatness. Our role as educators is to ignite the spark of curiosity, nurture their talents, and guide them towards becoming responsible citizens. We are committed to providing an environment where learning is joyful, values are lived, and dreams take flight."</p>
-                <p className="font-semibold text-foreground">Dr. Kavita Joshi</p>
-                <p className="text-sm text-muted-foreground">Principal, M.Ed., Ph.D. (Education)</p>
+                <p className="font-semibold text-foreground">Mr. Pravin Mali</p>
+                <p className="text-sm text-muted-foreground">B.A,B.S (Education)</p>
               </div>
             </div>
           </div>

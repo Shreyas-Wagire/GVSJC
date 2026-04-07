@@ -53,7 +53,7 @@ const Footer = () => {
             <div className="flex flex-col gap-3 text-sm opacity-80">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-                <span>123, Education Lane, Kothrud, Pune, Maharashtra 411038</span>
+                <span>Chokak, Taluka Hatkanangale, District Kolhapur – 416118</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 shrink-0" />
@@ -61,7 +61,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0" />
-                <span>gurukulvidyalay2485858@gmail.com</span>
+                <span>gurukulvidyalay2425858@gmail.com</span>
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@ const Footer = () => {
             <div className="flex flex-col gap-2 text-sm opacity-80">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 shrink-0" />
-                <span>Mon – Fri: 8:00 AM – 4:00 PM</span>
+                <span>Mon – Fri: 9:00 AM – 4:00 PM</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 shrink-0" />

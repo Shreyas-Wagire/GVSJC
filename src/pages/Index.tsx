@@ -37,7 +37,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-primary/70" />
       <div className="relative container-school py-24">
         <div className="max-w-2xl">
-          <p className="text-secondary font-semibold text-sm tracking-widest uppercase mb-4 animate-reveal-up">Maharashtra State Board | Est. 1985</p>
+          <p className="text-secondary font-semibold text-sm tracking-widest uppercase mb-4 animate-reveal-up">Maharashtra State Board | Est. 2016</p>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground leading-[1.1] mb-6 animate-reveal-up delay-100">
             {t('hero.tagline')}
           </h2>
@@ -207,26 +207,23 @@ const ToppersSection = () => {
                 {group.toppers.map((topper) => (
                   <div
                     key={topper.name}
-                    className={`flex-1 rounded-xl p-5 border shadow-sm flex items-center gap-4 ${
-                      topper.rank === 1
+                    className={`flex-1 rounded-xl p-5 border shadow-sm flex items-center gap-4 ${topper.rank === 1
                         ? 'bg-gradient-to-br from-yellow-50 to-amber-50 border-amber-200 dark:from-yellow-950/20 dark:to-amber-950/20 dark:border-amber-800'
                         : 'bg-gradient-to-br from-slate-50 to-gray-50 border-gray-200 dark:from-slate-900/30 dark:to-gray-900/30 dark:border-gray-700'
-                    }`}
+                      }`}
                   >
                     <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shrink-0 ${
-                        topper.rank === 1
+                      className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shrink-0 ${topper.rank === 1
                           ? 'bg-amber-400 text-amber-900'
                           : 'bg-slate-300 text-slate-700'
-                      }`}
+                        }`}
                     >
                       {topper.rank === 1 ? '🥇' : '🥈'}
                     </div>
                     <div className="min-w-0">
                       <p className="font-display font-bold text-foreground truncate">{topper.name}</p>
-                      <p className={`text-sm font-semibold ${
-                        topper.rank === 1 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500 dark:text-slate-400'
-                      }`}>
+                      <p className={`text-sm font-semibold ${topper.rank === 1 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500 dark:text-slate-400'
+                        }`}>
                         {topper.percentage}
                       </p>
                       <p className="text-xs text-muted-foreground">Rank {topper.rank}</p>

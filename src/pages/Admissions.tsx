@@ -22,8 +22,8 @@ const Admissions = () => {
   const fees = [
     { grade: 'Pre-Primary (Nursery–UKG)', admission: '₹15,000', tuition: '₹3,500/month' },
     { grade: 'Primary (I–V)', admission: '₹18,000', tuition: '₹4,000/month' },
-    { grade: 'Middle (VI–VIII)', admission: '₹20,000', tuition: '₹4,500/month' },
-    { grade: 'Secondary (IX–X)', admission: '₹22,000', tuition: '₹5,000/month' },
+    // { grade: 'Middle (VI–VIII)', admission: '₹20,000', tuition: '₹4,500/month' },
+    // { grade: 'Secondary (IX–X)', admission: '₹22,000', tuition: '₹5,000/month' },
     { grade: 'Sr. Secondary (XI–XII)', admission: '₹25,000', tuition: '₹5,500/month' },
   ];
 
@@ -50,7 +50,7 @@ const Admissions = () => {
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground mb-8 text-center">Admission Process</h2>
           <div className="grid sm:grid-cols-2 gap-6">
             {steps.map((s, i) => (
-              <div key={s.step} className={`flex gap-4 p-5 bg-card rounded-xl border border-border ${isVisible ? `animate-reveal-up delay-${(i+1)*100}` : 'opacity-0'}`}>
+              <div key={s.step} className={`flex gap-4 p-5 bg-card rounded-xl border border-border ${isVisible ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'}`}>
                 <div className="text-3xl font-display font-bold text-secondary/30">{s.step}</div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">{s.title}</h3>
@@ -102,26 +102,26 @@ const Admissions = () => {
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">Student's Name</label>
-                <input type="text" required value={form.studentName} onChange={e => setForm({...form, studentName: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="text" required value={form.studentName} onChange={e => setForm({ ...form, studentName: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">Parent's Name</label>
-                <input type="text" required value={form.parentName} onChange={e => setForm({...form, parentName: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="text" required value={form.parentName} onChange={e => setForm({ ...form, parentName: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">Email</label>
-                <input type="email" required value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="email" required value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">Phone</label>
-                <input type="tel" required value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input type="tel" required value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Applying for Grade</label>
-              <select required value={form.grade} onChange={e => setForm({...form, grade: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+              <select required value={form.grade} onChange={e => setForm({ ...form, grade: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
                 <option value="">Select Grade</option>
                 <option>Nursery</option><option>LKG</option><option>UKG</option>
                 <option>Class I</option><option>Class II</option><option>Class III</option>
@@ -132,7 +132,7 @@ const Admissions = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1">Additional Message</label>
-              <textarea rows={3} value={form.message} onChange={e => setForm({...form, message: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
+              <textarea rows={3} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
             </div>
             <Button type="submit" size="lg" className="w-full">Submit Application</Button>
           </form>

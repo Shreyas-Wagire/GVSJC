@@ -38,7 +38,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-foreground text-sm">Address</p>
-                    <p className="text-muted-foreground text-sm">123, Education Lane, Kothrud, Pune, Maharashtra 411038, India</p>
+                    <p className="text-muted-foreground text-sm">Chokak, Tal. Hatkanangale, Dis. Kolhapur – 416118, India</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -56,7 +56,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-foreground text-sm">Email</p>
-                    <p className="text-muted-foreground text-sm">gurukulvidyalay2485858@gmail.com</p>
+                    <p className="text-muted-foreground text-sm">gurukulvidyalay2425858@gmail.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -65,14 +65,14 @@ const Contact = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-foreground text-sm">Office Hours</p>
-                    <p className="text-muted-foreground text-sm">Mon – Fri: 8:00 AM – 4:00 PM</p>
+                    <p className="text-muted-foreground text-sm">Mon – Fri: 9:00 AM – 4:00 PM</p>
                     <p className="text-muted-foreground text-sm">Saturday: 8:00 AM – 1:00 PM</p>
                   </div>
                 </div>
               </div>
 
               {/* Map */}
-              <div className="mt-8 rounded-xl overflow-hidden border border-border h-48">
+              <div className="mt-8 rounded-xl overflow-hidden border border-border h-42">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.2!2d73.807!3d18.508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDMwJzI5LjAiTiA3M8KwNDgnMjUuMiJF!5e0!3m2!1sen!2sin!4v1"
                   width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy"

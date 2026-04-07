@@ -23,7 +23,7 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Hero
   'hero.tagline': { en: 'Nurturing Minds, Shaping Futures', hi: 'मन का पोषण, भविष्य का निर्माण', mr: 'मनाचे पोषण, भविष्याची जडणघडण' },
-  'hero.subtitle': { en: 'Providing quality education with strong values since 1985. Empowering students to become leaders of tomorrow.', hi: '1985 से गुणवत्तापूर्ण शिक्षा और मजबूत मूल्यों के साथ। छात्रों को कल के नेता बनने के लिए सशक्त बनाना।', mr: '1985 पासून दर्जेदार शिक्षण आणि मजबूत मूल्यांसह. विद्यार्थ्यांना उद्याचे नेते बनण्यासाठी सक्षम करणे.' },
+  'hero.subtitle': { en: 'Providing quality education with strong values since 2016. Empowering students to become leaders of tomorrow.', hi: '2016 से गुणवत्तापूर्ण शिक्षा और मजबूत मूल्यों के साथ। छात्रों को कल के नेता बनने के लिए सशक्त बनाना।', mr: '2016 पासून दर्जेदार शिक्षण आणि मजबूत मूल्यांसह. विद्यार्थ्यांना उद्याचे नेते बनण्यासाठी सक्षम करणे.' },
   'hero.apply': { en: 'Apply Now', hi: 'अभी आवेदन करें', mr: 'आत्ता अर्ज करा' },
   'hero.explore': { en: 'Explore More', hi: 'और जानें', mr: 'अधिक जाणून घ्या' },
 
@@ -49,7 +49,7 @@ const translations: Record<string, Record<Language, string>> = {
   'cta.contact': { en: 'Contact Us', hi: 'संपर्क करें', mr: 'संपर्क करा' },
 
   // Footer
-  'footer.desc': { en: 'Providing quality education since 1985. Affiliated to CBSE, New Delhi.', hi: '1985 से गुणवत्तापूर्ण शिक्षा। CBSE, नई दिल्ली से संबद्ध।', mr: '1985 पासून दर्जेदार शिक्षण. CBSE, नवी दिल्ली संलग्न.' },
+  'footer.desc': { en: 'Providing quality education since 2016. Affiliated to Shivaji University, Kolhapur.', hi: '2016 से गुणवत्तापूर्ण शिक्षा। शिवाजी विद्यापीठ, कोल्हापूर से संबद्ध।', mr: '2016 पासून दर्जेदार शिक्षण. शिवाजी विद्यापीठ, कोल्हापूर संलग्न.' },
   'footer.quicklinks': { en: 'Quick Links', hi: 'त्वरित लिंक', mr: 'जलद दुवे' },
   'footer.contact': { en: 'Contact Info', hi: 'संपर्क जानकारी', mr: 'संपर्क माहिती' },
   'footer.hours': { en: 'Office Hours', hi: 'कार्यालय समय', mr: 'कार्यालयीन वेळ' },

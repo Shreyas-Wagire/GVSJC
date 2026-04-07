@@ -12,14 +12,14 @@ const Gallery = () => {
   const [activeCat, setActiveCat] = useState('All');
 
   const photos = [
-    { src: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&h=300&fit=crop', category: 'Classroom', title: 'Smart Classroom' },
-    { src: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=400&h=300&fit=crop', category: 'Campus', title: 'School Library' },
-    { src: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=400&h=300&fit=crop', category: 'Events', title: 'Annual Day' },
-    { src: 'https://images.unsplash.com/photo-1540479859555-17af45c78602?w=400&h=300&fit=crop', category: 'Sports', title: 'Sports Day' },
-    { src: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&h=300&fit=crop', category: 'Campus', title: 'School Building' },
-    { src: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop', category: 'Classroom', title: 'Group Study' },
-    { src: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=300&fit=crop', category: 'Cultural', title: 'Cultural Program' },
-    { src: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop', category: 'Events', title: 'Science Exhibition' },
+    { src: './smartclassroom.jpeg', category: 'Classroom', title: 'Smart Classroom' },
+    { src: './library.jpg', category: 'Campus', title: 'School Library' },
+    { src: './Annual-day.jpg', category: 'Events', title: 'Annual Day' },
+    { src: './sports.jpg', category: 'Sports', title: 'Sports Day' },
+    { src: './middle_school_building.jpg', category: 'Campus', title: 'School Building' },
+    { src: './group-activities.jpg', category: 'Classroom', title: 'Group Study' },
+    { src: './culture-program.jpg', category: 'Cultural', title: 'Cultural Program' },
+    { src: './science-exhibition.jpg', category: 'Events', title: 'Science Exhibition' },
   ];
 
   const filtered = activeCat === 'All' ? photos : photos.filter(p => p.category === activeCat);
@@ -55,7 +55,7 @@ const Gallery = () => {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {filtered.map((photo, i) => (
                   <div key={i} className="group relative rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-                    <img src={photo.src} alt={photo.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                    <img src={photo.src} alt={photo.title} className="w-full h-42 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                     <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 transition-colors flex items-end">
                       <p className="text-primary-foreground font-medium text-sm p-3 translate-y-full group-hover:translate-y-0 transition-transform">{photo.title}</p>
                     </div>

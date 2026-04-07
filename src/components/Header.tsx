@@ -84,7 +84,7 @@ const Header = () => {
       {/* Top bar */}
       <div className="bg-primary text-primary-foreground text-xs py-1.5">
         <div className="container-school flex justify-between items-center">
-          <span>📞 +91 70832 37878 / 97871 84476 | ✉️ gurukulvidyalay2485858@gmail.com</span>
+          <span>📞 +91 70832 37878 / 97871 84476 | ✉️ gurukulvidyalay2425858@gmail.com</span>
           <div className="hidden sm:flex items-center gap-3">
             <Link to="/students" className="hover:underline">{t('nav.students')}</Link>
             <span>|</span>
@@ -114,9 +114,8 @@ const Header = () => {
                 <div key={item.label} className="relative">
                   <button
                     onClick={() => setOpenDropdown(isOpen ? null : item.label)}
-                    className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                      isOpen ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:text-foreground hover:bg-muted'
-                    }`}
+                    className={`flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${isOpen ? 'bg-primary/10 text-primary' : 'text-foreground/70 hover:text-foreground hover:bg-muted'
+                      }`}
                   >
                     {item.label}
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
@@ -153,11 +152,10 @@ const Header = () => {
               <Link
                 key={item.path}
                 to={item.path!}
-                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  location.pathname === item.path
+                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === item.path
                     ? 'bg-primary/10 text-primary'
                     : 'text-foreground/70 hover:text-foreground hover:bg-muted'
-                }`}
+                  }`}
               >
                 {item.label}
               </Link>
@@ -260,11 +258,10 @@ const Header = () => {
                   key={item.path}
                   to={item.path!}
                   onClick={() => setMobileOpen(false)}
-                  className={`px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                    location.pathname === item.path
+                  className={`px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${location.pathname === item.path
                       ? 'bg-primary/10 text-primary'
                       : 'text-foreground/70 hover:bg-muted'
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Link>
