@@ -1,26 +1,25 @@
 import Layout from '@/components/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { Calendar, Bell, Newspaper } from 'lucide-react';
+import { Calendar, Bell } from 'lucide-react';
 
 const Events = () => {
   const { t } = useLanguage();
   const { ref, isVisible } = useScrollReveal();
-  const { ref: ref2, isVisible: vis2 } = useScrollReveal();
 
   const events = [
-    { date: 'Mar 15, 2025', title: 'Annual Sports Day', desc: 'Inter-house athletics, cricket, and kho-kho competitions.', tag: 'Sports' },
-    { date: 'Mar 22, 2025', title: 'Science Exhibition', desc: 'Student projects and working models on display for parents.', tag: 'Academic' },
-    { date: 'Apr 5, 2025', title: 'Parent-Teacher Meeting', desc: 'Term 2 progress discussion and report card distribution.', tag: 'Meeting' },
-    { date: 'Apr 14, 2025', title: 'Dr. Ambedkar Jayanti', desc: 'Special assembly and essay competition.', tag: 'Cultural' },
-    { date: 'May 1, 2025', title: 'Summer Camp Registration', desc: 'Art, robotics, swimming, and cricket summer camps.', tag: 'Activity' },
+    { date: 'Apr 20, 2026', title: 'Annual Sports Day', desc: 'Inter-house athletics, cricket, and kho-kho competitions. Parents are cordially invited at 9:00 AM.', tag: 'Sports' },
+    { date: 'Apr 28, 2026', title: 'Science Exhibition', desc: 'Student projects and working models on display for parents and judges.', tag: 'Academic' },
+    { date: 'May 5, 2026', title: 'Parent-Teacher Meeting', desc: 'Term 2 progress discussion and report card distribution for all classes.', tag: 'Meeting' },
+    { date: 'Apr 14, 2026', title: 'Dr. Ambedkar Jayanti', desc: 'Special assembly, essay competition, and cultural programme.', tag: 'Cultural' },
+    { date: 'Jun 1, 2026', title: 'Summer Camp Registration Opens', desc: 'Art, robotics, and cricket summer camps for Classes I–V. Limited seats.', tag: 'Activity' },
   ];
 
   const announcements = [
-    { title: 'Admission Open for 2025-26', date: 'Feb 2025', urgent: true },
-    { title: 'Board Exam Timetable Released', date: 'Feb 2025', urgent: true },
-    { title: 'Republic Day Celebration Photos', date: 'Jan 2025', urgent: false },
-    { title: 'Winter Vacation: Dec 24 - Jan 5', date: 'Dec 2024', urgent: false },
+    { title: 'Admissions Open for 2026-27 Academic Year', date: 'Apr 2026', urgent: true },
+    { title: 'Annual Exam Schedule Released (Apr 15 onwards)', date: 'Apr 2026', urgent: true },
+    { title: 'Fee Payment Due — Last Date: 20 Apr 2026', date: 'Apr 2026', urgent: true },
+    { title: 'Annual Sports Day — 20th April 2026', date: 'Apr 2026', urgent: false },
   ];
 
   return (

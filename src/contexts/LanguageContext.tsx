@@ -14,7 +14,6 @@ const translations: Record<string, Record<Language, string>> = {
   'nav.about': { en: 'About Us', hi: 'हमारे बारे में', mr: 'आमच्याबद्दल' },
   'nav.academics': { en: 'Academics', hi: 'शैक्षणिक', mr: 'शैक्षणिक' },
   'nav.admissions': { en: 'Admissions', hi: 'प्रवेश', mr: 'प्रवेश' },
-  'nav.faculty': { en: 'Faculty', hi: 'शिक्षक', mr: 'शिक्षक' },
   'nav.gallery': { en: 'Gallery', hi: 'गैलरी', mr: 'गॅलरी' },
   'nav.events': { en: 'Events & News', hi: 'कार्यक्रम और समाचार', mr: 'कार्यक्रम व बातम्या' },
   'nav.students': { en: 'Student Corner', hi: 'छात्र कोना', mr: 'विद्यार्थी कोपरा' },
@@ -36,7 +35,7 @@ const translations: Record<string, Record<Language, string>> = {
   // Sections
   'highlights.admissions': { en: '🎓 Admissions Open 2025-26', hi: '🎓 प्रवेश खुले 2025-26', mr: '🎓 प्रवेश सुरू 2025-26' },
   'highlights.results': { en: '📊 Board Results: 98.5% Pass', hi: '📊 बोर्ड परिणाम: 98.5% उत्तीर्ण', mr: '📊 बोर्ड निकाल: 98.5% उत्तीर्ण' },
-  'highlights.events': { en: '🏅 Annual Sports Day - March 2025', hi: '🏅 वार्षिक खेल दिवस - मार्च 2025', mr: '🏅 वार्षिक क्रीडा दिन - मार्च 2025' },
+  'highlights.events': { en: '🏅 Annual Sports Day - April 2026', hi: '🏅 वार्षिक खेल दिवस - अप्रैल 2026', mr: '🏅 वार्षिक क्रीडा दिन - एप्रिल 2026' },
 
   'about.title': { en: 'About Our School', hi: 'हमारे विद्यालय के बारे में', mr: 'आमच्या शाळेबद्दल' },
   'about.desc': { en: 'Gurukul Vidyalay & Jr. College has been a beacon of education in Maharashtra for nearly four decades. Our school combines traditional Indian values with modern teaching methodologies to create well-rounded individuals ready for the challenges of the 21st century.', hi: 'गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज लगभग चार दशकों से महाराष्ट्र में शिक्षा का केंद्र रहा है। हमारा विद्यालय पारंपरिक भारतीय मूल्यों को आधुनिक शिक्षण पद्धतियों के साथ जोड़ता है।', mr: 'गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज जवळजवळ चार दशकांपासून महाराष्ट्रातील शिक्षणाचा दीपस्तंभ आहे. आमची शाळा पारंपरिक भारतीय मूल्ये आणि आधुनिक शिक्षण पद्धतींचा मेळ घालते.' },

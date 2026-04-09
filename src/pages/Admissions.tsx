@@ -95,7 +95,7 @@ const Admissions = () => {
       </section>
 
       {/* Application Form */}
-      <section className="py-20 bg-background" ref={ref3}>
+      <section id="eligibility" className="py-20 bg-background" ref={ref3}>
         <div className={`container-school max-w-2xl ${vis3 ? 'animate-reveal-up' : 'opacity-0'}`}>
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground mb-8 text-center">Online Application</h2>
           <form onSubmit={handleSubmit} className="bg-card rounded-xl p-8 shadow-sm border border-border space-y-5">
@@ -125,9 +125,9 @@ const Admissions = () => {
                 <option value="">Select Grade</option>
                 <option>Nursery</option><option>LKG</option><option>UKG</option>
                 <option>Class I</option><option>Class II</option><option>Class III</option>
-                <option>Class IV</option><option>Class V</option><option>Class VI</option>
-                <option>Class VII</option><option>Class VIII</option><option>Class IX</option>
-                <option>Class X</option><option>Class XI - Science</option><option>Class XI - Commerce</option><option>Class XI - Arts</option>
+                <option>Class IV</option><option>Class V</option>
+                <option>Class XI - Science</option><option>Class XI - Commerce</option><option>Class XI - Arts</option>
+                <option>Class XII - Science</option><option>Class XII - Commerce</option><option>Class XII - Arts</option>
               </select>
             </div>
             <div>

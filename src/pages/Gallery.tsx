@@ -12,14 +12,14 @@ const Gallery = () => {
   const [activeCat, setActiveCat] = useState('All');
 
   const photos = [
-    { src: './smartclassroom.jpeg', category: 'Classroom', title: 'Smart Classroom' },
-    { src: './library.jpg', category: 'Campus', title: 'School Library' },
-    { src: './Annual-day.jpg', category: 'Events', title: 'Annual Day' },
-    { src: './sports.jpg', category: 'Sports', title: 'Sports Day' },
-    { src: './middle_school_building.jpg', category: 'Campus', title: 'School Building' },
-    { src: './group-activities.jpg', category: 'Classroom', title: 'Group Study' },
-    { src: './culture-program.jpg', category: 'Cultural', title: 'Cultural Program' },
-    { src: './science-exhibition.jpg', category: 'Events', title: 'Science Exhibition' },
+    { src: '/smartclassroom.jpeg', category: 'Classroom', title: 'Smart Classroom' },
+    { src: '/library.jpg', category: 'Campus', title: 'School Library' },
+    { src: '/Annual-day.jpg', category: 'Events', title: 'Annual Day' },
+    { src: '/sports.jpg', category: 'Sports', title: 'Sports Day' },
+    { src: '/middle_school_building.jpg', category: 'Campus', title: 'School Building' },
+    { src: '/group-activities.jpg', category: 'Classroom', title: 'Group Study' },
+    { src: '/culture-program.jpg', category: 'Cultural', title: 'Cultural Program' },
+    { src: '/science-exhibition.jpg', category: 'Events', title: 'Science Exhibition' },
   ];
 
   const filtered = activeCat === 'All' ? photos : photos.filter(p => p.category === activeCat);

@@ -51,7 +51,7 @@ const Academics = () => {
       </section>
 
       {/* Methodology */}
-      <section className="py-20 bg-muted" ref={ref2}>
+      <section id="methods" className="py-20 bg-muted" ref={ref2}>
         <div className={`container-school ${vis2 ? 'animate-reveal-up' : 'opacity-0'}`}>
           <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground text-center mb-10">Teaching Methodology</h2>
           <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">

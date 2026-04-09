@@ -9,17 +9,17 @@ const StudentCorner = () => {
   const { ref, isVisible } = useScrollReveal();
 
   const downloads = [
-    { title: 'Class X Syllabus 2025-26', type: 'PDF', size: '2.3 MB' },
-    { title: 'Class XII Physics Notes - Ch 1', type: 'PDF', size: '1.8 MB' },
-    { title: 'Holiday Homework (Summer 2025)', type: 'PDF', size: '450 KB' },
-    { title: 'Lab Manual - Chemistry', type: 'PDF', size: '3.1 MB' },
-    { title: 'Mathematics Formula Sheet', type: 'PDF', size: '680 KB' },
+    { title: 'Class V Syllabus 2025-26 (Maharashtra Board)', type: 'PDF', size: '2.3 MB' },
+    { title: 'Class XI Physics Notes - Ch 1 (HSC)', type: 'PDF', size: '1.8 MB' },
+    { title: 'Holiday Homework (Summer 2026)', type: 'PDF', size: '450 KB' },
+    { title: 'Lab Manual - Chemistry (Class XI–XII)', type: 'PDF', size: '3.1 MB' },
+    { title: 'Mathematics Formula Sheet (Primary)', type: 'PDF', size: '680 KB' },
   ];
 
   const results = [
-    { exam: 'Class X Board 2024', toppers: 'Ananya Sharma (98.2%)', passRate: '100%' },
-    { exam: 'Class XII Board 2024', toppers: 'Rohan Kulkarni (97.6%)', passRate: '98.5%' },
-    { exam: 'Term 1 (2024-25)', toppers: 'Available on portal', passRate: '96%' },
+    { exam: 'HSC Board (Class XII) 2024', toppers: 'Omkar Kale (96%)', passRate: '98.5%' },
+    { exam: 'Class V Annual Exam 2024', toppers: 'Vedant Bhosale (98%)', passRate: '100%' },
+    { exam: 'Term 1 (2025-26)', toppers: 'Available on portal', passRate: '97%' },
   ];
 
   return (

@@ -7,7 +7,7 @@ const Faculty = () => {
   const { ref, isVisible } = useScrollReveal();
 
   const faculty = [
-    { name: 'Mr. Pravin Mali', role: 'Principal', qual: 'M.Ed., Ph.D. (Education)', exp: '22 years', initials: 'KJ' },
+    { name: 'Mr. Pravin Mali', role: 'Principal', qual: 'M.Ed., Ph.D. (Education)', exp: '22 years', initials: 'PM' },
     { name: 'Shri Anil Deshmukh', role: 'Vice Principal & Mathematics', qual: 'M.Sc., B.Ed.', exp: '18 years', initials: 'AD' },
     { name: 'Smt. Meena Sharma', role: 'Head of Science Dept.', qual: 'M.Sc. Physics, B.Ed.', exp: '15 years', initials: 'MS' },
     { name: 'Smt. Rekha Patil', role: 'English Department', qual: 'M.A. English, B.Ed.', exp: '12 years', initials: 'RP' },

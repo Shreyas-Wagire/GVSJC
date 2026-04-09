@@ -4,7 +4,7 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
 import heroImg from '@/assets/school-hero.jpg';
-import { GraduationCap, Users, Award, TrendingUp, BookOpen, FlaskConical, Music, Laptop, Quote, Medal } from 'lucide-react';
+import { GraduationCap, Users, Award, TrendingUp, BookOpen, FlaskConical, Music, Laptop, Quote, Medal, Bell, AlertCircle, Info, CalendarDays, PartyPopper } from 'lucide-react';
 
 const StatCard = ({ value, label, delay }: { value: string; label: string; delay: string }) => {
   const { ref, isVisible } = useScrollReveal();
@@ -119,6 +119,132 @@ const FeaturesSection = () => {
               </div>
               <h3 className="font-display font-semibold text-foreground text-lg mb-2">{f.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const NoticeBoardSection = () => {
+  const { ref, isVisible } = useScrollReveal();
+
+  const notices = [
+    {
+      id: 1,
+      tag: 'Exam',
+      tagColor: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+      icon: AlertCircle,
+      iconColor: 'text-red-500',
+      title: 'Annual Examination Schedule 2025-26',
+      desc: 'Final examinations for all classes (I–V & XI–XII) will commence from 15th April 2026. Detailed timetables are available at the school office.',
+      date: '09 Apr 2026',
+      isNew: true,
+    },
+    {
+      id: 2,
+      tag: 'Holiday',
+      tagColor: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+      icon: CalendarDays,
+      iconColor: 'text-amber-500',
+      title: 'Summer Vacation Notice',
+      desc: 'School will remain closed for summer vacation from 1st May to 15th June 2026. Re-opening date will be intimated shortly.',
+      date: '07 Apr 2026',
+      isNew: true,
+    },
+    {
+      id: 3,
+      tag: 'Event',
+      tagColor: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+      icon: PartyPopper,
+      iconColor: 'text-purple-500',
+      title: 'Annual Sports Day – 20th April 2026',
+      desc: 'All parents are cordially invited to the Annual Sports Day on 20th April 2026 at 9:00 AM on the school grounds. Students must arrive in sports uniform.',
+      date: '05 Apr 2026',
+      isNew: false,
+    },
+    {
+      id: 4,
+      tag: 'General',
+      tagColor: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+      icon: Info,
+      iconColor: 'text-blue-500',
+      title: 'Fee Payment Reminder – Last Date 20th April',
+      desc: 'Parents are requested to clear the pending Term 2 fees before 20th April 2026 to avoid late fine. Contact: 70832 37878.',
+      date: '03 Apr 2026',
+      isNew: false,
+    },
+    {
+      id: 5,
+      tag: 'Admissions',
+      tagColor: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+      icon: Bell,
+      iconColor: 'text-green-500',
+      title: 'Admissions Open for 2026-27 Academic Year',
+      desc: 'Admissions for Pre-Primary (Nursery–UKG), Primary (Class I–V), and Jr. College (XI–XII) are now open. Limited seats available. Apply early.',
+      date: '01 Apr 2026',
+      isNew: false,
+    },
+  ];
+
+  // Ticker notices
+  const tickerTexts = notices.map(n => `📌 ${n.title}`);
+
+  return (
+    <section id="notices" className="py-20 bg-muted" ref={ref}>
+      {/* Scrolling ticker */}
+      <div className="bg-primary text-primary-foreground py-2 overflow-hidden mb-10">
+        <div className="flex whitespace-nowrap animate-marquee text-sm font-medium gap-12">
+          {[...tickerTexts, ...tickerTexts].map((text, i) => (
+            <span key={i} className="inline-flex items-center gap-2 shrink-0">
+              <Bell className="w-3.5 h-3.5 text-secondary shrink-0" />
+              {text}
+              <span className="text-secondary mx-6">•</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="container-school">
+        <div className={`text-center mb-10 ${isVisible ? 'animate-reveal-up' : 'opacity-0'}`}>
+          <p className="text-secondary font-semibold text-sm tracking-widest uppercase mb-3">Latest Updates</p>
+          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground flex items-center justify-center gap-3">
+            <Bell className="w-8 h-8 text-secondary" />
+            Notice Board
+          </h2>
+          <p className="text-muted-foreground mt-3 max-w-xl mx-auto text-sm">Stay informed with the latest school announcements, exam schedules, and events.</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+          {notices.map((notice, i) => (
+            <div
+              key={notice.id}
+              className={`bg-card rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow p-5 flex gap-4 ${
+                isVisible ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'
+              }`}
+            >
+              {/* Icon */}
+              <div className={`w-10 h-10 rounded-lg bg-muted flex items-center justify-center shrink-0 mt-0.5`}>
+                <notice.icon className={`w-5 h-5 ${notice.iconColor}`} />
+              </div>
+
+              {/* Content */}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap mb-1.5">
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${notice.tagColor}`}>
+                    {notice.tag}
+                  </span>
+                  {notice.isNew && (
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-red-500 text-white animate-pulse">
+                      NEW
+                    </span>
+                  )}
+                  <span className="text-xs text-muted-foreground ml-auto">{notice.date}</span>
+                </div>
+                <h3 className="font-semibold text-foreground text-sm leading-snug mb-1">{notice.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{notice.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -310,6 +436,7 @@ const Index = () => {
       <StatsSection />
       <AboutSection />
       <FeaturesSection />
+      <NoticeBoardSection />
       <ToppersSection />
       <TestimonialsSection />
       {/* <CTASection /> */}
