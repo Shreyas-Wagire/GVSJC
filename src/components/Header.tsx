@@ -50,7 +50,7 @@ const Header = () => {
       label: t('nav.academics'),
       children: [
         { label: 'Curriculum', path: '/academics', icon: BookOpen, desc: 'Maharashtra State Board syllabus & class structure' },
-        { label: 'Our Toppers', path: '/#toppers', icon: Medal, desc: 'Hall of fame — top rankers' },
+        { label: 'Our Toppers', path: '/toppers', icon: Medal, desc: 'Hall of fame — top rankers' },
         { label: 'Teaching Methods', path: '/academics', hash: '#methods', icon: FlaskConical, desc: 'How we teach & assess' },
         { label: 'Faculty', path: '/faculty', icon: Users, desc: 'Meet our expert teachers' },
       ],

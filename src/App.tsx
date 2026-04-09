@@ -14,6 +14,7 @@ import Events from "./pages/Events";
 import StudentCorner from "./pages/StudentCorner";
 import ParentPortal from "./pages/ParentPortal";
 import Contact from "./pages/Contact";
+import Toppers from "./pages/Toppers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/students" element={<StudentCorner />} />
             <Route path="/parents" element={<ParentPortal />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/toppers" element={<Toppers />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

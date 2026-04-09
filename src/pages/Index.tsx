@@ -4,7 +4,7 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
 import heroImg from '@/assets/school-hero.jpg';
-import { GraduationCap, Users, Award, TrendingUp, BookOpen, FlaskConical, Music, Laptop, Quote, Medal, Bell, AlertCircle, Info, CalendarDays, PartyPopper } from 'lucide-react';
+import { GraduationCap, Users, Award, TrendingUp, BookOpen, FlaskConical, Music, Laptop, Quote, Bell, AlertCircle, Info, CalendarDays, PartyPopper } from 'lucide-react';
 
 const StatCard = ({ value, label, delay }: { value: string; label: string; delay: string }) => {
   const { ref, isVisible } = useScrollReveal();
@@ -19,11 +19,13 @@ const StatCard = ({ value, label, delay }: { value: string; label: string; delay
 const HighlightBanner = () => {
   const { t } = useLanguage();
   return (
-    <div className="bg-secondary/10 border-b border-secondary/20">
-      <div className="container-school py-3 flex flex-wrap justify-center gap-4 sm:gap-8 text-sm font-medium">
-        <span className="animate-fade-in">{t('highlights.admissions')}</span>
-        <span className="animate-fade-in delay-200">{t('highlights.results')}</span>
-        <span className="animate-fade-in delay-400">{t('highlights.events')}</span>
+    <div className="bg-gradient-to-r from-secondary/20 via-secondary/10 to-secondary/20 border-b border-secondary/30">
+      <div className="container-school py-2.5 flex flex-wrap justify-center gap-2 sm:gap-6 text-sm font-semibold">
+        <span className="animate-fade-in flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-secondary inline-block" />{t('highlights.admissions')}</span>
+        <span className="text-secondary/40 hidden sm:inline">|</span>
+        <span className="animate-fade-in delay-200 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-500 inline-block" />{t('highlights.results')}</span>
+        <span className="text-secondary/40 hidden sm:inline">|</span>
+        <span className="animate-fade-in delay-400 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />{t('highlights.events')}</span>
       </div>
     </div>
   );
@@ -32,26 +34,53 @@ const HighlightBanner = () => {
 const HeroSection = () => {
   const { t } = useLanguage();
   return (
-    <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-      <img src={heroImg} alt="Gurukul Vidyalay & Jr. College campus" className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute inset-0 bg-primary/70" />
+    <section className="relative min-h-[88vh] flex items-center overflow-hidden">
+      <img src={heroImg} alt="Gurukul Vidyalay & Jr. College campus" className="absolute inset-0 w-full h-full object-cover scale-105" />
+      {/* Multi-layered overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/70 to-primary/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+
       <div className="relative container-school py-24">
         <div className="max-w-2xl">
-          <p className="text-secondary font-semibold text-sm tracking-widest uppercase mb-4 animate-reveal-up">Maharashtra State Board | Est. 2016</p>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground leading-[1.1] mb-6 animate-reveal-up delay-100">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-secondary/25 backdrop-blur-sm border border-secondary/30 text-secondary px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6 animate-reveal-up">
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+            Maharashtra State Board · Est. 2016
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground leading-[1.1] mb-6 animate-reveal-up delay-100">
             {t('hero.tagline')}
-          </h2>
+          </h1>
           <p className="text-lg text-primary-foreground/85 leading-relaxed mb-8 max-w-lg animate-reveal-up delay-200">
             {t('hero.subtitle')}
           </p>
+
           <div className="flex flex-wrap gap-4 animate-reveal-up delay-300">
-            <Button variant="hero" size="lg" asChild>
+            <Button variant="hero" size="lg" asChild className="shadow-lg shadow-secondary/30">
               <Link to="/admissions">{t('hero.apply')}</Link>
             </Button>
             <Button variant="hero-outline" size="lg" asChild>
               <Link to="/about">{t('hero.explore')}</Link>
             </Button>
           </div>
+
+          {/* Trust indicators */}
+          <div className="flex flex-wrap gap-5 mt-10 animate-reveal-up delay-400">
+            {['97% Board Results', '700+ Students', '35+ Expert Teachers'].map((item) => (
+              <div key={item} className="flex items-center gap-2 text-primary-foreground/80 text-sm">
+                <div className="w-4 h-4 rounded-full bg-secondary/80 flex items-center justify-center text-[10px]">✓</div>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-primary-foreground/50 animate-bounce">
+        <span className="text-xs">Scroll</span>
+        <div className="w-5 h-8 rounded-full border-2 border-primary-foreground/30 flex items-start justify-center pt-1">
+          <div className="w-1 h-2 rounded-full bg-primary-foreground/50" />
         </div>
       </div>
     </section>
@@ -253,117 +282,6 @@ const NoticeBoardSection = () => {
   );
 };
 
-const ToppersSection = () => {
-  const { ref, isVisible } = useScrollReveal();
-
-  const classGroups = [
-    {
-      label: '1st Std',
-      toppers: [
-        { rank: 1, name: 'Aarav Patil', percentage: '98%' },
-        { rank: 2, name: 'Sneha Kulkarni', percentage: '97%' },
-      ],
-    },
-    {
-      label: '2nd Std',
-      toppers: [
-        { rank: 1, name: 'Rohan Deshmukh', percentage: '99%' },
-        { rank: 2, name: 'Priya Gaikwad', percentage: '97%' },
-      ],
-    },
-    {
-      label: '3rd Std',
-      toppers: [
-        { rank: 1, name: 'Yash Shinde', percentage: '98%' },
-        { rank: 2, name: 'Ananya More', percentage: '96%' },
-      ],
-    },
-    {
-      label: '4th Std',
-      toppers: [
-        { rank: 1, name: 'Arjun Jadhav', percentage: '99%' },
-        { rank: 2, name: 'Isha Pawar', percentage: '97%' },
-      ],
-    },
-    {
-      label: '5th Std',
-      toppers: [
-        { rank: 1, name: 'Vedant Bhosale', percentage: '98%' },
-        { rank: 2, name: 'Mahi Salunke', percentage: '97%' },
-      ],
-    },
-    {
-      label: '11th (HSC Board)',
-      toppers: [
-        { rank: 1, name: 'Tanmay Wagh', percentage: '94%' },
-        { rank: 2, name: 'Siddhi Mane', percentage: '92%' },
-      ],
-    },
-    {
-      label: '12th (HSC Board)',
-      toppers: [
-        { rank: 1, name: 'Omkar Kale', percentage: '96%' },
-        { rank: 2, name: 'Rutuja Deshpande', percentage: '95%' },
-      ],
-    },
-  ];
-
-  return (
-    <section id="toppers" className="py-20 bg-background" ref={ref}>
-      <div className="container-school">
-        <div className={`text-center mb-12 ${isVisible ? 'animate-reveal-up' : 'opacity-0'}`}>
-          <p className="text-secondary font-semibold text-sm tracking-widest uppercase mb-3">Hall of Fame</p>
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-foreground flex items-center justify-center gap-3">
-            <Medal className="w-8 h-8 text-secondary" />
-            Our Toppers
-            <Medal className="w-8 h-8 text-secondary" />
-          </h2>
-          <p className="text-muted-foreground mt-3 max-w-xl mx-auto">Celebrating academic excellence across all classes — from 1st Standard to Junior College (HSC Board).</p>
-        </div>
-
-        <div className="space-y-10">
-          {classGroups.map((group, gi) => (
-            <div key={group.label} className={`${isVisible ? `animate-reveal-up delay-${(gi + 1) * 100}` : 'opacity-0'}`}>
-              <h3 className="text-center font-display font-semibold text-lg text-primary mb-4 flex items-center justify-center gap-2">
-                <span className="flex-1 h-px bg-border" />
-                <span className="px-4">{group.label}</span>
-                <span className="flex-1 h-px bg-border" />
-              </h3>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
-                {group.toppers.map((topper) => (
-                  <div
-                    key={topper.name}
-                    className={`flex-1 rounded-xl p-5 border shadow-sm flex items-center gap-4 ${topper.rank === 1
-                        ? 'bg-gradient-to-br from-yellow-50 to-amber-50 border-amber-200 dark:from-yellow-950/20 dark:to-amber-950/20 dark:border-amber-800'
-                        : 'bg-gradient-to-br from-slate-50 to-gray-50 border-gray-200 dark:from-slate-900/30 dark:to-gray-900/30 dark:border-gray-700'
-                      }`}
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold shrink-0 ${topper.rank === 1
-                          ? 'bg-amber-400 text-amber-900'
-                          : 'bg-slate-300 text-slate-700'
-                        }`}
-                    >
-                      {topper.rank === 1 ? '🥇' : '🥈'}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-display font-bold text-foreground truncate">{topper.name}</p>
-                      <p className={`text-sm font-semibold ${topper.rank === 1 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500 dark:text-slate-400'
-                        }`}>
-                        {topper.percentage}
-                      </p>
-                      <p className="text-xs text-muted-foreground">Rank {topper.rank}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const TestimonialsSection = () => {
   const { t } = useLanguage();
@@ -437,7 +355,6 @@ const Index = () => {
       <AboutSection />
       <FeaturesSection />
       <NoticeBoardSection />
-      <ToppersSection />
       <TestimonialsSection />
       {/* <CTASection /> */}
     </Layout>
