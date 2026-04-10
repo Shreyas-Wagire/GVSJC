@@ -1,27 +1,51 @@
 import { Link } from 'react-router-dom';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { Facebook, Twitter, Instagram, Youtube, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-react';
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const year = new Date().getFullYear();
+
+  const links = [
+    { to: '/about',      label: 'About' },
+    { to: '/academics',  label: 'Academics' },
+    { to: '/admissions', label: 'Admissions' },
+    { to: '/toppers',    label: 'Toppers' },
+    { to: '/gallery',    label: 'Gallery' },
+    { to: '/contact',    label: 'Contact' },
+  ];
 
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="container-school py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* About */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-secondary-foreground font-display font-bold">S</div>
+      {/* Gold accent line */}
+      <div className="h-0.5 bg-secondary w-full" />
+
+      <div className="container-school py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+          {/* Brand */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-primary font-display font-bold text-lg shrink-0">
+                G
+              </div>
               <div>
-                <h3 className="font-display font-bold text-lg">Gurukul Vidyalay & Jr. College</h3>
-                <p className="text-xs opacity-70">गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज</p>
+                <p className="font-display font-bold text-base leading-tight">Gurukul Vidyalay</p>
+                <p className="text-xs opacity-60">& Jr. College, Kolhapur</p>
               </div>
             </div>
-            <p className="text-sm opacity-80 leading-relaxed">{t('footer.desc')}</p>
-            <div className="flex gap-3 mt-5">
-              {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-full bg-primary-foreground/10 hover:bg-secondary/80 flex items-center justify-center transition-colors">
+            <p className="text-sm opacity-70 leading-relaxed">
+              Empowering students from Class 1–12 through quality education under the Maharashtra State Board.
+            </p>
+            <div className="flex gap-2 mt-1">
+              {[
+                { Icon: Facebook,  href: '#' },
+                { Icon: Instagram, href: '#' },
+                { Icon: Youtube,   href: '#' },
+              ].map(({ Icon, href }, i) => (
+                <a
+                  key={i}
+                  href={href}
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-secondary/80 flex items-center justify-center transition-colors duration-200"
+                >
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
@@ -29,64 +53,53 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h4 className="font-display font-semibold text-lg mb-4">{t('footer.quicklinks')}</h4>
-            <div className="flex flex-col gap-2">
-              {[
-                { to: '/about', label: t('nav.about') },
-                { to: '/academics', label: t('nav.academics') },
-                { to: '/admissions', label: t('nav.admissions') },
-                { to: '/gallery', label: t('nav.gallery') },
-                { to: '/events', label: t('nav.events') },
-                { to: '/contact', label: t('nav.contact') },
-              ].map((link) => (
-                <Link key={link.to} to={link.to} className="text-sm opacity-80 hover:opacity-100 hover:text-secondary transition-colors">
-                  {link.label}
-                </Link>
+          <div className="flex flex-col gap-3">
+            <h4 className="font-display font-semibold text-sm uppercase tracking-widest text-secondary">Quick Links</h4>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+              {links.map(({ to, label }) => (
+                <li key={to}>
+                  <Link
+                    to={to}
+                    className="text-sm opacity-70 hover:opacity-100 hover:text-secondary transition-all duration-200"
+                  >
+                    {label}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           {/* Contact */}
-          <div>
-            <h4 className="font-display font-semibold text-lg mb-4">{t('footer.contact')}</h4>
-            <div className="flex flex-col gap-3 text-sm opacity-80">
-              <div className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-                <span>Chokak, Taluka Hatkanangale, District Kolhapur – 416118</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 shrink-0" />
-                <span>+91 70832 37878 / 97871 84476</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 shrink-0" />
-                <span>gurukulvidyalay2425858@gmail.com</span>
-              </div>
-            </div>
+          <div className="flex flex-col gap-3">
+            <h4 className="font-display font-semibold text-sm uppercase tracking-widest text-secondary">Contact</h4>
+            <ul className="flex flex-col gap-3">
+              <li className="flex items-start gap-2 text-sm opacity-70">
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-secondary" />
+                <span>Chokak, Taluka Hatkanangale, Kolhapur – 416118</span>
+              </li>
+              <li className="flex items-center gap-2 text-sm opacity-70">
+                <Phone className="w-4 h-4 shrink-0 text-secondary" />
+                <a href="tel:+917083237878" className="hover:opacity-100 transition-opacity">
+                  +91 70832 37878
+                </a>
+              </li>
+              <li className="flex items-center gap-2 text-sm opacity-70">
+                <Mail className="w-4 h-4 shrink-0 text-secondary" />
+                <a href="mailto:gurukulvidyalay2425858@gmail.com" className="hover:opacity-100 transition-opacity break-all">
+                  gurukulvidyalay2425858@gmail.com
+                </a>
+              </li>
+            </ul>
           </div>
 
-          {/* Hours */}
-          <div>
-            <h4 className="font-display font-semibold text-lg mb-4">{t('footer.hours')}</h4>
-            <div className="flex flex-col gap-2 text-sm opacity-80">
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 shrink-0" />
-                <span>Mon – Fri: 9:00 AM – 4:00 PM</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 shrink-0" />
-                <span>Saturday: 8:00 AM – 1:00 PM</span>
-              </div>
-              <p className="mt-2">Sunday: Closed</p>
-            </div>
-          </div>
         </div>
       </div>
 
-      <div className="border-t border-primary-foreground/10 py-5">
-        <div className="container-school text-center text-sm opacity-60">
-          © 2025 Gurukul Vidyalay & Jr. College. {t('footer.rights')}
+      {/* Bottom bar */}
+      <div className="border-t border-white/10 py-4">
+        <div className="container-school flex flex-col sm:flex-row items-center justify-between gap-2 text-xs opacity-50">
+          <span>© {year} Gurukul Vidyalay & Jr. College. All rights reserved.</span>
+          <span>Maharashtra State Board</span>
         </div>
       </div>
     </footer>

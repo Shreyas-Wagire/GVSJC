@@ -1,20 +1,130 @@
 import Layout from '@/components/Layout';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { Medal, Trophy, Star, TrendingUp, Award } from 'lucide-react';
+import { Medal, Trophy, Star, TrendingUp, Award, UserCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
+// ─────────────────────────────────────────────
+//  DATA — Add a `photo` path to show a real image.
+//  Drop the photo file inside public/toppers/ and
+//  set photo: '/toppers/filename.jpg'
+//  If photo is omitted, the card shows emoji instead.
+// ─────────────────────────────────────────────
 const classGroups = [
-  { label: '1st Std', toppers: [{ rank: 1, name: 'Aarav Patil', percentage: '98%' }, { rank: 2, name: 'Sneha Kulkarni', percentage: '97%' }] },
-  { label: '2nd Std', toppers: [{ rank: 1, name: 'Rohan Deshmukh', percentage: '99%' }, { rank: 2, name: 'Priya Gaikwad', percentage: '97%' }] },
-  { label: '3rd Std', toppers: [{ rank: 1, name: 'Yash Shinde', percentage: '98%' }, { rank: 2, name: 'Ananya More', percentage: '96%' }] },
-  { label: '4th Std', toppers: [{ rank: 1, name: 'Arjun Jadhav', percentage: '99%' }, { rank: 2, name: 'Isha Pawar', percentage: '97%' }] },
-  { label: '5th Std', toppers: [{ rank: 1, name: 'Vedant Bhosale', percentage: '98%' }, { rank: 2, name: 'Mahi Salunke', percentage: '97%' }] },
-  { label: '11th (HSC)', toppers: [{ rank: 1, name: 'Tanmay Wagh', percentage: '94%' }, { rank: 2, name: 'Siddhi Mane', percentage: '92%' }] },
-  { label: '12th (HSC)', toppers: [{ rank: 1, name: 'Omkar Kale', percentage: '96%' }, { rank: 2, name: 'Rutuja Deshpande', percentage: '95%' }] },
+  {
+    label: '1st Std',
+    toppers: [
+      { rank: 1, name: 'Aarav Patil',     percentage: '98%', photo: '/toppers/aarav-patil.jpg'     },
+      { rank: 2, name: 'Sneha Kulkarni',   percentage: '97%', photo: '/toppers/sneha-kulkarni.jpg'  },
+    ],
+  },
+  {
+    label: '2nd Std',
+    toppers: [
+      { rank: 1, name: 'Rohan Deshmukh',  percentage: '99%', photo: '/toppers/rohan-deshmukh.jpg'  },
+      { rank: 2, name: 'Priya Gaikwad',   percentage: '97%', photo: '/toppers/priya-gaikwad.jpg'   },
+    ],
+  },
+  {
+    label: '3rd Std',
+    toppers: [
+      { rank: 1, name: 'Yash Shinde',     percentage: '98%', photo: '/toppers/yash-shinde.jpg'     },
+      { rank: 2, name: 'Ananya More',     percentage: '96%', photo: '/toppers/ananya-more.jpg'     },
+    ],
+  },
+  {
+    label: '4th Std',
+    toppers: [
+      { rank: 1, name: 'Arjun Jadhav',    percentage: '99%', photo: '/toppers/arjun-jadhav.jpg'    },
+      { rank: 2, name: 'Isha Pawar',      percentage: '97%', photo: '/toppers/isha-pawar.jpg'      },
+    ],
+  },
+  {
+    label: '5th Std',
+    toppers: [
+      { rank: 1, name: 'Vedant Bhosale',  percentage: '98%', photo: '/toppers/vedant-bhosale.jpg'  },
+      { rank: 2, name: 'Mahi Salunke',    percentage: '97%', photo: '/toppers/mahi-salunke.jpg'    },
+    ],
+  },
+  {
+    label: '11th (HSC)',
+    toppers: [
+      { rank: 1, name: 'Tanmay Wagh',     percentage: '94%', photo: '/toppers/tanmay-wagh.jpg'     },
+      { rank: 2, name: 'Siddhi Mane',     percentage: '92%', photo: '/toppers/siddhi-mane.jpg'     },
+    ],
+  },
+  {
+    label: '12th (HSC)',
+    toppers: [
+      { rank: 1, name: 'Omkar Kale',      percentage: '96%', photo: '/toppers/omkar-kale.jpg'      },
+      { rank: 2, name: 'Rutuja Deshpande',percentage: '95%', photo: '/toppers/rutuja-deshpande.jpg'},
+    ],
+  },
 ];
 
-const TopperCard = ({ topper, delay }: { topper: { rank: number; name: string; percentage: string }; delay: string }) => {
+// ─────────────────────────────────────────────
+//  Avatar — shows photo if available, emoji fallback
+// ─────────────────────────────────────────────
+const TopperAvatar = ({
+  photo,
+  name,
+  rank,
+}: {
+  photo?: string;
+  name: string;
+  rank: number;
+}) => {
+  const [imgError, setImgError] = useState(false);
+  const isGold = rank === 1;
+
+  if (photo && !imgError) {
+    return (
+      <div className={`relative shrink-0`}>
+        <img
+          src={photo}
+          alt={name}
+          onError={() => setImgError(true)}
+          className={`w-16 h-16 rounded-2xl object-cover shadow-md border-2 ${
+            isGold ? 'border-amber-400' : 'border-slate-300'
+          }`}
+        />
+        {/* Rank badge on photo */}
+        <span
+          className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 border-white shadow ${
+            isGold ? 'bg-amber-400 text-amber-900' : 'bg-slate-300 text-slate-700'
+          }`}
+        >
+          {isGold ? '①' : '②'}
+        </span>
+      </div>
+    );
+  }
+
+  // Fallback — emoji in gradient circle
+  return (
+    <div
+      className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-inner ${
+        isGold
+          ? 'bg-gradient-to-br from-amber-300 to-yellow-500'
+          : 'bg-gradient-to-br from-slate-200 to-gray-300'
+      }`}
+    >
+      {isGold ? '🥇' : '🥈'}
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────
+//  Card
+// ─────────────────────────────────────────────
+const TopperCard = ({
+  topper,
+  delay,
+}: {
+  topper: { rank: number; name: string; percentage: string; photo?: string };
+  delay: string;
+}) => {
   const isGold = topper.rank === 1;
   return (
     <div
@@ -24,14 +134,7 @@ const TopperCard = ({ topper, delay }: { topper: { rank: number; name: string; p
           : 'bg-gradient-to-br from-slate-50 to-gray-100 border-slate-200 shadow-sm hover:shadow-md'
       }`}
     >
-      {/* Rank Badge */}
-      <div
-        className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-inner ${
-          isGold ? 'bg-gradient-to-br from-amber-300 to-yellow-500' : 'bg-gradient-to-br from-slate-200 to-gray-300'
-        }`}
-      >
-        {isGold ? '🥇' : '🥈'}
-      </div>
+      <TopperAvatar photo={topper.photo} name={topper.name} rank={topper.rank} />
 
       {/* Info */}
       <div className="min-w-0 flex-1">
@@ -50,14 +153,14 @@ const TopperCard = ({ topper, delay }: { topper: { rank: number; name: string; p
         <p className="text-xs text-muted-foreground mt-0.5">Rank #{topper.rank}</p>
       </div>
 
-      {/* Glow on gold */}
-      {isGold && (
-        <Star className="w-4 h-4 text-amber-400 absolute top-3 right-3 animate-pulse" />
-      )}
+      {isGold && <Star className="w-4 h-4 text-amber-400 absolute top-3 right-3 animate-pulse" />}
     </div>
   );
 };
 
+// ─────────────────────────────────────────────
+//  Page
+// ─────────────────────────────────────────────
 const Toppers = () => {
   const { ref: heroRef, isVisible: heroVis } = useScrollReveal();
   const { ref: gridRef, isVisible: gridVis } = useScrollReveal();
@@ -66,7 +169,6 @@ const Toppers = () => {
     <Layout>
       {/* Hero */}
       <section className="relative bg-primary py-24 overflow-hidden">
-        {/* Decorative blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-secondary/20 blur-3xl" />
           <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-secondary/10 blur-3xl" />
@@ -87,9 +189,9 @@ const Toppers = () => {
           {/* Stats row */}
           <div className={`mt-12 grid grid-cols-3 gap-6 max-w-lg mx-auto ${heroVis ? 'animate-reveal-up delay-200' : 'opacity-0'}`}>
             {[
-              { icon: Award, value: '7', label: 'Classes' },
-              { icon: Medal, value: '14', label: 'Toppers' },
-              { icon: TrendingUp, value: '97%', label: 'Avg Score' },
+              { icon: Award,     value: '7',   label: 'Classes'   },
+              { icon: Medal,     value: '14',  label: 'Toppers'   },
+              { icon: TrendingUp,value: '97%', label: 'Avg Score' },
             ].map((s) => (
               <div key={s.label} className="text-center">
                 <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center mx-auto mb-2">
@@ -106,6 +208,18 @@ const Toppers = () => {
       {/* Toppers Grid */}
       <section className="py-20 bg-background" ref={gridRef}>
         <div className="container-school max-w-5xl">
+
+          {/* Upload hint */}
+          <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-10 text-blue-700 text-sm">
+            <UserCircle className="w-5 h-5 shrink-0" />
+            <span>
+              To add student photos, place image files in the{' '}
+              <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono text-xs">public/toppers/</code>{' '}
+              folder named as shown in the data (e.g. <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono text-xs">aarav-patil.jpg</code>).
+              Photos appear automatically.
+            </span>
+          </div>
+
           <div className="space-y-12">
             {classGroups.map((group, gi) => (
               <div
