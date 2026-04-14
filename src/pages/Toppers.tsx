@@ -15,50 +15,50 @@ const classGroups = [
   {
     label: '1st Std',
     toppers: [
-      { rank: 1, name: 'Aarav Patil',     percentage: '98%', photo: '/toppers/aarav-patil.jpg'     },
-      { rank: 2, name: 'Sneha Kulkarni',   percentage: '97%', photo: '/toppers/sneha-kulkarni.jpg'  },
+      { rank: 1, name: 'Aarav Patil',     percentage: '98%', photo: '/toppers/aarav-patil.png'     },
+      { rank: 2, name: 'Sneha Kulkarni',   percentage: '97%', photo: '/toppers/sneha-kulkarni.png'  },
     ],
   },
   {
     label: '2nd Std',
     toppers: [
-      { rank: 1, name: 'Rohan Deshmukh',  percentage: '99%', photo: '/toppers/rohan-deshmukh.jpg'  },
-      { rank: 2, name: 'Priya Gaikwad',   percentage: '97%', photo: '/toppers/priya-gaikwad.jpg'   },
+      { rank: 1, name: 'Priya Gaikwad ',  percentage: '99%', photo: '/toppers/priya-gaikwad.png'  },
+      { rank: 2, name: 'Rohan Deshmukh',   percentage: '97%', photo: '/toppers/rohan-deshmukh.png'   },
     ],
   },
   {
     label: '3rd Std',
     toppers: [
-      { rank: 1, name: 'Yash Shinde',     percentage: '98%', photo: '/toppers/yash-shinde.jpg'     },
-      { rank: 2, name: 'Ananya More',     percentage: '96%', photo: '/toppers/ananya-more.jpg'     },
+      { rank: 1, name: 'Ananya More',     percentage: '98%', photo: '/toppers/ananya-more.png'     },
+      { rank: 2, name: 'Yash Shinde',     percentage: '96%', photo: '/toppers/yash-shinde.png'     },
     ],
   },
   {
     label: '4th Std',
     toppers: [
-      { rank: 1, name: 'Arjun Jadhav',    percentage: '99%', photo: '/toppers/arjun-jadhav.jpg'    },
-      { rank: 2, name: 'Isha Pawar',      percentage: '97%', photo: '/toppers/isha-pawar.jpg'      },
+      { rank: 1, name: 'Arjun Jadhav',    percentage: '99%', photo: '/toppers/arjun-jadhav.png'    },
+      { rank: 2, name: 'Isha Pawar',      percentage: '97%', photo: '/toppers/isha-pawar.png'      },
     ],
   },
   {
     label: '5th Std',
     toppers: [
-      { rank: 1, name: 'Vedant Bhosale',  percentage: '98%', photo: '/toppers/vedant-bhosale.jpg'  },
-      { rank: 2, name: 'Mahi Salunke',    percentage: '97%', photo: '/toppers/mahi-salunke.jpg'    },
+      { rank: 1, name: 'Vedant Bhosale',  percentage: '98%', photo: '/toppers/vedant-bhosale.png'  },
+      { rank: 2, name: 'Mahi Salunke',    percentage: '97%', photo: '/toppers/mahi-salunke.png'    },
     ],
   },
   {
     label: '11th (HSC)',
     toppers: [
-      { rank: 1, name: 'Tanmay Wagh',     percentage: '94%', photo: '/toppers/tanmay-wagh.jpg'     },
-      { rank: 2, name: 'Siddhi Mane',     percentage: '92%', photo: '/toppers/siddhi-mane.jpg'     },
+      { rank: 1, name: 'Shreya Wagh',     percentage: '94%', photo: '/toppers/shreya-wagh.png'     },
+      { rank: 2, name: 'Siddhi Mane',     percentage: '92%', photo: '/toppers/siddhi-mane.png'     },
     ],
   },
   {
     label: '12th (HSC)',
     toppers: [
-      { rank: 1, name: 'Omkar Kale',      percentage: '96%', photo: '/toppers/omkar-kale.jpg'      },
-      { rank: 2, name: 'Rutuja Deshpande',percentage: '95%', photo: '/toppers/rutuja-deshpande.jpg'},
+      { rank: 1, name: 'Omkar Kale',      percentage: '96%', photo: '/toppers/omkar-kale.png'      },
+      { rank: 2, name: 'Rutuja Deshpande',percentage: '95%', photo: '/toppers/rutuja-deshpande.png'},
     ],
   },
 ];
@@ -209,16 +209,6 @@ const Toppers = () => {
       <section className="py-20 bg-background" ref={gridRef}>
         <div className="container-school max-w-5xl">
 
-          {/* Upload hint */}
-          <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-10 text-blue-700 text-sm">
-            <UserCircle className="w-5 h-5 shrink-0" />
-            <span>
-              To add student photos, place image files in the{' '}
-              <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono text-xs">public/toppers/</code>{' '}
-              folder named as shown in the data (e.g. <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono text-xs">aarav-patil.jpg</code>).
-              Photos appear automatically.
-            </span>
-          </div>
 
           <div className="space-y-12">
             {classGroups.map((group, gi) => (

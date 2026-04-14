@@ -3,8 +3,9 @@ import Layout from '@/components/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
-import { MapPin, Phone, Mail, Clock, MessageSquare, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, MessageSquare, CheckCircle2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
 
 const contactInfo = [
   {
@@ -39,14 +40,33 @@ const Contact = () => {
   const { t } = useLanguage();
   const { ref, isVisible } = useScrollReveal();
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you within 24 hours.");
-    setForm({ name: '', email: '', phone: '', message: '' });
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
+    setIsSubmitting(true);
+    
+    const { error } = await supabase.from('contacts').insert([
+      {
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        message: form.message
+      }
+    ]);
+
+    setIsSubmitting(false);
+
+    if (error) {
+      console.error(error);
+      toast.error(`Error: ${error.message || 'Database connection failed'}`);
+    } else {
+      toast.success("Message sent! We'll get back to you within 24 hours.");
+      setForm({ name: '', email: '', phone: '', message: '' });
+      setSent(true);
+      setTimeout(() => setSent(false), 4000);
+    }
   };
 
   return (
@@ -154,9 +174,9 @@ const Contact = () => {
                       className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all resize-none placeholder:text-muted-foreground/50"
                     />
                   </div>
-                  <Button type="submit" size="lg" className="w-full">
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    {t('contact.form.send')}
+                  <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <MessageSquare className="w-4 h-4 mr-2" />}
+                    {isSubmitting ? 'Sending...' : t('contact.form.send')}
                   </Button>
                   <p className="text-xs text-muted-foreground text-center">We respect your privacy. Your details will not be shared.</p>
                 </form>

@@ -3,8 +3,9 @@ import Layout from '@/components/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, FileText, Download } from 'lucide-react';
+import { CheckCircle, FileText, Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
 
 const Admissions = () => {
   const { t } = useLanguage();
@@ -28,11 +29,33 @@ const Admissions = () => {
   ];
 
   const [form, setForm] = useState({ studentName: '', parentName: '', email: '', phone: '', grade: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success('Application submitted successfully! We will contact you shortly.');
-    setForm({ studentName: '', parentName: '', email: '', phone: '', grade: '', message: '' });
+    setIsSubmitting(true);
+    
+    // Attempt to insert data into Supabase
+    const { error } = await supabase.from('admissions').insert([
+      {
+        student_name: form.studentName,
+        parent_name: form.parentName,
+        email: form.email,
+        phone: form.phone,
+        grade: form.grade,
+        message: form.message
+      }
+    ]);
+
+    setIsSubmitting(false);
+
+    if (error) {
+      console.error(error);
+      toast.error('Failed to submit application. Database connection error or missing credentials.');
+    } else {
+      toast.success('Application submitted successfully! We will contact you shortly.');
+      setForm({ studentName: '', parentName: '', email: '', phone: '', grade: '', message: '' });
+    }
   };
 
   return (
@@ -134,7 +157,10 @@ const Admissions = () => {
               <label className="block text-sm font-medium text-foreground mb-1">Additional Message</label>
               <textarea rows={3} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
             </div>
-            <Button type="submit" size="lg" className="w-full">Submit Application</Button>
+            <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : null}
+              {isSubmitting ? 'Submitting...' : 'Submit Application'}
+            </Button>
           </form>
         </div>
       </section>

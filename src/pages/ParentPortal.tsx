@@ -1,8 +1,12 @@
 import Layout from '@/components/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { UserCheck, CreditCard, MessageSquare, BarChart3 } from 'lucide-react';
+import { UserCheck, CreditCard, MessageSquare, BarChart3, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 const ParentPortal = () => {
   const { t } = useLanguage();
@@ -14,6 +18,30 @@ const ParentPortal = () => {
     { icon: MessageSquare, title: 'Communication', desc: 'Direct messaging with teachers, receive circulars, and important updates.' },
     { icon: UserCheck, title: 'Academic Progress', desc: 'Track grades, report cards, and teacher remarks throughout the year.' },
   ];
+
+  const { user, loading } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) return toast.error('Please enter email and password');
+    setIsLoggingIn(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setIsLoggingIn(false);
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success('Logged in successfully!');
+    }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    toast.success('Logged out');
+  };
 
   return (
     <Layout>
@@ -37,14 +65,37 @@ const ParentPortal = () => {
           </div>
 
           <div className="text-center bg-card rounded-xl p-10 border border-border max-w-lg mx-auto">
-            <h3 className="font-display font-bold text-foreground text-xl mb-3">Login to Parent Portal</h3>
-            <p className="text-muted-foreground text-sm mb-6">Access your dashboard with your registered credentials.</p>
-            <div className="space-y-4 max-w-xs mx-auto">
-              <input type="text" placeholder="Parent ID / Email" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-              <input type="password" placeholder="Password" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-              <Button className="w-full">Login</Button>
-              <p className="text-xs text-muted-foreground">Forgot password? Contact the school office.</p>
-            </div>
+            {loading ? (
+              <div className="flex justify-center p-8"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>
+            ) : user ? (
+              <div className="space-y-6">
+                <div className="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                  <UserCheck className="w-8 h-8" />
+                </div>
+                <h3 className="font-display font-bold text-foreground text-xl">Welcome, Parent!</h3>
+                <p className="text-muted-foreground text-sm">You are logged in as <span className="font-medium text-foreground">{user.email}</span></p>
+                <div className="pt-4 border-t border-border">
+                  <p className="text-sm font-medium mb-4 text-foreground/70">Please check your email or SMS for circulars, as the portal dashboard is actively being updated for the new session.</p>
+                  <Button variant="outline" onClick={handleLogout} className="w-full">
+                    <LogOut className="w-4 h-4 mr-2" /> Logout
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h3 className="font-display font-bold text-foreground text-xl mb-3">Login to Parent Portal</h3>
+                <p className="text-muted-foreground text-sm mb-6">Access your dashboard with your registered credentials.</p>
+                <form onSubmit={handleLogin} className="space-y-4 max-w-xs mx-auto">
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email Address" required className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                  <Button type="submit" className="w-full" disabled={isLoggingIn}>
+                    {isLoggingIn ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    {isLoggingIn ? 'Logging in...' : 'Login'}
+                  </Button>
+                  <p className="text-xs text-muted-foreground mt-4 block">Forgot password? Contact the school office.</p>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </section>

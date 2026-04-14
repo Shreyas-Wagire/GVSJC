@@ -43,6 +43,41 @@ const Header = () => {
     setMobileExpanded(null);
   }, [location.pathname]);
 
+  const handleLanguageChange = (langCode: string) => {
+    setLanguage(langCode as any);
+    setLangOpen(false);
+    
+    const selectElement = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+    if (selectElement) {
+      selectElement.value = langCode;
+      selectElement.dispatchEvent(new Event('change'));
+    }
+  };
+
+  // Load Google Translate Widget
+  useEffect(() => {
+    const addGoogleTranslateScript = () => {
+      if (!document.getElementById('google-translate-script')) {
+        const script = document.createElement('script');
+        script.id = 'google-translate-script';
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        document.body.appendChild(script);
+
+        (window as any).googleTranslateElementInit = () => {
+          new (window as any).google.translate.TranslateElement(
+            {
+              pageLanguage: 'en',
+              includedLanguages: 'en,hi,mr',
+              layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
+            },
+            'google_translate_element'
+          );
+        };
+      }
+    };
+    addGoogleTranslateScript();
+  }, []);
+
   const navItems: NavItem[] = [
     { path: '/', label: t('nav.home') },
     { path: '/about', label: t('nav.about') },
@@ -96,9 +131,7 @@ const Header = () => {
       {/* Main nav */}
       <div className="container-school flex items-center justify-between h-16" ref={dropdownRef}>
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-display font-bold text-lg">
-            S
-          </div>
+          <img src="/icon.png" alt="Gurukul Vidyalay Logo" className="w-10 h-10 object-contain rounded-full shadow-sm bg-white" />
           <div className="hidden sm:block">
             <h1 className="text-base font-display font-bold text-foreground leading-tight">Gurukul Vidyalay &amp; Jr. College</h1>
             <p className="text-[10px] text-muted-foreground tracking-wider uppercase">गुरुकुल विद्यालय ॲन्ड ज्युनियर कॉलेज</p>
@@ -172,21 +205,21 @@ const Header = () => {
             <Search className="w-4 h-4" />
           </button>
 
-          {/* Language switcher */}
+          {/* Language switcher UI */}
           <div className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
               className="flex items-center gap-1 p-2 rounded-md hover:bg-muted transition-colors text-sm"
             >
               <Globe className="w-4 h-4" />
-              <span className="hidden sm:inline">{languages.find(l => l.code === language)?.label}</span>
+              <span className="hidden sm:inline">{languages.find(l => l.code === language)?.label || 'Language'}</span>
             </button>
             {langOpen && (
               <div className="absolute right-0 top-full mt-1 bg-card rounded-lg shadow-xl border border-border py-1 min-w-[120px] z-50">
                 {languages.map((lang) => (
                   <button
                     key={lang.code}
-                    onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
+                    onClick={() => handleLanguageChange(lang.code)}
                     className={`w-full text-left px-4 py-2 text-sm hover:bg-muted transition-colors ${language === lang.code ? 'font-semibold text-primary' : ''}`}
                   >
                     {lang.label}
@@ -195,6 +228,9 @@ const Header = () => {
               </div>
             )}
           </div>
+
+          {/* Hidden Google Translate Element */}
+          <div id="google_translate_element" className="absolute opacity-0 w-0 h-0 overflow-hidden pointer-events-none -z-50"></div>
 
           {/* Mobile menu toggle */}
           <button

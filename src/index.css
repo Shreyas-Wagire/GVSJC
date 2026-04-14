@@ -68,7 +68,9 @@
     font-family: var(--font-body);
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
     text-wrap: balance;
   }
@@ -120,6 +122,7 @@
     transform: translateY(20px);
     filter: blur(4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -128,8 +131,13 @@
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slide-in-left {
@@ -138,6 +146,7 @@
     transform: translateX(-20px);
     filter: blur(4px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -151,6 +160,7 @@
     transform: translateX(20px);
     filter: blur(4px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -175,17 +185,39 @@
 }
 
 /* Stagger delays */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-600 {
+  animation-delay: 600ms;
+}
 
 /* Notice board ticker / marquee */
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -200,8 +232,15 @@
 
 /* Contact widget slow pulse */
 @keyframes pulse-slow {
-  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.5); }
-  50%       { box-shadow: 0 0 0 10px hsl(var(--primary) / 0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.5);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px hsl(var(--primary) / 0);
+  }
 }
 
 .animate-pulse-slow {
@@ -220,13 +259,16 @@ html {
 ::-webkit-scrollbar {
   width: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: hsl(var(--muted));
 }
+
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--primary) / 0.4);
   border-radius: 99px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary) / 0.7);
 }
@@ -254,6 +296,7 @@ img {
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .hover-lift:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px -10px hsl(var(--primary) / 0.2);
@@ -271,4 +314,3 @@ img {
 .duration-400 {
   transition-duration: 400ms;
 }
-

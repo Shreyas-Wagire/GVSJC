@@ -24,9 +24,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-primary font-display font-bold text-lg shrink-0">
-                G
-              </div>
+              <img src="/icon.png" alt="Gurukul Vidyalay Logo" className="w-10 h-10 object-contain rounded-full shadow-sm bg-white shrink-0" />
               <div>
                 <p className="font-display font-bold text-base leading-tight">Gurukul Vidyalay</p>
                 <p className="text-xs opacity-60">& Jr. College, Kolhapur</p>

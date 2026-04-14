@@ -4,15 +4,30 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Users, GraduationCap, Star } from 'lucide-react';
 
 const faculty = [
-  { name: 'Mr. Pravin Mali', role: 'Principal', qual: 'M.Ed., Ph.D. (Education)', exp: '22 years', initials: 'PM', color: 'from-blue-500 to-indigo-600' },
-  { name: 'Shri Anil Deshmukh', role: 'Vice Principal & Mathematics', qual: 'M.Sc., B.Ed.', exp: '18 years', initials: 'AD', color: 'from-purple-500 to-violet-600' },
-  { name: 'Smt. Meena Sharma', role: 'Head of Science Dept.', qual: 'M.Sc. Physics, B.Ed.', exp: '15 years', initials: 'MS', color: 'from-rose-500 to-pink-600' },
-  { name: 'Smt. Rekha Patil', role: 'English Department', qual: 'M.A. English, B.Ed.', exp: '12 years', initials: 'RP', color: 'from-amber-500 to-orange-600' },
-  { name: 'Shri Vikas Kulkarni', role: 'Hindi & Sanskrit', qual: 'M.A. Hindi, B.Ed.', exp: '14 years', initials: 'VK', color: 'from-teal-500 to-cyan-600' },
-  { name: 'Smt. Anjali Bhosale', role: 'Social Studies', qual: 'M.A. History, B.Ed.', exp: '10 years', initials: 'AB', color: 'from-green-500 to-emerald-600' },
-  { name: 'Shri Prasad Rao', role: 'Physical Education', qual: 'M.P.Ed.', exp: '16 years', initials: 'PR', color: 'from-red-500 to-rose-600' },
-  { name: 'Smt. Sneha Nair', role: 'Computer Science', qual: 'M.Tech. (CS), B.Ed.', exp: '8 years', initials: 'SN', color: 'from-sky-500 to-blue-600' },
+  { name: 'Hon. Shri. Pravin Mali', role: 'Principal', qual: 'M.Ed., Ph.D. (Education)', exp: '22 years', initials: 'PM', color: 'from-blue-500 to-indigo-600' },
+  { name: 'Smt. Alka Pralhad Kamble', role: 'Vice Principal', qual: 'M.Sc., B.Ed.', exp: '18 years', initials: 'AK', color: 'from-purple-500 to-violet-600' },
+
+  { name: 'Smt. Sharvari S. Chinchangi', qual: 'M.Sc. Physics, B.Ed.', exp: '15 years', initials: 'SC', color: 'from-rose-500 to-pink-600' },
+  { name: 'Smt. Rekha Patil', qual: 'M.A. English, B.Ed.', exp: '12 years', initials: 'RP', color: 'from-amber-500 to-orange-600' },
+  { name: 'Shri Vikas Kulkarni', qual: 'M.A. Hindi, B.Ed.', exp: '14 years', initials: 'VK', color: 'from-teal-500 to-cyan-600' },
+  { name: 'Smt. Anjali Bhosale', qual: 'M.A. History, B.Ed.', exp: '10 years', initials: 'AB', color: 'from-green-500 to-emerald-600' },
+  { name: 'Shri Prasad Rao', qual: 'M.A B.Ed.', exp: '16 years', initials: 'PR', color: 'from-red-500 to-rose-600' },
+  { name: 'Smt. Swapnali S. Patil', qual: 'B.Ed.', exp: '8 years', initials: 'SP', color: 'from-sky-500 to-blue-600' },
+
+  // Added Teachers (random experience)
+  { name: 'Sou. Poonam Keshav Gawade', qual: 'B.A B.Ed', exp: '17 years', initials: 'PG', color: 'from-indigo-500 to-purple-600' },
+  { name: 'Shrimati. Priyanka P. Gawade', qual: 'B.Sc D.Ed', exp: '9 years', initials: 'PG', color: 'from-pink-500 to-rose-600' },
+  { name: 'Sou. Samruddhi S. Tarlekar', qual: 'B.A B.Ed', exp: '6 years', initials: 'ST', color: 'from-green-500 to-teal-600' },
+  { name: 'Shri. Asif Khalil Mujawar', qual: 'B.A B.Ed', exp: '11 years', initials: 'AM', color: 'from-yellow-500 to-orange-600' },
+  { name: 'Shri. Dhirendra N. Patil', qual: 'M.A B.Ed', exp: '13 years', initials: 'DP', color: 'from-blue-400 to-cyan-600' },
+  { name: 'Sou. Smita V. Mulik', qual: 'B.A D.Ed', exp: '7 years', initials: 'SM', color: 'from-emerald-500 to-green-700' },
+  { name: 'Sou. Shailaja A. Vhanamani', qual: 'B.A B.Ed', exp: '10 years', initials: 'SV', color: 'from-purple-400 to-indigo-700' },
+  { name: 'Sou. Chaya C. Swami', qual: 'M.Com', exp: '12 years', initials: 'CS', color: 'from-rose-400 to-pink-700' },
+  { name: 'Sou. Sonali J. Gawade', qual: 'B.Sc', exp: '5 years', initials: 'SG', color: 'from-orange-400 to-red-600' },
+  { name: 'Sou. Parveen A. Shaikh', qual: 'B.Sc D.Ed', exp: '8 years', initials: 'PS', color: 'from-teal-400 to-cyan-700' },
+  { name: 'Shri. Dayanand R. Kamble', qual: 'M.A D.Ed', exp: '14 years', initials: 'DK', color: 'from-red-400 to-rose-700' },
 ];
+
 
 const Faculty = () => {
   const { t } = useLanguage();
