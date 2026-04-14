@@ -22,14 +22,14 @@ const classGroups = [
   {
     label: '2nd Std',
     toppers: [
-      { rank: 1, name: 'Priya Gaikwad ',  percentage: '99%', photo: '/toppers/priya-gaikwad.png'  },
+      { rank: 1, name: 'Ananya More',     percentage: '98%', photo: '/toppers/ananya-more.png'     },
       { rank: 2, name: 'Rohan Deshmukh',   percentage: '97%', photo: '/toppers/rohan-deshmukh.png'   },
     ],
   },
   {
     label: '3rd Std',
     toppers: [
-      { rank: 1, name: 'Ananya More',     percentage: '98%', photo: '/toppers/ananya-more.png'     },
+      { rank: 1, name: 'Priya Gaikwad ',  percentage: '99%', photo: '/toppers/priya-gaikwad.png'  },
       { rank: 2, name: 'Yash Shinde',     percentage: '96%', photo: '/toppers/yash-shinde.png'     },
     ],
   },
