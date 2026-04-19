@@ -1,12 +1,25 @@
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useNotices } from '@/hooks/useNotices';
+import { useQueries } from '@/hooks/useQueries';
+import { useFeedback } from '@/hooks/useFeedback';
+import { useAdmissions } from '@/hooks/useAdmissions';
 import { useAuth } from '@/contexts/AuthContext';
 import { BellRing, FileText, Activity } from 'lucide-react';
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { notices, isLoading } = useNotices();
+  const { data: noticesData = [], isLoading: noticesLoading } = useNotices();
+  const notices = noticesData ?? [];
+
+  const { data: queriesData = [], isLoading: queriesLoading } = useQueries();
+  const queries = queriesData ?? [];
+
+  const { data: feedbackData = [], isLoading: feedbackLoading } = useFeedback();
+  const feedback = feedbackData ?? [];
+
+  const { data: admissionsData = [], isLoading: admissionsLoading } = useAdmissions();
+  const admissions = admissionsData ?? [];
 
   return (
     <div className="space-y-8 animate-fade-in text-left">
@@ -24,18 +37,16 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {isLoading ? '...' : notices?.length || 0}
+              {noticesLoading ? '...' : notices?.length || 0}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Announcements currently visible
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">Announcements currently visible</p>
             <Link to="/admin/notices" className="text-xs text-primary font-medium mt-3 inline-block hover:underline">
-              Manage Notices &rarr;
+              Manage Notices →
             </Link>
           </CardContent>
         </Card>
 
-        {/* Dynamic Content Summary */}
+        {/* Site Content Summary */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Site Content</CardTitle>
@@ -43,11 +54,9 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">Editable Data</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Text, headers, and UI strings
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">Text, headers, and UI strings</p>
             <Link to="/admin/content" className="text-xs text-primary font-medium mt-3 inline-block hover:underline">
-              Manage Content &rarr;
+              Manage Content →
             </Link>
           </CardContent>
         </Card>
@@ -60,27 +69,25 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">Online</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Supabase connected successfully
-            </p>
+            <p className="text-xs text-muted-foreground mt-1">Supabase connected successfully</p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      {/* Detailed Sections */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {/* Recent Notices */}
         <Card className="col-span-1">
           <CardHeader>
             <CardTitle>Recent Notices</CardTitle>
-            <CardDescription>
-              A quick glance at the latest announcements on your site.
-            </CardDescription>
+            <CardDescription>A quick glance at the latest announcements on your site.</CardDescription>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
+            {noticesLoading ? (
               <p className="text-sm text-gray-500">Loading...</p>
             ) : notices && notices.length > 0 ? (
               <div className="space-y-4">
-                {notices.slice(0, 3).map(notice => (
+                {notices.slice(0, 3).map((notice) => (
                   <div key={notice.id} className="flex items-start gap-4 pb-4 border-b last:border-0">
                     <div className="bg-gray-100 p-2 rounded-lg mt-1">
                       <BellRing className="w-4 h-4 text-gray-600" />
@@ -94,6 +101,78 @@ export default function Dashboard() {
               </div>
             ) : (
               <p className="text-sm text-gray-500">No notices found.</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Queries / Contacts */}
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Site Queries</CardTitle>
+            <CardDescription>Messages submitted by visitors via the contact form.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {queriesLoading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : queries && queries.length > 0 ? (
+              <div className="space-y-3">
+                {queries.slice(0, 5).map((q: any) => (
+                  <div key={q.id} className="text-sm border-b pb-2 last:border-0">
+                    <p className="font-medium">{q.name} <span className="text-xs text-gray-400">({q.email})</span></p>
+                    <p className="text-gray-500 text-xs line-clamp-2">{q.message}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">No queries received.</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Feedback */}
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Feedback</CardTitle>
+            <CardDescription>User feedback collected from the feedback form.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {feedbackLoading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : feedback && feedback.length > 0 ? (
+              <ul className="list-disc list-inside space-y-1">
+                {feedback.slice(0, 5).map((f: any) => (
+                  <li key={f.id} className="text-sm">{f.comment}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500">No feedback yet.</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Admissions */}
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Admissions</CardTitle>
+            <CardDescription>Recent admission applications.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {admissionsLoading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : admissions && admissions.length > 0 ? (
+              <div className="space-y-3">
+                {admissions.slice(0, 5).map((a: any) => (
+                  <div key={a.id} className="text-sm border-b pb-2 last:border-0">
+                    <p className="font-medium">{a.student_name ?? 'N/A'}</p>
+                    <p className="text-xs text-gray-400">
+                      Grade: {a.grade ?? '–'} · Parent: {a.parent_name ?? '–'}
+                    </p>
+                    <p className="text-xs text-gray-400">{a.email}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">No admissions data.</p>
             )}
           </CardContent>
         </Card>

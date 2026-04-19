@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Layout from '@/components/Layout';
+import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
@@ -60,6 +61,12 @@ const Admissions = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Admissions 2026-27"
+        description="Apply for admissions at Gurukul Vidyalay & Jr. College, Chokak. Pre-Primary (Nursery–UKG), Primary (I–V) and Junior College (XI–XII) Science, Commerce, Arts. Limited seats. Call +91 70832 37878."
+        keywords="admission 2026, school admission Kolhapur, 11th admission Chokak, junior college admission Hatkanangale, GVSJC admission form"
+        canonical="/admissions"
+      />
       <section className="bg-primary py-16">
         <div className="container-school text-center">
           <h1 className="text-3xl sm:text-4xl font-display font-bold text-primary-foreground">{t('admissions.title')}</h1>

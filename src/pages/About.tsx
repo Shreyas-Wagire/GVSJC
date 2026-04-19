@@ -1,4 +1,5 @@
 import Layout from '@/components/Layout';
+import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Building2, Eye, Target, UserCheck, BookOpen, Beaker, Monitor, Trees, CheckCircle } from 'lucide-react';
@@ -34,6 +35,11 @@ const About = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="About Us"
+        description="Learn about Gurukul Vidyalay & Jr. College, Chokak — founded in 2016, offering Maharashtra State Board education from Pre-Primary to Junior College with 700+ students and 35+ teachers."
+        canonical="/about"
+      />
       {/* Hero */}
       <section className="bg-primary py-24 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">

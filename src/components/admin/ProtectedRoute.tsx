@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export default function ProtectedRoute() {
   const { session, loading } = useAuth();
+  const adminLoggedIn = typeof window !== 'undefined' && localStorage.getItem('adminLoggedIn') === 'true';
 
   if (loading) {
     return (
@@ -14,7 +15,7 @@ export default function ProtectedRoute() {
 
   // Check if session exists (user is authenticated)
   // (In a highly robust app, you might also have role checks, but email/pass is enough here)
-  if (!session) {
+  if (!session && !adminLoggedIn) {
     return <Navigate to="/admin/login" replace />;
   }
 

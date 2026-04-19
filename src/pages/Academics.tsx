@@ -1,4 +1,5 @@
 import Layout from '@/components/Layout';
+import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { BookOpen, Lightbulb, Users, Brain, GraduationCap, CheckCircle2 } from 'lucide-react';
@@ -44,6 +45,11 @@ const Academics = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Academics & Curriculam"
+        description="Explore the academic curriculum at Gurukul Vidyalay & Jr. College. We follow the Maharashtra State Board syllabus for Pre-Primary, Primary and Junior College (HSC)."
+        canonical="/academics"
+      />
       <section className="bg-primary py-16">
         <div className="container-school text-center">
           <h1 className="text-3xl sm:text-4xl font-display font-bold text-primary-foreground">{t('academics.title')}</h1>

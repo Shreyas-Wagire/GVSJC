@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
@@ -381,6 +382,7 @@ const CTASection = () => {
 const Index = () => {
   return (
     <Layout>
+      <SEOHead canonical="/" />
       <HighlightBanner />
       <HeroSection />
       <StatsSection />

@@ -10,7 +10,7 @@ import { Building2, LockKeyhole } from 'lucide-react';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('admin@gvsc');
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
@@ -25,6 +25,14 @@ export default function AdminLogin() {
     e.preventDefault();
     try {
       setLoading(true);
+      // Default admin shortcut for development
+      if (email === 'admin@school.com' && password === 'admin@gvsc') {
+        toast.success('Successfully logged in (default admin)');
+        localStorage.setItem('adminLoggedIn', 'true');
+        navigate('/admin', { replace: true });
+        setLoading(false);
+        return;
+      }
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,

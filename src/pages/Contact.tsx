@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Layout from '@/components/Layout';
+import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
@@ -71,6 +72,12 @@ const Contact = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Contact Us"
+        description="Get in touch with Gurukul Vidyalay & Jr. College, Chokak, Kolhapur. Contact us for admission queries, facilities, and more at +91 70832 37878."
+        keywords="contact GVSJC, school in Chokak, Kolhapur school contact, education Hatkanangale"
+        canonical="/contact"
+      />
       {/* Hero */}
       <section className="bg-primary py-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
