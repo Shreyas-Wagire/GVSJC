@@ -3,6 +3,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
+import { useNotices } from '@/hooks/useNotices';
+import { useSiteContent } from '@/hooks/useSiteContent';
 import heroImg from '@/assets/school-hero.jpg';
 import { GraduationCap, Users, Award, TrendingUp, BookOpen, FlaskConical, Music, Laptop, Quote, Bell, AlertCircle, Info, CalendarDays, PartyPopper } from 'lucide-react';
 
@@ -33,9 +35,15 @@ const HighlightBanner = () => {
 
 const HeroSection = () => {
   const { t } = useLanguage();
+  const { getContentValue } = useSiteContent();
+  
+  const heroTitle = getContentValue('hero.title', t('hero.tagline'));
+  const heroSubtitle = getContentValue('hero.subtitle', t('hero.subtitle'));
+  const heroImageBg = getContentValue('hero.image', heroImg);
+
   return (
     <section className="relative min-h-[88vh] flex items-center overflow-hidden">
-      <img src={heroImg} alt="Gurukul Vidyalay & Jr. College campus" className="absolute inset-0 w-full h-full object-cover scale-105" />
+      <img src={heroImageBg} alt="Gurukul Vidyalay & Jr. College campus" className="absolute inset-0 w-full h-full object-cover scale-105" />
       {/* Multi-layered overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/70 to-primary/40" />
       <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
@@ -49,10 +57,10 @@ const HeroSection = () => {
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-primary-foreground leading-[1.1] mb-6 animate-reveal-up delay-100">
-            {t('hero.tagline')}
+            {heroTitle}
           </h1>
           <p className="text-lg text-primary-foreground/85 leading-relaxed mb-8 max-w-lg animate-reveal-up delay-200">
-            {t('hero.subtitle')}
+            {heroSubtitle}
           </p>
 
           <div className="flex flex-wrap gap-4 animate-reveal-up delay-300">
@@ -158,8 +166,11 @@ const FeaturesSection = () => {
 
 const NoticeBoardSection = () => {
   const { ref, isVisible } = useScrollReveal();
+  const { notices: fetchedNotices, isLoading } = useNotices();
 
-  const notices = [
+  const iconMap = { AlertCircle, CalendarDays, PartyPopper, Info, Bell };
+
+  const defaultNotices = [
     {
       id: 1,
       tag: 'Exam',
@@ -217,6 +228,21 @@ const NoticeBoardSection = () => {
     },
   ];
 
+  // Map dynamic notices or strictly fallback to static
+  const notices = fetchedNotices && fetchedNotices.length > 0
+    ? fetchedNotices.map((n) => ({
+        id: n.id,
+        tag: n.tag,
+        tagColor: n.tag_color,
+        icon: iconMap[n.icon as keyof typeof iconMap] || Info,
+        iconColor: n.icon_color,
+        title: n.title,
+        desc: n.description,
+        date: n.date,
+        isNew: n.is_new,
+      }))
+    : defaultNotices;
+
   // Ticker notices
   const tickerTexts = notices.map(n => `📌 ${n.title}`);
 
@@ -246,7 +272,13 @@ const NoticeBoardSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto">
-          {notices.map((notice, i) => (
+          {isLoading && !fetchedNotices ? (
+            <div className="col-span-1 border border-border shadow-sm rounded-xl p-5 w-full bg-white animate-pulse">
+               <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+               <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
+               <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+            </div>
+          ) : notices.map((notice, i) => (
             <div
               key={notice.id}
               className={`bg-card rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow p-5 flex gap-4 ${

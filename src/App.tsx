@@ -19,6 +19,13 @@ import Contact from "./pages/Contact";
 import Toppers from "./pages/Toppers";
 import NotFound from "./pages/NotFound";
 
+import AdminLayout from "./components/admin/AdminLayout";
+import ProtectedRoute from "./components/admin/ProtectedRoute";
+import AdminLogin from "./pages/admin/Login";
+import AdminDashboard from "./pages/admin/Dashboard";
+import NoticeManager from "./pages/admin/NoticeManager";
+import ContentManager from "./pages/admin/ContentManager";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -42,6 +49,17 @@ const App = () => (
               <Route path="/parents" element={<ParentPortal />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/toppers" element={<Toppers />} />
+              
+              {/* Admin Routes Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<ProtectedRoute />}>
+                <Route element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="notices" element={<NoticeManager />} />
+                  <Route path="content" element={<ContentManager />} />
+                </Route>
+              </Route>
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
