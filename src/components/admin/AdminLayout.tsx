@@ -34,7 +34,7 @@ export default function AdminLayout() {
       {/* Mobile nav header */}
       <div className="md:hidden bg-white border-b p-4 flex items-center justify-between z-20">
         <Link to="/admin" className="flex items-center gap-2 font-bold text-gray-800">
-          <Building2 className="w-6 h-6 text-primary" />
+          <img src="/icon.png" alt="Gurukul Vidyalay Logo" className="w-8 h-8 object-contain rounded-full shadow-sm bg-white" />
           <span>Admin Panel</span>
         </Link>
         <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 -mr-2">
@@ -49,9 +49,8 @@ export default function AdminLayout() {
         } md:translate-x-0 fixed md:static inset-y-0 left-0 w-64 bg-white border-r transition-transform duration-200 ease-in-out z-10 flex flex-col pt-16 md:pt-0`}
       >
         <div className="hidden md:flex p-6 items-center gap-3 border-b">
-          <div className="bg-primary/10 p-2 rounded-lg">
-            <Building2 className="w-6 h-6 text-primary" />
-          </div>
+          <img src="/icon.png" alt="Gurukul Vidyalay Logo" className="w-10 h-10 object-contain rounded-full shadow-sm bg-white shrink-0" />
+
           <div>
             <h2 className="font-bold text-gray-800 leading-tight">Admin Portal</h2>
             <p className="text-xs text-gray-500">Gurukul Vidyalay</p>
