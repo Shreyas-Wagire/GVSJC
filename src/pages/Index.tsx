@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
 import { useNotices } from '@/hooks/useNotices';
 import { useSiteContent } from '@/hooks/useSiteContent';
-import heroImg from '@/assets/school-hero.jpg';
+const heroImg = '/middle_school_building.jpg';
+
 import { GraduationCap, Users, Award, TrendingUp, BookOpen, FlaskConical, Music, Laptop, Quote, Bell, AlertCircle, Info, CalendarDays, PartyPopper } from 'lucide-react';
 
 const StatCard = ({ value, label, delay }: { value: string; label: string; delay: string }) => {

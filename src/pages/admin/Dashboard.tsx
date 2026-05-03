@@ -126,6 +126,9 @@ export default function Dashboard() {
             ) : (
               <p className="text-sm text-gray-500">No queries received.</p>
             )}
+            <Link to="/admin/queries" className="text-xs text-primary font-medium mt-3 inline-block hover:underline">
+              View all queries →
+            </Link>
           </CardContent>
         </Card>
 
@@ -139,14 +142,20 @@ export default function Dashboard() {
             {feedbackLoading ? (
               <p className="text-sm text-gray-500">Loading...</p>
             ) : feedback && feedback.length > 0 ? (
-              <ul className="list-disc list-inside space-y-1">
+              <div className="space-y-3">
                 {feedback.slice(0, 5).map((f: any) => (
-                  <li key={f.id} className="text-sm">{f.comment}</li>
+                  <div key={f.id} className="text-sm border-b pb-2 last:border-0">
+                    <p className="font-medium">{f.name ?? 'Anonymous'} <span className="text-xs text-yellow-500">{'★'.repeat(f.rating ?? 0)}</span></p>
+                    <p className="text-gray-500 text-xs line-clamp-2">{f.comment}</p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : (
               <p className="text-sm text-gray-500">No feedback yet.</p>
             )}
+            <Link to="/admin/feedback" className="text-xs text-primary font-medium mt-3 inline-block hover:underline">
+              View all feedback →
+            </Link>
           </CardContent>
         </Card>
 
@@ -174,6 +183,9 @@ export default function Dashboard() {
             ) : (
               <p className="text-sm text-gray-500">No admissions data.</p>
             )}
+            <Link to="/admin/admissions" className="text-xs text-primary font-medium mt-3 inline-block hover:underline">
+              View all admissions →
+            </Link>
           </CardContent>
         </Card>
       </div>

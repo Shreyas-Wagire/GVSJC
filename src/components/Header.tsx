@@ -123,7 +123,7 @@ const Header = () => {
           <div className="hidden sm:flex items-center gap-3">
             <Link to="/students" className="hover:underline">{t('nav.students')}</Link>
             <span>|</span>
-            <Link to="/parents" className="hover:underline">{t('nav.parents')}</Link>
+            <Link to="/portal" className="hover:underline">Portal</Link>
           </div>
         </div>
       </div>
@@ -304,7 +304,7 @@ const Header = () => {
               );
             })}
             <Link to="/students" onClick={() => setMobileOpen(false)} className="px-4 py-2.5 rounded-md text-sm text-foreground/70 hover:bg-muted">{t('nav.students')}</Link>
-            <Link to="/parents" onClick={() => setMobileOpen(false)} className="px-4 py-2.5 rounded-md text-sm text-foreground/70 hover:bg-muted">{t('nav.parents')}</Link>
+            <Link to="/portal" onClick={() => setMobileOpen(false)} className="px-4 py-2.5 rounded-md text-sm text-foreground/70 hover:bg-muted">Portal</Link>
           </nav>
         </div>
       )}

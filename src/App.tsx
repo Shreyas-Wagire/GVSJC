@@ -7,6 +7,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ScrollToTop from "@/components/ScrollToTop";
+
+// Public pages
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Academics from "./pages/Academics";
@@ -15,17 +17,43 @@ import Faculty from "./pages/Faculty";
 import Gallery from "./pages/Gallery";
 import Events from "./pages/Events";
 import StudentCorner from "./pages/StudentCorner";
-import ParentPortal from "./pages/ParentPortal";
+import LoginPortal from "./pages/LoginPortal";
 import Contact from "./pages/Contact";
 import Toppers from "./pages/Toppers";
 import NotFound from "./pages/NotFound";
 
+// Admin
 import AdminLayout from "./components/admin/AdminLayout";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import NoticeManager from "./pages/admin/NoticeManager";
 import ContentManager from "./pages/admin/ContentManager";
+import AdmissionsManager from "./pages/admin/AdmissionsManager";
+import QueriesManager from "./pages/admin/QueriesManager";
+import FeedbackManager from "./pages/admin/FeedbackManager";
+import FacultyManager from "./pages/admin/FacultyManager";
+import ToppersManager from "./pages/admin/ToppersManager";
+import StudentsManager from "./pages/admin/StudentsManager";
+import FeePaymentsAdmin from "./pages/admin/FeePayments";
+import AdminDonations from "./pages/admin/Donations";
+
+// Clerk
+import ClerkLayout from "./components/clerk/ClerkLayout";
+import ClerkProtectedRoute from "./components/clerk/ClerkProtectedRoute";
+import ClerkLogin from "./pages/clerk/Login";
+import ClerkDashboard from "./pages/clerk/Dashboard";
+import ClerkAdmissions from "./pages/clerk/Admissions";
+import ClerkEnrollment from "./pages/clerk/Enrollment";
+import ClerkFeeCollection from "./pages/clerk/FeeCollection";
+import ClerkBonafide from "./pages/clerk/Bonafide";
+import ClerkLeavingCertificate from "./pages/clerk/LeavingCertificate";
+import ClerkIdCard from "./pages/clerk/IdCard";
+import ClerkDonations from "./pages/clerk/Donations";
+import ClerkNotices from "./pages/clerk/Notices";
+import ClerkApplications from "./pages/clerk/Applications";
+import ClerkQueries from "./pages/clerk/Queries";
+import ClerkFeedback from "./pages/clerk/Feedback";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +68,7 @@ const App = () => (
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/academics" element={<Academics />} />
@@ -48,17 +77,46 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/events" element={<Events />} />
               <Route path="/students" element={<StudentCorner />} />
-              <Route path="/parents" element={<ParentPortal />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/portal" element={<LoginPortal />} />
+              <Route path="/parents" element={<LoginPortal />} />
               <Route path="/toppers" element={<Toppers />} />
-              
-              {/* Admin Routes Routes */}
+              <Route path="/contact" element={<Contact />} />
+
+
+              {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute />}>
                 <Route element={<AdminLayout />}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="notices" element={<NoticeManager />} />
+                  <Route path="admissions" element={<AdmissionsManager />} />
+                  <Route path="queries" element={<QueriesManager />} />
+                  <Route path="feedback" element={<FeedbackManager />} />
+                  <Route path="faculty" element={<FacultyManager />} />
+                  <Route path="toppers" element={<ToppersManager />} />
+                  <Route path="students" element={<StudentsManager />} />
+                  <Route path="fees" element={<FeePaymentsAdmin />} />
+                  <Route path="donations" element={<AdminDonations />} />
                   <Route path="content" element={<ContentManager />} />
+                </Route>
+              </Route>
+
+              {/* Clerk Routes */}
+              <Route path="/clerk/login" element={<ClerkLogin />} />
+              <Route path="/clerk" element={<ClerkProtectedRoute />}>
+                <Route element={<ClerkLayout />}>
+                  <Route index element={<ClerkDashboard />} />
+                  <Route path="admissions" element={<ClerkAdmissions />} />
+                  <Route path="enrollment" element={<ClerkEnrollment />} />
+                  <Route path="fees" element={<ClerkFeeCollection />} />
+                  <Route path="bonafide" element={<ClerkBonafide />} />
+                  <Route path="leaving-certificate" element={<ClerkLeavingCertificate />} />
+                  <Route path="idcard" element={<ClerkIdCard />} />
+                  <Route path="donations" element={<ClerkDonations />} />
+                  <Route path="notices" element={<ClerkNotices />} />
+                  <Route path="applications" element={<ClerkApplications />} />
+                  <Route path="queries" element={<ClerkQueries />} />
+                  <Route path="feedback" element={<ClerkFeedback />} />
                 </Route>
               </Route>
 

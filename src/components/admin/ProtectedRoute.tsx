@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function ProtectedRoute() {
-  const { session, loading } = useAuth();
+  const { session, loading, role } = useAuth();
   const adminLoggedIn = typeof window !== 'undefined' && localStorage.getItem('adminLoggedIn') === 'true';
 
   if (loading) {
@@ -13,8 +13,12 @@ export default function ProtectedRoute() {
     );
   }
 
-  // Check if session exists (user is authenticated)
-  // (In a highly robust app, you might also have role checks, but email/pass is enough here)
+  // If authenticated as clerk, redirect them to clerk portal
+  if (session && role === 'clerk') {
+    return <Navigate to="/clerk" replace />;
+  }
+
+  // Check if session exists OR admin local login flag
   if (!session && !adminLoggedIn) {
     return <Navigate to="/admin/login" replace />;
   }
