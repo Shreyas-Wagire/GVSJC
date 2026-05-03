@@ -78,7 +78,7 @@ const Faculty = () => {
                 // If it's from DB, f.name.charAt(0) + (f.name.split(' ')[1]?.charAt(0) || '') as initials
                 const initials = f.initials || (f.name.charAt(0) + (f.name.split(' ')[1]?.charAt(0) || '')).toUpperCase();
                 const color = f.color || 'from-blue-500 to-indigo-600';
-                
+
                 return (
                   <div
                     key={f.id || f.name || i}

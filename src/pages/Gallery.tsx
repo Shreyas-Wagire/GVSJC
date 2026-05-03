@@ -88,7 +88,9 @@ const Lightbox = ({ photos, index, onClose }: LightboxProps) => {
         />
         <div className="text-center mt-4">
           <p className="text-white font-semibold text-lg">{photo.title}</p>
-          <p className="text-white/60 text-sm mt-1">{photo.desc || photo.category}</p>
+          <p className="text-white/60 text-sm mt-1">
+            {photo.photo_date ? new Date(photo.photo_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : (photo.desc || photo.category)}
+          </p>
         </div>
       </div>
 
@@ -118,6 +120,64 @@ const Gallery = () => {
   const displayPhotos = images && images.length > 0 ? images : fallbackPhotos;
   const filtered = activeCat === 'All' ? displayPhotos : displayPhotos.filter((p) => p.category === activeCat);
 
+  const isYearSplitCategory = ['Cultural', 'Achievements', 'Sports', 'Events'].includes(activeCat);
+
+  const getPhotoYear = (photo: any) => {
+    if (photo.photo_date) return new Date(photo.photo_date).getFullYear().toString();
+    if (photo.created_at) return new Date(photo.created_at).getFullYear().toString();
+    return 'Other';
+  };
+
+  const groupedPhotos = filtered.reduce((acc, photo) => {
+    const year = getPhotoYear(photo);
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(photo);
+    return acc;
+  }, {} as Record<string, any[]>);
+
+  const sortedYears = Object.keys(groupedPhotos).sort((a, b) => b.localeCompare(a));
+
+  const renderPhotoGrid = (photosToRender: any[]) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {photosToRender.map((photo, i) => {
+        const globalIndex = displayPhotos.indexOf(photo);
+        return (
+          <div
+            key={photo.id || photo.image_url || i}
+            className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 ${isVisible ? `animate-reveal-up delay-${Math.min((i + 1) * 100, 600)}` : 'opacity-0'
+              } ${i % 5 === 0 ? 'sm:col-span-2' : ''}`}
+            onClick={() => setLightboxIndex(globalIndex)}
+          >
+            <div className={`w-full overflow-hidden ${i % 5 === 0 ? 'h-56' : 'h-48'}`}>
+              <img
+                src={photo.image_url || photo.src}
+                alt={photo.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                loading="lazy"
+              />
+            </div>
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+              <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                <span className="text-xs font-semibold text-secondary bg-secondary/20 px-2 py-0.5 rounded-full mb-2 inline-block">{photo.category}</span>
+                <p className="text-white font-semibold text-sm">{photo.title}</p>
+                <p className="text-white/70 text-xs mt-0.5">
+                  {photo.photo_date ? new Date(photo.photo_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : (photo.desc || photo.category)}
+                </p>
+              </div>
+            </div>
+
+            {/* Zoom icon */}
+            <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <ZoomIn className="w-4 h-4 text-white" />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   return (
     <Layout>
       {/* Hero */}
@@ -144,11 +204,10 @@ const Gallery = () => {
               <button
                 key={cat}
                 onClick={() => setActiveCat(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                  activeCat === cat
-                    ? 'bg-primary text-primary-foreground shadow-lg scale-105'
-                    : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
-                }`}
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${activeCat === cat
+                  ? 'bg-primary text-primary-foreground shadow-lg scale-105'
+                  : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                  }`}
               >
                 {cat}
               </button>
@@ -167,43 +226,24 @@ const Gallery = () => {
               <Loader2 className="w-8 h-8 text-primary animate-spin" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {filtered.map((photo, i) => {
-                const globalIndex = displayPhotos.indexOf(photo);
-                return (
-                  <div
-                    key={photo.id || photo.image_url || i}
-                    className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 ${
-                    isVisible ? `animate-reveal-up delay-${Math.min((i + 1) * 100, 600)}` : 'opacity-0'
-                  } ${i % 5 === 0 ? 'sm:col-span-2' : ''}`}
-                  onClick={() => setLightboxIndex(globalIndex)}
-                >
-                  <div className={`w-full overflow-hidden ${i % 5 === 0 ? 'h-56' : 'h-48'}`}>
-                    <img
-                      src={photo.image_url || photo.src}
-                      alt={photo.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                  </div>
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <span className="text-xs font-semibold text-secondary bg-secondary/20 px-2 py-0.5 rounded-full mb-2 inline-block">{photo.category}</span>
-                      <p className="text-white font-semibold text-sm">{photo.title}</p>
-                      <p className="text-white/70 text-xs mt-0.5">{photo.desc || photo.category}</p>
+            isYearSplitCategory ? (
+              <div className="space-y-16">
+                {sortedYears.map((year) => (
+                  <div key={year}>
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+                      <span className="inline-block bg-primary/10 text-primary font-display font-bold px-6 py-2 rounded-full text-lg shadow-sm border border-primary/20">
+                        {year}
+                      </span>
+                      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
                     </div>
+                    {renderPhotoGrid(groupedPhotos[year])}
                   </div>
-
-                  {/* Zoom icon */}
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <ZoomIn className="w-4 h-4 text-white" />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                ))}
+              </div>
+            ) : (
+              renderPhotoGrid(filtered)
+            )
           )}
         </div>
       </section>

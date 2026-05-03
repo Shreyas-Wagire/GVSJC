@@ -61,7 +61,7 @@ const Events = () => {
                     const isInvalidDate = displayDate === 'Invalid Date';
 
                     return (
-                      <div key={e.title + i} className={`bg-card rounded-xl p-5 border border-border hover:shadow-md transition-shadow ${isVisible ? `animate-reveal-up delay-${(i+1)*100}` : 'opacity-0'}`}>
+                      <div key={e.title + i} className={`bg-card rounded-xl p-5 border border-border hover:shadow-md transition-shadow ${isVisible ? `animate-reveal-up delay-${(i + 1) * 100}` : 'opacity-0'}`}>
                         <div className="flex items-start justify-between gap-4">
                           <div>
                             <span className="text-xs font-medium text-secondary">{isInvalidDate ? dateStr : displayDate}</span>

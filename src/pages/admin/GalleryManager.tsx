@@ -16,13 +16,14 @@ export default function GalleryManager() {
   const { images, isLoading, addImage, updateImage, deleteImage } = useGallery();
   const { uploadImage, isUploading } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState<Omit<GalleryImage, 'id' | 'created_at'>>({
     image_url: '',
     category: 'Events',
     title: '',
+    photo_date: '',
   });
   const [activeTab, setActiveTab] = useState('All');
 
@@ -31,6 +32,7 @@ export default function GalleryManager() {
       image_url: img.image_url,
       category: img.category,
       title: img.title || '',
+      photo_date: img.photo_date || '',
     });
     setEditingId(img.id);
     setIsDialogOpen(true);
@@ -41,6 +43,7 @@ export default function GalleryManager() {
       image_url: '',
       category: 'Events',
       title: '',
+      photo_date: '',
     });
     setEditingId(null);
     setIsDialogOpen(true);
@@ -76,7 +79,7 @@ export default function GalleryManager() {
           <h1 className="text-3xl font-bold font-display text-gray-900">Gallery Manager</h1>
           <p className="text-gray-500">Manage photos and categories for the gallery.</p>
         </div>
-        
+
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={handleAdd}>
@@ -88,20 +91,20 @@ export default function GalleryManager() {
               <DialogTitle>{editingId ? 'Edit Image' : 'Upload New Image'}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4 mt-2">
-              
+
               <div className="space-y-2">
                 <Label>Image File</Label>
                 <div className="flex gap-2">
-                  <Input 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden" 
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
                     ref={fileInputRef}
                     onChange={handleFileChange}
                   />
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                  <Button
+                    type="button"
+                    variant="outline"
                     className="w-full"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploading}
@@ -111,7 +114,7 @@ export default function GalleryManager() {
                   </Button>
                 </div>
                 <div className="text-xs text-center text-gray-500 mt-2">OR provide an image URL directly</div>
-                <Input value={formData.image_url} onChange={e => setFormData({...formData, image_url: e.target.value})} placeholder="https://..." />
+                <Input value={formData.image_url} onChange={e => setFormData({ ...formData, image_url: e.target.value })} placeholder="https://..." />
                 {formData.image_url && (
                   <div className="mt-2 relative h-32 w-full rounded-md overflow-hidden bg-gray-100 border">
                     <img src={formData.image_url} alt="Preview" className="object-cover w-full h-full" />
@@ -121,7 +124,7 @@ export default function GalleryManager() {
 
               <div className="space-y-2">
                 <Label>Category</Label>
-                <Select value={formData.category} onValueChange={v => setFormData({...formData, category: v})}>
+                <Select value={formData.category} onValueChange={v => setFormData({ ...formData, category: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     {CATEGORIES.map(cat => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)}
@@ -131,7 +134,13 @@ export default function GalleryManager() {
 
               <div className="space-y-2">
                 <Label>Title / Caption (Optional)</Label>
-                <Input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} placeholder="Annual Sports Day 2024" />
+                <Input value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="Annual Sports Day 2024" />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Photo Date (Optional)</Label>
+                <Input type="date" value={formData.photo_date} onChange={e => setFormData({ ...formData, photo_date: e.target.value })} />
+                <p className="text-xs text-gray-500">Leaving this blank will organize the photo by its upload time.</p>
               </div>
 
             </div>
@@ -154,8 +163,8 @@ export default function GalleryManager() {
         <div className="space-y-6">
           <div className="flex flex-wrap gap-2">
             {VIEW_CATEGORIES.map(cat => (
-              <Button 
-                key={cat} 
+              <Button
+                key={cat}
                 variant={activeTab === cat ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setActiveTab(cat)}
@@ -168,24 +177,24 @@ export default function GalleryManager() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {images?.filter(img => activeTab === 'All' || img.category === activeTab).map((img) => (
-            <Card key={img.id} className="overflow-hidden group relative">
-              <div className="aspect-square bg-gray-100 relative">
-                <img src={img.image_url} alt={img.title || 'Gallery'} className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                  <Button size="icon" variant="secondary" onClick={() => handleEdit(img)}>
-                    <Pencil className="w-4 h-4" />
-                  </Button>
-                  <Button size="icon" variant="destructive" onClick={() => deleteImage.mutate(img.id)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+              <Card key={img.id} className="overflow-hidden group relative">
+                <div className="aspect-square bg-gray-100 relative">
+                  <img src={img.image_url} alt={img.title || 'Gallery'} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <Button size="icon" variant="secondary" onClick={() => handleEdit(img)}>
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <Button size="icon" variant="destructive" onClick={() => deleteImage.mutate(img.id)}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              <CardContent className="p-3">
-                <div className="text-xs font-semibold text-primary mb-1">{img.category}</div>
-                <p className="text-sm font-medium line-clamp-1">{img.title || 'Untitled'}</p>
-              </CardContent>
-            </Card>
-          ))}
+                <CardContent className="p-3">
+                  <div className="text-xs font-semibold text-primary mb-1">{img.category}</div>
+                  <p className="text-sm font-medium line-clamp-1">{img.title || 'Untitled'}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       )}

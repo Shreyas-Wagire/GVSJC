@@ -10,14 +10,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Pencil, Trash2, Trophy, Loader2, Upload } from 'lucide-react';
 
 const CLASSES = ['1st Std', '2nd Std', '3rd Std', '4th Std', '5th Std', '6th Std', '7th Std', '8th Std', '9th Std', '10th Std'];
-const YEARS = ['2023-24', '2024-25', '2025-26', '2026-27'];
+const YEARS = [
+  '2026-27', '2025-26', '2024-25', '2023-24', '2022-23', '2021-22',
+  '2020-21', '2019-20', '2018-19', '2017-18', '2016-17', '2015-16', '2014-15'
+];
 const RANKS = [1, 2, 3];
 
 export default function ToppersManager() {
   const { toppers, isLoading, addTopper, updateTopper, deleteTopper } = useToppers();
   const { uploadImage, isUploading } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState<Omit<Topper, 'id' | 'created_at'>>({
@@ -85,7 +88,7 @@ export default function ToppersManager() {
           <h1 className="text-3xl font-bold font-display text-gray-900">Toppers Manager</h1>
           <p className="text-gray-500">Manage student achievers and their rankings.</p>
         </div>
-        
+
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={handleAdd}>
@@ -97,22 +100,22 @@ export default function ToppersManager() {
               <DialogTitle>{editingId ? 'Edit Topper' : 'Add New Topper'}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4 mt-2">
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Student Name</Label>
-                  <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="Jane Doe" />
+                  <Input value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Jane Doe" />
                 </div>
                 <div className="space-y-2">
                   <Label>Marks / Percentage</Label>
-                  <Input value={formData.marks} onChange={e => setFormData({...formData, marks: e.target.value})} placeholder="98.5%" />
+                  <Input value={formData.marks} onChange={e => setFormData({ ...formData, marks: e.target.value })} placeholder="98.5%" />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label>Rank (1-3)</Label>
-                  <Select value={formData.rank.toString()} onValueChange={v => setFormData({...formData, rank: parseInt(v)})}>
+                  <Select value={formData.rank.toString()} onValueChange={v => setFormData({ ...formData, rank: parseInt(v) })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {RANKS.map(r => <SelectItem key={r} value={r.toString()}>{r}</SelectItem>)}
@@ -121,7 +124,7 @@ export default function ToppersManager() {
                 </div>
                 <div className="space-y-2">
                   <Label>Class</Label>
-                  <Select value={formData.class} onValueChange={v => setFormData({...formData, class: v})}>
+                  <Select value={formData.class} onValueChange={v => setFormData({ ...formData, class: v })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {CLASSES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
@@ -130,7 +133,7 @@ export default function ToppersManager() {
                 </div>
                 <div className="space-y-2">
                   <Label>Academic Year</Label>
-                  <Select value={formData.academic_year} onValueChange={v => setFormData({...formData, academic_year: v})}>
+                  <Select value={formData.academic_year} onValueChange={v => setFormData({ ...formData, academic_year: v })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {YEARS.map(y => <SelectItem key={y} value={y}>{y}</SelectItem>)}
@@ -142,16 +145,16 @@ export default function ToppersManager() {
               <div className="space-y-2">
                 <Label>Student Photo</Label>
                 <div className="flex gap-2">
-                  <Input 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden" 
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
                     ref={fileInputRef}
                     onChange={handleFileChange}
                   />
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                  <Button
+                    type="button"
+                    variant="outline"
                     className="w-full"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploading}
@@ -161,7 +164,7 @@ export default function ToppersManager() {
                   </Button>
                 </div>
                 <div className="text-xs text-center text-gray-500 mt-2">OR provide an image URL directly</div>
-                <Input value={formData.photo_url} onChange={e => setFormData({...formData, photo_url: e.target.value})} placeholder="https://..." />
+                <Input value={formData.photo_url} onChange={e => setFormData({ ...formData, photo_url: e.target.value })} placeholder="https://..." />
                 {formData.photo_url && (
                   <div className="mt-2 relative h-24 w-24 rounded-lg overflow-hidden bg-gray-100 border mx-auto">
                     <img src={formData.photo_url} alt="Preview" className="object-cover w-full h-full" />
@@ -207,7 +210,7 @@ export default function ToppersManager() {
                   <h3 className="font-bold text-lg">{topper.name}</h3>
                   <div className="text-3xl font-black text-primary mt-1">{topper.marks}</div>
                 </div>
-                
+
                 <div className="mt-6 flex gap-2">
                   <Button variant="outline" size="sm" className="w-full" onClick={() => handleEdit(topper)}>
                     <Pencil className="w-4 h-4 mr-2" /> Edit

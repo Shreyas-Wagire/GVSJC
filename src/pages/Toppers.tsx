@@ -17,50 +17,50 @@ const classGroups = [
   {
     label: '1st Std',
     toppers: [
-      { rank: 1, name: 'Aarav Patil',     percentage: '98%', photo: '/toppers/aarav-patil.png'     },
-      { rank: 2, name: 'Sneha Kulkarni',   percentage: '97%', photo: '/toppers/sneha-kulkarni.png'  },
+      { rank: 1, name: 'Aarav Patil', percentage: '98%', photo: '/toppers/aarav-patil.png' },
+      { rank: 2, name: 'Sneha Kulkarni', percentage: '97%', photo: '/toppers/sneha-kulkarni.png' },
     ],
   },
   {
     label: '2nd Std',
     toppers: [
-      { rank: 1, name: 'Ananya More',     percentage: '98%', photo: '/toppers/ananya-more.png'     },
-      { rank: 2, name: 'Rohan Deshmukh',   percentage: '97%', photo: '/toppers/rohan-deshmukh.png'   },
+      { rank: 1, name: 'Ananya More', percentage: '98%', photo: '/toppers/ananya-more.png' },
+      { rank: 2, name: 'Rohan Deshmukh', percentage: '97%', photo: '/toppers/rohan-deshmukh.png' },
     ],
   },
   {
     label: '3rd Std',
     toppers: [
-      { rank: 1, name: 'Priya Gaikwad ',  percentage: '99%', photo: '/toppers/priya-gaikwad.png'  },
-      { rank: 2, name: 'Yash Shinde',     percentage: '96%', photo: '/toppers/yash-shinde.png'     },
+      { rank: 1, name: 'Priya Gaikwad ', percentage: '99%', photo: '/toppers/priya-gaikwad.png' },
+      { rank: 2, name: 'Yash Shinde', percentage: '96%', photo: '/toppers/yash-shinde.png' },
     ],
   },
   {
     label: '4th Std',
     toppers: [
-      { rank: 1, name: 'Arjun Jadhav',    percentage: '99%', photo: '/toppers/arjun-jadhav.png'    },
-      { rank: 2, name: 'Isha Pawar',      percentage: '97%', photo: '/toppers/isha-pawar.png'      },
+      { rank: 1, name: 'Arjun Jadhav', percentage: '99%', photo: '/toppers/arjun-jadhav.png' },
+      { rank: 2, name: 'Isha Pawar', percentage: '97%', photo: '/toppers/isha-pawar.png' },
     ],
   },
   {
     label: '5th Std',
     toppers: [
-      { rank: 1, name: 'Vedant Bhosale',  percentage: '98%', photo: '/toppers/vedant-bhosale.png'  },
-      { rank: 2, name: 'Mahi Salunke',    percentage: '97%', photo: '/toppers/mahi-salunke.png'    },
+      { rank: 1, name: 'Vedant Bhosale', percentage: '98%', photo: '/toppers/vedant-bhosale.png' },
+      { rank: 2, name: 'Mahi Salunke', percentage: '97%', photo: '/toppers/mahi-salunke.png' },
     ],
   },
   {
     label: '11th (HSC)',
     toppers: [
-      { rank: 1, name: 'Shreya Wagh',     percentage: '94%', photo: '/toppers/shreya-wagh.png'     },
-      { rank: 2, name: 'Siddhi Mane',     percentage: '92%', photo: '/toppers/siddhi-mane.png'     },
+      { rank: 1, name: 'Shreya Wagh', percentage: '94%', photo: '/toppers/shreya-wagh.png' },
+      { rank: 2, name: 'Siddhi Mane', percentage: '92%', photo: '/toppers/siddhi-mane.png' },
     ],
   },
   {
     label: '12th (HSC)',
     toppers: [
-      { rank: 1, name: 'Omkar Kale',      percentage: '96%', photo: '/toppers/omkar-kale.png'      },
-      { rank: 2, name: 'Rutuja Deshpande',percentage: '95%', photo: '/toppers/rutuja-deshpande.png'},
+      { rank: 1, name: 'Omkar Kale', percentage: '96%', photo: '/toppers/omkar-kale.png' },
+      { rank: 2, name: 'Rutuja Deshpande', percentage: '95%', photo: '/toppers/rutuja-deshpande.png' },
     ],
   },
 ];
@@ -87,15 +87,13 @@ const TopperAvatar = ({
           src={photo}
           alt={name}
           onError={() => setImgError(true)}
-          className={`w-16 h-16 rounded-2xl object-cover shadow-md border-2 ${
-            isGold ? 'border-amber-400' : 'border-slate-300'
-          }`}
+          className={`w-16 h-16 rounded-2xl object-cover shadow-md border-2 ${isGold ? 'border-amber-400' : 'border-slate-300'
+            }`}
         />
         {/* Rank badge on photo */}
         <span
-          className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 border-white shadow ${
-            isGold ? 'bg-amber-400 text-amber-900' : 'bg-slate-300 text-slate-700'
-          }`}
+          className={`absolute -bottom-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 border-white shadow ${isGold ? 'bg-amber-400 text-amber-900' : 'bg-slate-300 text-slate-700'
+            }`}
         >
           {isGold ? '①' : '②'}
         </span>
@@ -106,11 +104,10 @@ const TopperAvatar = ({
   // Fallback — emoji in gradient circle
   return (
     <div
-      className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-inner ${
-        isGold
-          ? 'bg-gradient-to-br from-amber-300 to-yellow-500'
-          : 'bg-gradient-to-br from-slate-200 to-gray-300'
-      }`}
+      className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-inner ${isGold
+        ? 'bg-gradient-to-br from-amber-300 to-yellow-500'
+        : 'bg-gradient-to-br from-slate-200 to-gray-300'
+        }`}
     >
       {isGold ? '🥇' : '🥈'}
     </div>
@@ -130,11 +127,10 @@ const TopperCard = ({
   const isGold = topper.rank === 1;
   return (
     <div
-      className={`relative rounded-2xl p-5 border-2 flex items-center gap-4 group hover:scale-[1.02] transition-all duration-300 animate-reveal-up ${delay} ${
-        isGold
-          ? 'bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 border-amber-300 shadow-amber-100 shadow-lg'
-          : 'bg-gradient-to-br from-slate-50 to-gray-100 border-slate-200 shadow-sm hover:shadow-md'
-      }`}
+      className={`relative rounded-2xl p-5 border-2 flex items-center gap-4 group hover:scale-[1.02] transition-all duration-300 animate-reveal-up ${delay} ${isGold
+        ? 'bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 border-amber-300 shadow-amber-100 shadow-lg'
+        : 'bg-gradient-to-br from-slate-50 to-gray-100 border-slate-200 shadow-sm hover:shadow-md'
+        }`}
     >
       <TopperAvatar photo={topper.photo} name={topper.name} rank={topper.rank} />
 
@@ -174,7 +170,7 @@ const Toppers = () => {
     dynamicGroups = years.map(year => {
       const yearToppers = dbToppers.filter(t => t.academic_year === year);
       const classes = [...new Set(yearToppers.map(t => t.class))];
-      
+
       return {
         year,
         classes: classes.map(c => ({
@@ -220,9 +216,9 @@ const Toppers = () => {
           {/* Stats row */}
           <div className={`mt-12 grid grid-cols-3 gap-6 max-w-lg mx-auto ${heroVis ? 'animate-reveal-up delay-200' : 'opacity-0'}`}>
             {[
-              { icon: Award,     value: '7',   label: 'Classes'   },
-              { icon: Medal,     value: '14',  label: 'Toppers'   },
-              { icon: TrendingUp,value: '97%', label: 'Avg Score' },
+              { icon: Award, value: '7', label: 'Classes' },
+              { icon: Medal, value: '14', label: 'Toppers' },
+              { icon: TrendingUp, value: '97%', label: 'Avg Score' },
             ].map((s) => (
               <div key={s.label} className="text-center">
                 <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center mx-auto mb-2">
@@ -249,7 +245,7 @@ const Toppers = () => {
             <div className="space-y-16">
               {dynamicGroups.map((yearGroup, yi) => (
                 <div key={yearGroup.year} className={`${gridVis ? `animate-reveal-up delay-${Math.min((yi + 1) * 100, 600)}` : 'opacity-0'}`}>
-                  
+
                   {/* Academic Year Heading */}
                   <div className="text-center mb-10">
                     <span className="inline-block bg-primary text-primary-foreground font-display font-bold px-6 py-2 rounded-full text-xl shadow-md">

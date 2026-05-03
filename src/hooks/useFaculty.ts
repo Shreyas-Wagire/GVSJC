@@ -36,7 +36,7 @@ export const useFaculty = () => {
         .insert([newFaculty])
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as Faculty;
     },
@@ -59,7 +59,7 @@ export const useFaculty = () => {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as Faculty;
     },
@@ -79,7 +79,7 @@ export const useFaculty = () => {
         .from('faculty')
         .delete()
         .eq('id', id);
-      
+
       if (error) throw error;
       return id;
     },

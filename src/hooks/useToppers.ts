@@ -39,7 +39,7 @@ export const useToppers = () => {
         .insert([newTopper])
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as Topper;
     },
@@ -62,7 +62,7 @@ export const useToppers = () => {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as Topper;
     },
@@ -82,7 +82,7 @@ export const useToppers = () => {
         .from('toppers')
         .delete()
         .eq('id', id);
-      
+
       if (error) throw error;
       return id;
     },

@@ -13,7 +13,7 @@ const EVENT_TYPES = ['Sports', 'Cultural', 'Academic', 'Holiday', 'Meeting', 'Ot
 
 export default function EventsManager() {
   const { events, isLoading, addEvent, updateEvent, deleteEvent } = useEvents();
-  
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState<Omit<Event, 'id' | 'created_at'>>({
@@ -64,7 +64,7 @@ export default function EventsManager() {
           <h1 className="text-3xl font-bold font-display text-gray-900">Events Manager</h1>
           <p className="text-gray-500">Manage upcoming and past school events.</p>
         </div>
-        
+
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={handleAdd}>
@@ -76,20 +76,20 @@ export default function EventsManager() {
               <DialogTitle>{editingId ? 'Edit Event' : 'Create New Event'}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4 mt-2">
-              
+
               <div className="space-y-2">
                 <Label>Event Title</Label>
-                <Input value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} placeholder="Annual Sports Meet" />
+                <Input value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="Annual Sports Meet" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Date</Label>
-                  <Input type="date" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} />
+                  <Input type="date" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} />
                 </div>
                 <div className="space-y-2">
                   <Label>Event Type</Label>
-                  <Select value={formData.type} onValueChange={v => setFormData({...formData, type: v})}>
+                  <Select value={formData.type} onValueChange={v => setFormData({ ...formData, type: v })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {EVENT_TYPES.map(type => <SelectItem key={type} value={type}>{type}</SelectItem>)}
@@ -100,7 +100,7 @@ export default function EventsManager() {
 
               <div className="space-y-2">
                 <Label>Description (Optional)</Label>
-                <Textarea value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} rows={3} placeholder="Details about the event..." />
+                <Textarea value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} rows={3} placeholder="Details about the event..." />
               </div>
 
             </div>

@@ -35,7 +35,7 @@ export const useEvents = () => {
         .insert([newEvent])
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as Event;
     },
@@ -58,7 +58,7 @@ export const useEvents = () => {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as Event;
     },
@@ -78,7 +78,7 @@ export const useEvents = () => {
         .from('events')
         .delete()
         .eq('id', id);
-      
+
       if (error) throw error;
       return id;
     },

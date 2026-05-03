@@ -7,6 +7,7 @@ export type GalleryImage = {
   image_url: string;
   category: string;
   title?: string;
+  photo_date?: string;
   created_at?: string;
 };
 
@@ -19,6 +20,7 @@ export const useGallery = () => {
       const { data, error } = await supabase
         .from('gallery')
         .select('*')
+        .order('photo_date', { ascending: false, nullsFirst: false })
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -34,7 +36,7 @@ export const useGallery = () => {
         .insert([newImage])
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as GalleryImage;
     },
@@ -57,7 +59,7 @@ export const useGallery = () => {
         .eq('id', id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data as GalleryImage;
     },
@@ -77,7 +79,7 @@ export const useGallery = () => {
         .from('gallery')
         .delete()
         .eq('id', id);
-      
+
       if (error) throw error;
       return id;
     },

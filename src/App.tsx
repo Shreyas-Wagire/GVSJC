@@ -53,7 +53,7 @@ const App = () => (
               <Route path="/parents" element={<ParentPortal />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/toppers" element={<Toppers />} />
-              
+
               {/* Admin Routes Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute />}>

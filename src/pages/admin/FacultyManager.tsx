@@ -12,7 +12,7 @@ export default function FacultyManager() {
   const { facultyMembers, isLoading, addFaculty, updateFaculty, deleteFaculty } = useFaculty();
   const { uploadImage, isUploading } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState<Omit<Faculty, 'id' | 'created_at'>>({
@@ -77,7 +77,7 @@ export default function FacultyManager() {
           <h1 className="text-3xl font-bold font-display text-gray-900">Faculty Manager</h1>
           <p className="text-gray-500">Manage teaching staff details.</p>
         </div>
-        
+
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={handleAdd}>
@@ -89,42 +89,42 @@ export default function FacultyManager() {
               <DialogTitle>{editingId ? 'Edit Faculty Member' : 'Add New Faculty Member'}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4 mt-2">
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Full Name</Label>
-                  <Input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="John Doe" />
+                  <Input value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="John Doe" />
                 </div>
                 <div className="space-y-2">
                   <Label>Subject</Label>
-                  <Input value={formData.subject} onChange={e => setFormData({...formData, subject: e.target.value})} placeholder="Mathematics" />
+                  <Input value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} placeholder="Mathematics" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Qualification</Label>
-                  <Input value={formData.qualification} onChange={e => setFormData({...formData, qualification: e.target.value})} placeholder="M.Sc, B.Ed" />
+                  <Input value={formData.qualification} onChange={e => setFormData({ ...formData, qualification: e.target.value })} placeholder="M.Sc, B.Ed" />
                 </div>
                 <div className="space-y-2">
                   <Label>Experience</Label>
-                  <Input value={formData.experience} onChange={e => setFormData({...formData, experience: e.target.value})} placeholder="5 Years" />
+                  <Input value={formData.experience} onChange={e => setFormData({ ...formData, experience: e.target.value })} placeholder="5 Years" />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label>Photo</Label>
                 <div className="flex gap-2">
-                  <Input 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden" 
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
                     ref={fileInputRef}
                     onChange={handleFileChange}
                   />
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                  <Button
+                    type="button"
+                    variant="outline"
                     className="w-full"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploading}
@@ -134,7 +134,7 @@ export default function FacultyManager() {
                   </Button>
                 </div>
                 <div className="text-xs text-center text-gray-500 mt-2">OR provide an image URL directly</div>
-                <Input value={formData.photo_url} onChange={e => setFormData({...formData, photo_url: e.target.value})} placeholder="https://..." />
+                <Input value={formData.photo_url} onChange={e => setFormData({ ...formData, photo_url: e.target.value })} placeholder="https://..." />
                 {formData.photo_url && (
                   <div className="mt-2 relative h-20 w-20 rounded-full overflow-hidden bg-gray-100 border mx-auto">
                     <img src={formData.photo_url} alt="Preview" className="object-cover w-full h-full" />
