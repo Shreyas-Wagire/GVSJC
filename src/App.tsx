@@ -25,6 +25,10 @@ import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import NoticeManager from "./pages/admin/NoticeManager";
 import ContentManager from "./pages/admin/ContentManager";
+import GalleryManager from "./pages/admin/GalleryManager";
+import FacultyManager from "./pages/admin/FacultyManager";
+import ToppersManager from "./pages/admin/ToppersManager";
+import EventsManager from "./pages/admin/EventsManager";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +61,10 @@ const App = () => (
                   <Route index element={<AdminDashboard />} />
                   <Route path="notices" element={<NoticeManager />} />
                   <Route path="content" element={<ContentManager />} />
+                  <Route path="gallery" element={<GalleryManager />} />
+                  <Route path="faculty" element={<FacultyManager />} />
+                  <Route path="toppers" element={<ToppersManager />} />
+                  <Route path="events" element={<EventsManager />} />
                 </Route>
               </Route>
 

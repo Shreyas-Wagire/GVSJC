@@ -1,9 +1,11 @@
 import Layout from '@/components/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { Users, GraduationCap, Star } from 'lucide-react';
+import { useFaculty } from '@/hooks/useFaculty';
+import { Users, GraduationCap, Star, Loader2 } from 'lucide-react';
 
-const faculty = [
+// Fallback faculty if DB is empty
+const fallbackFaculty = [
   { name: 'Hon. Shri. Pravin Mali', role: 'Principal', qual: 'M.Ed., Ph.D. (Education)', exp: '22 years', initials: 'PM', color: 'from-blue-500 to-indigo-600' },
   { name: 'Smt. Alka Pralhad Kamble', role: 'Vice Principal', qual: 'M.Sc., B.Ed.', exp: '18 years', initials: 'AK', color: 'from-purple-500 to-violet-600' },
 
@@ -32,6 +34,9 @@ const faculty = [
 const Faculty = () => {
   const { t } = useLanguage();
   const { ref, isVisible } = useScrollReveal();
+  const { facultyMembers, isLoading } = useFaculty();
+
+  const displayFaculty = facultyMembers && facultyMembers.length > 0 ? facultyMembers : fallbackFaculty;
 
   return (
     <Layout>
@@ -63,35 +68,51 @@ const Faculty = () => {
       {/* Faculty Grid */}
       <section className="py-20 bg-background" ref={ref}>
         <div className="container-school">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {faculty.map((f, i) => (
-              <div
-                key={f.name}
-                className={`group bg-card rounded-2xl overflow-hidden shadow-sm border border-border hover:shadow-xl hover:-translate-y-2 transition-all duration-400 ${isVisible ? `animate-reveal-up delay-${(i % 4 + 1) * 100}` : 'opacity-0'}`}
-              >
-                {/* Avatar stripe */}
-                <div className={`h-2 w-full bg-gradient-to-r ${f.color}`} />
-                <div className="p-6 text-center">
-                  <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${f.color} mx-auto mb-4 flex items-center justify-center text-white font-display font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    {f.initials}
-                  </div>
-                  <h3 className="font-display font-bold text-foreground text-base">{f.name}</h3>
-                  <p className="text-secondary text-xs font-semibold mt-1 mb-3">{f.role}</p>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {displayFaculty.map((f, i) => {
+                // If it's from DB, f.name.charAt(0) + (f.name.split(' ')[1]?.charAt(0) || '') as initials
+                const initials = f.initials || (f.name.charAt(0) + (f.name.split(' ')[1]?.charAt(0) || '')).toUpperCase();
+                const color = f.color || 'from-blue-500 to-indigo-600';
+                
+                return (
+                  <div
+                    key={f.id || f.name || i}
+                    className={`group bg-card rounded-2xl overflow-hidden shadow-sm border border-border hover:shadow-xl hover:-translate-y-2 transition-all duration-400 ${isVisible ? `animate-reveal-up delay-${(i % 4 + 1) * 100}` : 'opacity-0'}`}
+                  >
+                    {/* Avatar stripe */}
+                    <div className={`h-2 w-full bg-gradient-to-r ${color}`} />
+                    <div className="p-6 text-center">
+                      <div className={`relative w-20 h-20 rounded-2xl bg-gradient-to-br ${color} mx-auto mb-4 flex items-center justify-center text-white font-display font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-300 overflow-hidden`}>
+                        {f.photo_url ? (
+                          <img src={f.photo_url} alt={f.name} className="w-full h-full object-cover" />
+                        ) : (
+                          initials
+                        )}
+                      </div>
+                      <h3 className="font-display font-bold text-foreground text-base">{f.name}</h3>
+                      <p className="text-secondary text-xs font-semibold mt-1 mb-3">{f.subject || f.role}</p>
 
-                  <div className="space-y-1.5 border-t border-border pt-3">
-                    <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
-                      <GraduationCap className="w-3.5 h-3.5 text-secondary shrink-0" />
-                      <span>{f.qual}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
-                      <Star className="w-3.5 h-3.5 text-secondary shrink-0" />
-                      <span>{f.exp} experience</span>
+                      <div className="space-y-1.5 border-t border-border pt-3">
+                        <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
+                          <GraduationCap className="w-3.5 h-3.5 text-secondary shrink-0" />
+                          <span>{f.qualification || f.qual}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
+                          <Star className="w-3.5 h-3.5 text-secondary shrink-0" />
+                          <span>{f.experience || f.exp} {(!f.experience || !f.experience.includes('year')) && 'experience'}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
     </Layout>

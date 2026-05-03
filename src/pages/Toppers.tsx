@@ -4,6 +4,8 @@ import { Medal, Trophy, Star, TrendingUp, Award, UserCircle } from 'lucide-react
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { useToppers } from '@/hooks/useToppers';
+import { Loader2 } from 'lucide-react';
 
 // ─────────────────────────────────────────────
 //  DATA — Add a `photo` path to show a real image.
@@ -164,6 +166,35 @@ const TopperCard = ({
 const Toppers = () => {
   const { ref: heroRef, isVisible: heroVis } = useScrollReveal();
   const { ref: gridRef, isVisible: gridVis } = useScrollReveal();
+  const { toppers: dbToppers, isLoading } = useToppers();
+
+  let dynamicGroups: any[] = [];
+  if (dbToppers && dbToppers.length > 0) {
+    const years = [...new Set(dbToppers.map(t => t.academic_year))];
+    dynamicGroups = years.map(year => {
+      const yearToppers = dbToppers.filter(t => t.academic_year === year);
+      const classes = [...new Set(yearToppers.map(t => t.class))];
+      
+      return {
+        year,
+        classes: classes.map(c => ({
+          label: c,
+          toppers: yearToppers.filter(t => t.class === c).map(t => ({
+            rank: t.rank,
+            name: t.name,
+            percentage: t.marks,
+            photo: t.photo_url
+          }))
+        }))
+      };
+    });
+  } else {
+    // Wrap fallback data in a default year structure so render logic is the same
+    dynamicGroups = [{
+      year: '2025-26',
+      classes: classGroups
+    }];
+  }
 
   return (
     <Layout>
@@ -210,35 +241,52 @@ const Toppers = () => {
         <div className="container-school max-w-5xl">
 
 
-          <div className="space-y-12">
-            {classGroups.map((group, gi) => (
-              <div
-                key={group.label}
-                className={`${gridVis ? `animate-reveal-up delay-${Math.min((gi + 1) * 100, 600)}` : 'opacity-0'}`}
-              >
-                {/* Divider heading */}
-                <div className="flex items-center gap-4 mb-5">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
-                  <div className="flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-1.5">
-                    <Medal className="w-4 h-4 text-secondary" />
-                    <span className="font-display font-semibold text-primary text-sm">{group.label}</span>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            </div>
+          ) : (
+            <div className="space-y-16">
+              {dynamicGroups.map((yearGroup, yi) => (
+                <div key={yearGroup.year} className={`${gridVis ? `animate-reveal-up delay-${Math.min((yi + 1) * 100, 600)}` : 'opacity-0'}`}>
+                  
+                  {/* Academic Year Heading */}
+                  <div className="text-center mb-10">
+                    <span className="inline-block bg-primary text-primary-foreground font-display font-bold px-6 py-2 rounded-full text-xl shadow-md">
+                      Academic Year {yearGroup.year}
+                    </span>
                   </div>
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
-                </div>
 
-                {/* Cards */}
-                <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                  {group.toppers.map((topper) => (
-                    <TopperCard
-                      key={topper.name}
-                      topper={topper}
-                      delay={`delay-${topper.rank * 100}`}
-                    />
-                  ))}
+                  <div className="space-y-12">
+                    {yearGroup.classes.map((group: any, gi: number) => (
+                      <div key={group.label}>
+                        {/* Divider heading */}
+                        <div className="flex items-center gap-4 mb-5">
+                          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+                          <div className="flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-1.5">
+                            <Medal className="w-4 h-4 text-secondary" />
+                            <span className="font-display font-semibold text-primary text-sm">{group.label}</span>
+                          </div>
+                          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
+                        </div>
+
+                        {/* Cards */}
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto justify-center">
+                          {group.toppers.map((topper: any, i: number) => (
+                            <TopperCard
+                              key={topper.name + i}
+                              topper={topper}
+                              delay={`delay-${(i + 1) * 100}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* CTA */}
           <div className="text-center mt-20 py-12 rounded-3xl bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/5 border border-primary/10">

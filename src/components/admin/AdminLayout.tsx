@@ -9,13 +9,21 @@ import {
   LogOut, 
   BellRing,
   Menu,
-  X
+  X,
+  Image as ImageIcon,
+  Users,
+  Trophy,
+  CalendarDays
 } from 'lucide-react';
 import { useState } from 'react';
 
 const sidebarLinks = [
   { name: 'Dashboard', to: '/admin', icon: LayoutDashboard },
   { name: 'Notice Board', to: '/admin/notices', icon: BellRing },
+  { name: 'Gallery', to: '/admin/gallery', icon: ImageIcon },
+  { name: 'Faculty', to: '/admin/faculty', icon: Users },
+  { name: 'Toppers', to: '/admin/toppers', icon: Trophy },
+  { name: 'Events', to: '/admin/events', icon: CalendarDays },
   { name: 'Site Content', to: '/admin/content', icon: Settings2 },
 ];
 

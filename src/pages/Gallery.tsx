@@ -2,23 +2,25 @@ import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { X, ChevronLeft, ChevronRight, ZoomIn, Camera } from 'lucide-react';
+import { useGallery } from '@/hooks/useGallery';
+import { X, ChevronLeft, ChevronRight, ZoomIn, Camera, Loader2 } from 'lucide-react';
 
-const photos = [
-  { src: '/smartclassroom.jpeg', category: 'Classroom', title: 'Smart Classroom', desc: 'Interactive digital boards for modern learning' },
-  { src: '/library.jpg', category: 'Campus', title: 'School Library', desc: 'Over 1500 books and digital resources' },
-  { src: '/Annual-day.jpg', category: 'Events', title: 'Annual Day', desc: 'Grand celebration of talent and achievement' },
-  { src: '/sports.jpg', category: 'Sports', title: 'Sports Day', desc: 'Inter-house athletics competitions' },
-  { src: '/middle_school_building.jpg', category: 'Campus', title: 'School Building', desc: 'Our modern campus facility' },
-  { src: '/group-activities.jpg', category: 'Classroom', title: 'Group Activities', desc: 'Collaborative learning in action' },
-  { src: '/culture-program.jpg', category: 'Cultural', title: 'Cultural Program', desc: 'Celebrating arts and heritage' },
-  { src: '/science-exhibition.jpg', category: 'Events', title: 'Science Exhibition', desc: 'Students showcase innovative projects' },
+// Fallback photos if DB is empty
+const fallbackPhotos = [
+  { image_url: '/smartclassroom.jpeg', category: 'Classroom', title: 'Smart Classroom', desc: 'Interactive digital boards for modern learning' },
+  { image_url: '/library.jpg', category: 'Campus', title: 'School Library', desc: 'Over 1500 books and digital resources' },
+  { image_url: '/Annual-day.jpg', category: 'Events', title: 'Annual Day', desc: 'Grand celebration of talent and achievement' },
+  { image_url: '/sports.jpg', category: 'Sports', title: 'Sports Day', desc: 'Inter-house athletics competitions' },
+  { image_url: '/middle_school_building.jpg', category: 'Campus', title: 'School Building', desc: 'Our modern campus facility' },
+  { image_url: '/group-activities.jpg', category: 'Classroom', title: 'Group Activities', desc: 'Collaborative learning in action' },
+  { image_url: '/culture-program.jpg', category: 'Cultural', title: 'Cultural Program', desc: 'Celebrating arts and heritage' },
+  { image_url: '/science-exhibition.jpg', category: 'Events', title: 'Science Exhibition', desc: 'Students showcase innovative projects' },
 ];
 
-const categories = ['All', 'Campus', 'Events', 'Sports', 'Classroom', 'Cultural'];
+const categories = ['All', 'Campus', 'Events', 'Sports', 'Classroom', 'Cultural', 'Labs', 'Achievements'];
 
 interface LightboxProps {
-  photos: typeof photos;
+  photos: any[];
   index: number;
   onClose: () => void;
 }
@@ -80,13 +82,13 @@ const Lightbox = ({ photos, index, onClose }: LightboxProps) => {
       {/* Image */}
       <div className="max-w-4xl w-full mx-16" onClick={(e) => e.stopPropagation()}>
         <img
-          src={photo.src}
+          src={photo.image_url || photo.src}
           alt={photo.title}
           className="w-full max-h-[75vh] object-contain rounded-xl"
         />
         <div className="text-center mt-4">
           <p className="text-white font-semibold text-lg">{photo.title}</p>
-          <p className="text-white/60 text-sm mt-1">{photo.desc}</p>
+          <p className="text-white/60 text-sm mt-1">{photo.desc || photo.category}</p>
         </div>
       </div>
 
@@ -98,7 +100,7 @@ const Lightbox = ({ photos, index, onClose }: LightboxProps) => {
             onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
             className={`w-12 h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${i === current ? 'border-secondary scale-110' : 'border-white/20 opacity-60 hover:opacity-100'}`}
           >
-            <img src={p.src} alt={p.title} className="w-full h-full object-cover" />
+            <img src={p.image_url || p.src} alt={p.title} className="w-full h-full object-cover" />
           </button>
         ))}
       </div>
@@ -109,10 +111,12 @@ const Lightbox = ({ photos, index, onClose }: LightboxProps) => {
 const Gallery = () => {
   const { t } = useLanguage();
   const { ref, isVisible } = useScrollReveal();
+  const { images, isLoading } = useGallery();
   const [activeCat, setActiveCat] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const filtered = activeCat === 'All' ? photos : photos.filter((p) => p.category === activeCat);
+  const displayPhotos = images && images.length > 0 ? images : fallbackPhotos;
+  const filtered = activeCat === 'All' ? displayPhotos : displayPhotos.filter((p) => p.category === activeCat);
 
   return (
     <Layout>
@@ -158,20 +162,25 @@ const Gallery = () => {
           </p>
 
           {/* Masonry-style Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filtered.map((photo, i) => {
-              const globalIndex = photos.indexOf(photo);
-              return (
-                <div
-                  key={photo.src}
-                  className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 ${
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {filtered.map((photo, i) => {
+                const globalIndex = displayPhotos.indexOf(photo);
+                return (
+                  <div
+                    key={photo.id || photo.image_url || i}
+                    className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 ${
                     isVisible ? `animate-reveal-up delay-${Math.min((i + 1) * 100, 600)}` : 'opacity-0'
                   } ${i % 5 === 0 ? 'sm:col-span-2' : ''}`}
                   onClick={() => setLightboxIndex(globalIndex)}
                 >
                   <div className={`w-full overflow-hidden ${i % 5 === 0 ? 'h-56' : 'h-48'}`}>
                     <img
-                      src={photo.src}
+                      src={photo.image_url || photo.src}
                       alt={photo.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       loading="lazy"
@@ -183,7 +192,7 @@ const Gallery = () => {
                     <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                       <span className="text-xs font-semibold text-secondary bg-secondary/20 px-2 py-0.5 rounded-full mb-2 inline-block">{photo.category}</span>
                       <p className="text-white font-semibold text-sm">{photo.title}</p>
-                      <p className="text-white/70 text-xs mt-0.5">{photo.desc}</p>
+                      <p className="text-white/70 text-xs mt-0.5">{photo.desc || photo.category}</p>
                     </div>
                   </div>
 
@@ -195,12 +204,13 @@ const Gallery = () => {
               );
             })}
           </div>
+          )}
         </div>
       </section>
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
-        <Lightbox photos={photos} index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
+        <Lightbox photos={displayPhotos} index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
       )}
     </Layout>
   );
