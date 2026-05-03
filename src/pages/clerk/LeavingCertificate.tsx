@@ -4,7 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Printer } from 'lucide-react';
+import { Printer, Search, ArrowUpDown } from 'lucide-react';
+
+const CLASSES = ['LKG', 'UKG', ...Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`)];
 
 interface Student {
   id: string; name: string; class: string; student_id: string; aadhar: string;
@@ -21,6 +23,9 @@ interface FormState {
 
 export default function LeavingCertificate() {
   const [students, setStudents] = useState<Student[]>([]);
+  const [search, setSearch] = useState('');
+  const [classFilter, setClassFilter] = useState('all');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [selectedStudentId, setSelectedStudentId] = useState('');
   const [studentData, setStudentData] = useState<Student | null>(null);
   const [formData, setFormData] = useState<FormState>({
@@ -39,11 +44,18 @@ export default function LeavingCertificate() {
 
   useEffect(() => { fetchStudents(); }, [fetchStudents]);
 
-  const handleStudentSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const sid = e.target.value;
-    setSelectedStudentId(sid);
-    const s = students.find((st) => st.id === sid) ?? null;
-    setStudentData(s);
+  const filtered = students
+    .filter((s) => {
+      const q = search.toLowerCase();
+      const matchSearch = !search || s.name.toLowerCase().includes(q);
+      const matchClass = classFilter === 'all' || s.class === classFilter;
+      return matchSearch && matchClass;
+    })
+    .sort((a, b) => sortDir === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+
+  const handleStudentSelect = (id: string) => {
+    setSelectedStudentId(id);
+    setStudentData(students.find((s) => s.id === id) ?? null);
     setShowPreview(false);
   };
 
@@ -60,19 +72,12 @@ export default function LeavingCertificate() {
       body { font-family: serif; font-size: 11px; margin: 0; padding: 0; }
       table { width: 100%; border-collapse: collapse; }
       td { padding: 3px 8px; border: 1px solid #999; }
-      .header { text-align: center; margin-bottom: 8px; }
-      .school-info { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; margin-bottom: 8px; text-align: center; }
-      .signatures { display: flex; justify-content: space-between; margin-top: 16px; }
-      h2 { font-size: 16px; margin: 0 0 2px; }
-      h3 { font-size: 13px; margin: 4px 0 2px; }
-      p { margin: 1px 0; }
     </style></head><body>${previewRef.current.outerHTML}</body></html>`);
     w.document.close();
     w.print();
   };
 
-  const labelClass = "text-sm font-medium text-gray-700";
-  const selectClass = "mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500";
+  const labelClass = 'text-sm font-medium text-gray-700';
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -81,20 +86,58 @@ export default function LeavingCertificate() {
         <p className="text-gray-500 mt-1">Generate school leaving certificates for departing students.</p>
       </div>
 
-      <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6">
-        {/* Student Selector */}
-        <div className="max-w-sm">
-          <Label className={labelClass}>Select Student *</Label>
-          <select value={selectedStudentId} onChange={handleStudentSelect} className={selectClass}>
-            <option value="">-- Choose Student --</option>
-            {students.map((s) => <option key={s.id} value={s.id}>{s.name} ({s.class})</option>)}
+      <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-5">
+
+        {/* Search + Filter + Sort */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Input
+              placeholder="Search student by name..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <select
+            value={classFilter}
+            onChange={(e) => setClassFilter(e.target.value)}
+            className="rounded-md border border-gray-300 px-3 py-2 text-sm w-40 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option value="all">All Classes</option>
+            {CLASSES.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
+          <button
+            onClick={() => setSortDir((d) => d === 'asc' ? 'desc' : 'asc')}
+            className="flex items-center gap-2 px-3 py-2 rounded-md border border-gray-300 text-sm text-gray-600 hover:bg-gray-50 whitespace-nowrap"
+          >
+            <ArrowUpDown className="w-4 h-4" />
+            Name {sortDir === 'asc' ? 'A→Z' : 'Z→A'}
+          </button>
+        </div>
+
+        {/* Student list */}
+        <div className="max-h-52 overflow-y-auto rounded-lg border border-gray-200 divide-y">
+          {filtered.length === 0 ? (
+            <p className="text-center py-6 text-gray-400 text-sm">No students found</p>
+          ) : filtered.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => handleStudentSelect(s.id)}
+              className={`w-full flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors text-left ${
+                selectedStudentId === s.id ? 'bg-emerald-50 text-emerald-700 font-medium' : 'text-gray-700'
+              }`}
+            >
+              <span>{s.name}</span>
+              <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">{s.class}</span>
+            </button>
+          ))}
         </div>
 
         {/* Additional Fields */}
         {studentData && (
-          <div className="space-y-4">
-            <h3 className="font-semibold text-gray-700 border-b pb-2">Academic Details</h3>
+          <div className="space-y-4 pt-2 border-t">
+            <h3 className="font-semibold text-gray-700">Academic Details</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div><Label className={labelClass}>Date of Leaving *</Label><Input type="date" name="date_of_leaving" value={formData.date_of_leaving} onChange={handleChange} className="mt-1" /></div>
               <div><Label className={labelClass}>Reason for Leaving *</Label><Input name="reason_for_leaving" value={formData.reason_for_leaving} onChange={handleChange} className="mt-1" /></div>
@@ -105,16 +148,13 @@ export default function LeavingCertificate() {
               <div><Label className={labelClass}>Remark</Label><Input name="remark" value={formData.remark} onChange={handleChange} className="mt-1" /></div>
             </div>
 
-            {/* Original / Duplicate toggle */}
             <div className="flex items-center gap-3">
               <span className="text-sm font-medium text-gray-700">Copy Type:</span>
               <button
                 type="button"
                 onClick={() => setIsOriginal((v) => !v)}
                 className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
-                  isOriginal
-                    ? 'bg-emerald-600 text-white border-emerald-600'
-                    : 'bg-orange-500 text-white border-orange-500'
+                  isOriginal ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-orange-500 text-white border-orange-500'
                 }`}
               >
                 {isOriginal ? 'Original' : 'Duplicate Copy'}
@@ -122,7 +162,9 @@ export default function LeavingCertificate() {
               <span className="text-xs text-gray-400">Click to toggle</span>
             </div>
 
-            <Button onClick={() => setShowPreview(true)} className="bg-emerald-600 hover:bg-emerald-700">Generate Preview</Button>
+            <Button onClick={() => setShowPreview(true)} className="bg-emerald-600 hover:bg-emerald-700">
+              Generate Preview
+            </Button>
           </div>
         )}
       </div>
@@ -138,7 +180,6 @@ export default function LeavingCertificate() {
           </div>
 
           <div ref={previewRef} className="border border-gray-200 rounded-lg p-6 bg-gray-50 font-serif text-sm">
-            {/* Header – centered */}
             <div className="text-center space-y-0.5 border-b pb-3 mb-3">
               <h2 className="text-2xl font-bold">Gurukul Vidyalay S. J. C.</h2>
               <p className="text-gray-600">Chandgad, Kolhapur</p>
@@ -146,7 +187,6 @@ export default function LeavingCertificate() {
               <p className="text-gray-500 text-xs">( {isOriginal ? 'Original' : 'Duplicate Copy'} )</p>
             </div>
 
-            {/* School Info – centered */}
             <div className="grid grid-cols-2 gap-1 text-sm border-b pb-3 mb-3 text-center">
               <div><strong>Name of Management:</strong> Gurukul Vidyalay Trust</div>
               <div><strong>Name of School:</strong> GVSJC</div>
@@ -154,7 +194,6 @@ export default function LeavingCertificate() {
               <div><strong>Medium:</strong> Marathi / Semi-English</div>
             </div>
 
-            {/* Student Details Table */}
             <table className="w-full border-collapse text-sm">
               <tbody>
                 {[
@@ -190,10 +229,9 @@ export default function LeavingCertificate() {
               </tbody>
             </table>
 
-            <p className="text-xs text-gray-600 italic">
+            <p className="text-xs text-gray-600 italic mt-3">
               This is to certify that the above information is true according to the school general register No. 1.
             </p>
-
             <div className="flex justify-between pt-8 text-sm">
               <div>Date: {formData.date_of_leaving}</div>
               <div className="flex gap-16">
@@ -202,7 +240,6 @@ export default function LeavingCertificate() {
                 <span>Principal</span>
               </div>
             </div>
-
             <p className="text-xs text-red-600 text-center mt-4">
               Note: A legal action will be taken on the concerned if made unauthorised changes in Leaving Certificate.
             </p>
