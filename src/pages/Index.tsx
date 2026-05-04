@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
 import { useNotices } from '@/hooks/useNotices';
 import { useSiteContent } from '@/hooks/useSiteContent';
-const heroImg = '/middle_school_building.jpg';
+const heroImg = '/images/campus/middle_school_building.jpg';
 
 import { GraduationCap, Users, Award, TrendingUp, BookOpen, FlaskConical, Music, Laptop, Quote, Bell, AlertCircle, Info, CalendarDays, PartyPopper } from 'lucide-react';
 
@@ -400,27 +400,6 @@ const TestimonialsSection = () => {
   );
 };
 
-const CTASection = () => {
-  const { t } = useLanguage();
-  const { ref, isVisible } = useScrollReveal();
-  return (
-    <section className="py-20 bg-primary" ref={ref}>
-      <div className={`container-school text-center ${isVisible ? 'animate-reveal-up' : 'opacity-0'}`}>
-        <h2 className="text-3xl sm:text-4xl font-display font-bold text-primary-foreground mb-4">{t('cta.title')}</h2>
-        <p className="text-primary-foreground/80 max-w-xl mx-auto mb-8 text-lg">{t('cta.subtitle')}</p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Button variant="hero" size="lg" asChild>
-            <Link to="/admissions">{t('cta.apply')}</Link>
-          </Button>
-          <Button variant="hero-outline" size="lg" asChild>
-            <Link to="/contact">{t('cta.contact')}</Link>
-          </Button>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const Index = () => {
   return (
     <Layout>
@@ -432,7 +411,6 @@ const Index = () => {
       <FeaturesSection />
       <NoticeBoardSection />
       <TestimonialsSection />
-      {/* <CTASection /> */}
     </Layout>
   );
 };

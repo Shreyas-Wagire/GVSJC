@@ -25,7 +25,7 @@ export default function ContentManager() {
   const handleSave = (key: string) => {
     // If the original value had quotes around it, they might need JSON.parse() in standard approach,
     // but here we just store raw string data based on assumptions in useSiteContent.
-    let valueToSave = localData[key];
+    const valueToSave = localData[key];
     
     updateContent.mutate({
       key,

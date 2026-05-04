@@ -146,7 +146,7 @@ const About = () => {
               <div className="flex flex-col sm:flex-row gap-6 items-start relative">
                 <div className="shrink-0 mx-auto sm:mx-0">
                   <div className="w-40 h-40 sm:w-48 sm:h-56 rounded-2xl overflow-hidden shadow-lg border-2 border-primary/20">
-                    <img src="/principle.png" alt="Principal" className="w-full h-full object-cover object-top" />
+                    <img src="/images/staff/principle.png" alt="Principal" className="w-full h-full object-cover object-top" />
                   </div>
                 </div>
                 <div>

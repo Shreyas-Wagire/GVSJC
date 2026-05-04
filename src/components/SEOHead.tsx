@@ -10,7 +10,7 @@ interface SEOHeadProps {
 
 const SITE_NAME = 'Gurukul Vidyalay & Jr. College';
 const BASE_URL = 'https://gvsjc.vercel.app';
-const DEFAULT_IMAGE = `${BASE_URL}/middle_school_building.jpg`;
+const DEFAULT_IMAGE = `${BASE_URL}/images/campus/middle_school_building.jpg`;
 
 const DEFAULT_DESCRIPTION =
   'Gurukul Vidyalay & Junior College, Chokak (Hatkanangale, Kolhapur) — Maharashtra State Board school offering Pre-Primary, Primary (I–V) & Junior College (XI–XII). Admissions open for 2026-27. Call +91 70832 37878.';
