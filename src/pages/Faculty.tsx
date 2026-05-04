@@ -13,6 +13,7 @@ interface FacultyMember {
   exp: string | null;
   initials: string | null;
   color: string | null;
+  photo_url: string | null;
   display_order: number;
 }
 
@@ -22,6 +23,63 @@ const FALLBACK_COLORS = [
   'from-teal-500 to-cyan-600', 'from-green-500 to-emerald-600',
 ];
 
+/* ── FacultyCard: state-based image error so fallback works ── */
+const FacultyCard = ({
+  f,
+  color,
+  initials,
+  animClass,
+}: {
+  f: FacultyMember;
+  color: string;
+  initials: string;
+  animClass: string;
+}) => {
+  // Track per-card if the photo failed to load
+  const [imgFailed, setImgFailed] = useState(false);
+  const showPhoto = !!f.photo_url && !imgFailed;
+
+  return (
+    <div
+      className={`group bg-card rounded-2xl overflow-hidden shadow-sm border border-border hover:shadow-xl hover:-translate-y-2 transition-all duration-400 ${animClass}`}
+    >
+      <div className={`h-2 w-full bg-gradient-to-r ${color}`} />
+      <div className="p-6 text-center">
+        {showPhoto ? (
+          <img
+            src={f.photo_url!}
+            alt={f.name}
+            className="w-20 h-20 rounded-2xl object-cover mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300 border-2 border-white"
+            onError={() => setImgFailed(true)}
+          />
+        ) : (
+          <div
+            className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${color} mx-auto mb-4 flex items-center justify-center text-white font-display font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-300`}
+          >
+            {initials}
+          </div>
+        )}
+        <h3 className="font-display font-bold text-foreground text-base">{f.name}</h3>
+        <p className="text-secondary text-xs font-semibold mt-1 mb-3">{f.role ?? ''}</p>
+        <div className="space-y-1.5 border-t border-border pt-3">
+          {f.qual && (
+            <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
+              <GraduationCap className="w-3.5 h-3.5 text-secondary shrink-0" />
+              <span>{f.qual}</span>
+            </div>
+          )}
+          {f.exp && (
+            <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
+              <Star className="w-3.5 h-3.5 text-secondary shrink-0" />
+              <span>{f.exp} experience</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Faculty = () => {
   const { t } = useLanguage();
   const { ref, isVisible } = useScrollReveal();
@@ -29,10 +87,15 @@ const Faculty = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from('faculty').select('*').order('display_order').then(({ data }) => {
-      setFaculty(data ?? []);
-      setLoading(false);
-    });
+    supabase
+      .from('faculty')
+      .select('id, name, role, qual, exp, initials, color, photo_url, display_order')
+      .order('display_order')
+      .then(({ data, error }) => {
+        if (error) console.error('Faculty fetch error:', error.message);
+        setFaculty(data ?? []);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -87,34 +150,17 @@ const Faculty = () => {
               {faculty.map((f, i) => {
                 const color = f.color ?? FALLBACK_COLORS[i % FALLBACK_COLORS.length];
                 const initials = f.initials ?? f.name.slice(0, 2).toUpperCase();
+                const animClass = isVisible
+                  ? `animate-reveal-up delay-${(i % 4 + 1) * 100}`
+                  : 'opacity-0';
                 return (
-                  <div
+                  <FacultyCard
                     key={f.id}
-                    className={`group bg-card rounded-2xl overflow-hidden shadow-sm border border-border hover:shadow-xl hover:-translate-y-2 transition-all duration-400 ${isVisible ? `animate-reveal-up delay-${(i % 4 + 1) * 100}` : 'opacity-0'}`}
-                  >
-                    <div className={`h-2 w-full bg-gradient-to-r ${color}`} />
-                    <div className="p-6 text-center">
-                      <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${color} mx-auto mb-4 flex items-center justify-center text-white font-display font-bold text-xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                        {initials}
-                      </div>
-                      <h3 className="font-display font-bold text-foreground text-base">{f.name}</h3>
-                      <p className="text-secondary text-xs font-semibold mt-1 mb-3">{f.role ?? ''}</p>
-                      <div className="space-y-1.5 border-t border-border pt-3">
-                        {f.qual && (
-                          <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
-                            <GraduationCap className="w-3.5 h-3.5 text-secondary shrink-0" />
-                            <span>{f.qual}</span>
-                          </div>
-                        )}
-                        {f.exp && (
-                          <div className="flex items-center gap-1.5 justify-center text-xs text-muted-foreground">
-                            <Star className="w-3.5 h-3.5 text-secondary shrink-0" />
-                            <span>{f.exp} experience</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                    f={f}
+                    color={color}
+                    initials={initials}
+                    animClass={animClass}
+                  />
                 );
               })}
             </div>

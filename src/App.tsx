@@ -37,6 +37,7 @@ import ToppersManager from "./pages/admin/ToppersManager";
 import StudentsManager from "./pages/admin/StudentsManager";
 import FeePaymentsAdmin from "./pages/admin/FeePayments";
 import AdminDonations from "./pages/admin/Donations";
+import GalleryManager from "./pages/admin/GalleryManager";
 
 // Clerk
 import ClerkLayout from "./components/clerk/ClerkLayout";
@@ -45,6 +46,7 @@ import ClerkLogin from "./pages/clerk/Login";
 import ClerkDashboard from "./pages/clerk/Dashboard";
 import ClerkAdmissions from "./pages/clerk/Admissions";
 import ClerkEnrollment from "./pages/clerk/Enrollment";
+import ClerkExams from "./pages/clerk/Exams";
 import ClerkFeeCollection from "./pages/clerk/FeeCollection";
 import ClerkBonafide from "./pages/clerk/Bonafide";
 import ClerkLeavingCertificate from "./pages/clerk/LeavingCertificate";
@@ -97,6 +99,7 @@ const App = () => (
                   <Route path="students" element={<StudentsManager />} />
                   <Route path="fees" element={<FeePaymentsAdmin />} />
                   <Route path="donations" element={<AdminDonations />} />
+                  <Route path="gallery" element={<GalleryManager />} />
                   <Route path="content" element={<ContentManager />} />
                 </Route>
               </Route>
@@ -108,6 +111,7 @@ const App = () => (
                   <Route index element={<ClerkDashboard />} />
                   <Route path="admissions" element={<ClerkAdmissions />} />
                   <Route path="enrollment" element={<ClerkEnrollment />} />
+                  <Route path="exams" element={<ClerkExams />} />
                   <Route path="fees" element={<ClerkFeeCollection />} />
                   <Route path="bonafide" element={<ClerkBonafide />} />
                   <Route path="leaving-certificate" element={<ClerkLeavingCertificate />} />

@@ -18,6 +18,7 @@ import {
   IndianRupee,
   HeartHandshake,
   Globe,
+  Images,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -28,6 +29,7 @@ const sidebarLinks = [
   { name: 'Admissions',    to: '/admin/admissions',    icon: FileText },
   { name: 'Fee Payments',  to: '/admin/fees',          icon: IndianRupee },
   { name: 'Donations',     to: '/admin/donations',     icon: HeartHandshake },
+  { name: 'Gallery',       to: '/admin/gallery',       icon: Images },
   { name: 'Queries',       to: '/admin/queries',       icon: MessageSquare },
   { name: 'Feedback',      to: '/admin/feedback',      icon: Star },
   { name: 'Faculty',       to: '/admin/faculty',       icon: Users },
@@ -73,7 +75,7 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto sidebar-nav">
           {sidebarLinks.map((link) => {
             const isActive = link.to === '/admin' ? pathname === '/admin' : pathname.startsWith(link.to);
             return (

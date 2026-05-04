@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Plus, Pencil, Trash2, Trophy, X, Check } from 'lucide-react';
+import { Plus, Pencil, Trash2, Trophy, X, Check, Upload, ImageIcon, RefreshCw } from 'lucide-react';
 
 interface Topper {
   id: string;
@@ -17,7 +17,82 @@ interface Topper {
 }
 
 const CLASSES = ['1st Std','2nd Std','3rd Std','4th Std','5th Std','6th Std','7th Std','8th Std','9th Std','10th Std','11th (HSC)','12th (HSC)'];
+const BUCKET = 'topper-photos';
 const EMPTY = { name: '', class_label: '1st Std', rank: 1, percentage: '', photo_url: '', academic_year: '2025-26' };
+const cls = 'mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500';
+
+/* ── Inline photo uploader ─────────────────────────────────── */
+function PhotoUploader({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (url: string) => void;
+}) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFile = async (file: File) => {
+    if (!file.type.startsWith('image/')) { toast.error('Only images allowed'); return; }
+    setUploading(true);
+    const ext = file.name.split('.').pop();
+    const path = `toppers/${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from(BUCKET).upload(path, file, { upsert: true });
+    if (error) {
+      toast.error(
+        error.message.includes('Bucket not found')
+          ? `Storage bucket "${BUCKET}" not found — create it in Supabase → Storage.`
+          : error.message
+      );
+    } else {
+      const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+      onChange(data.publicUrl);
+      toast.success('Photo uploaded!');
+    }
+    setUploading(false);
+  };
+
+  return (
+    <div className="mt-1 flex items-center gap-3">
+      <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0">
+        {value ? (
+          <img src={value} alt="preview" className="w-full h-full object-cover" />
+        ) : (
+          <ImageIcon className="w-5 h-5 text-gray-300" />
+        )}
+      </div>
+      <div className="flex-1 space-y-1.5">
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => fileRef.current?.click()}
+          disabled={uploading}
+          className="w-full gap-1.5 text-xs"
+        >
+          {uploading ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+          {uploading ? 'Uploading…' : value ? 'Change Photo' : 'Upload Photo'}
+        </Button>
+        {value && (
+          <button
+            type="button"
+            onClick={() => onChange('')}
+            className="text-xs text-red-400 hover:text-red-600 hover:underline w-full text-center"
+          >
+            Remove photo
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function ToppersManager() {
   const [toppers, setToppers] = useState<Topper[]>([]);
@@ -43,14 +118,23 @@ export default function ToppersManager() {
   const openAdd = () => { setEditId(null); setForm({ ...EMPTY }); setShowForm(true); };
   const openEdit = (t: Topper) => {
     setEditId(t.id);
-    setForm({ name: t.name, class_label: t.class_label, rank: t.rank, percentage: t.percentage ?? '', photo_url: t.photo_url ?? '', academic_year: t.academic_year });
+    setForm({
+      name: t.name, class_label: t.class_label, rank: t.rank,
+      percentage: t.percentage ?? '', photo_url: t.photo_url ?? '',
+      academic_year: t.academic_year,
+    });
     setShowForm(true);
   };
 
   const handleSave = async () => {
     if (!form.name.trim()) { toast.error('Name is required'); return; }
     setSaving(true);
-    const payload = { ...form, percentage: form.percentage || null, photo_url: form.photo_url || null, updated_at: new Date().toISOString() };
+    const payload = {
+      ...form,
+      percentage: form.percentage || null,
+      photo_url: form.photo_url || null,
+      updated_at: new Date().toISOString(),
+    };
     const { error } = editId
       ? await supabase.from('toppers').update(payload).eq('id', editId)
       : await supabase.from('toppers').insert([payload]);
@@ -71,7 +155,6 @@ export default function ToppersManager() {
     (!yearFilter || t.academic_year === yearFilter)
   );
 
-  const cls = 'mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500';
   const rankColor = (r: number) => r === 1 ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600';
 
   return (
@@ -129,10 +212,14 @@ export default function ToppersManager() {
               <Label className="text-sm font-medium text-gray-700">Academic Year</Label>
               <input value={form.academic_year} onChange={(e) => setForm((p) => ({ ...p, academic_year: e.target.value }))} className={cls} placeholder="2025-26" />
             </div>
+
+            {/* Photo Upload */}
             <div className="sm:col-span-2">
-              <Label className="text-sm font-medium text-gray-700">Photo Path (optional)</Label>
-              <input value={form.photo_url} onChange={(e) => setForm((p) => ({ ...p, photo_url: e.target.value }))} className={cls} placeholder="/toppers/student.png" />
-              <p className="text-xs text-gray-400 mt-1">Place the image in the <code>public/toppers/</code> folder and enter the path here.</p>
+              <Label className="text-sm font-medium text-gray-700">Student Photo</Label>
+              <PhotoUploader
+                value={form.photo_url}
+                onChange={(url) => setForm((p) => ({ ...p, photo_url: url }))}
+              />
             </div>
           </div>
           <div className="flex gap-2">
@@ -170,7 +257,7 @@ export default function ToppersManager() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  {['Rank', 'Name', 'Class', 'Percentage', 'Year', 'Actions'].map((h) => (
+                  {['Rank', 'Photo', 'Name', 'Class', 'Percentage', 'Year', 'Actions'].map((h) => (
                     <th key={h} className={`px-4 py-3 font-semibold text-gray-600 ${h === 'Actions' ? 'text-right' : 'text-left'}`}>{h}</th>
                   ))}
                 </tr>
@@ -183,12 +270,21 @@ export default function ToppersManager() {
                         {t.rank === 1 ? '🥇 1st' : t.rank === 2 ? '🥈 2nd' : '🥉 3rd'}
                       </span>
                     </td>
+                    <td className="px-4 py-2">
+                      {t.photo_url ? (
+                        <img src={t.photo_url} alt={t.name} className="w-10 h-10 rounded-xl object-cover border-2 border-amber-200" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center text-lg">
+                          {t.rank === 1 ? '🥇' : t.rank === 2 ? '🥈' : '🥉'}
+                        </div>
+                      )}
+                    </td>
                     <td className="px-4 py-3 font-medium text-gray-900">{t.name}</td>
                     <td className="px-4 py-3 text-gray-600">{t.class_label}</td>
                     <td className="px-4 py-3">
-                      {t.percentage ? (
-                        <span className="font-semibold text-emerald-600">{t.percentage}</span>
-                      ) : <span className="text-gray-300 italic">—</span>}
+                      {t.percentage
+                        ? <span className="font-semibold text-emerald-600">{t.percentage}</span>
+                        : <span className="text-gray-300 italic">—</span>}
                     </td>
                     <td className="px-4 py-3 text-gray-500">{t.academic_year}</td>
                     <td className="px-4 py-3 text-right">

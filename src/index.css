@@ -7,10 +7,10 @@
     --background: 210 20% 98%;
     --foreground: 215 30% 15%;
 
-    --card: 0 0% 100%;
+    --card: 0 0% 95%;
     --card-foreground: 215 30% 15%;
 
-    --popover: 0 0% 100%;
+    --popover: 0 0% 95%;
     --popover-foreground: 215 30% 15%;
 
     --primary: 213 55% 22%;
@@ -313,4 +313,41 @@ img {
 /* Better transition duration */
 .duration-400 {
   transition-duration: 400ms;
+}
+
+/* ── Admin sidebar: scrollable nav, scrollbar hidden until hover ── */
+.sidebar-nav {
+  scrollbar-width: none;          /* Firefox: always hidden */
+  -ms-overflow-style: none;       /* IE / Edge */
+}
+
+/* Chrome / Safari: hidden by default */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 99px;
+  transition: background 0.3s ease;
+}
+
+/* Reveal scrollbar on hover */
+.sidebar-nav:hover {
+  scrollbar-width: thin;          /* Firefox: show thin on hover */
+  scrollbar-color: hsl(var(--primary) / 0.25) transparent;
+}
+
+.sidebar-nav:hover::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.25);
+}
+
+.sidebar-nav:hover::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
 }

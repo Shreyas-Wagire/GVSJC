@@ -24,6 +24,7 @@ const sidebarLinks = [
   { name: 'New Admission',  to: '/clerk/admissions',          icon: UserPlus },
   { name: 'Applications',   to: '/clerk/applications',        icon: FileText },
   { name: 'Enrollment',     to: '/clerk/enrollment',          icon: Users },
+  { name: 'Examinations',   to: '/clerk/exams',               icon: FileText },
   { name: 'Fee Collection', to: '/clerk/fees',                icon: Wallet },
   { name: 'Donations',      to: '/clerk/donations',           icon: HeartHandshake },
   { name: 'Queries',        to: '/clerk/queries',             icon: MessageSquare },
@@ -72,7 +73,7 @@ export default function ClerkLayout() {
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto sidebar-nav">
           {sidebarLinks.map((link) => {
             const isActive = link.to === '/clerk' ? pathname === '/clerk' : pathname.startsWith(link.to);
             return (

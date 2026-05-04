@@ -1,33 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Layout from '@/components/Layout';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { X, ChevronLeft, ChevronRight, ZoomIn, Camera } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import {
+  X, ChevronLeft, ChevronRight, ZoomIn, Camera, Film,
+  Play, ImageIcon, LayoutGrid, Sparkles,
+} from 'lucide-react';
 
-const photos = [
-  { src: '/smartclassroom.jpeg', category: 'Classroom', title: 'Smart Classroom', desc: 'Interactive digital boards for modern learning' },
-  { src: '/library.jpg', category: 'Campus', title: 'School Library', desc: 'Over 1500 books and digital resources' },
-  { src: '/Annual-day.jpg', category: 'Events', title: 'Annual Day', desc: 'Grand celebration of talent and achievement' },
-  { src: '/sports.jpg', category: 'Sports', title: 'Sports Day', desc: 'Inter-house athletics competitions' },
-  { src: '/middle_school_building.jpg', category: 'Campus', title: 'School Building', desc: 'Our modern campus facility' },
-  { src: '/group-activities.jpg', category: 'Classroom', title: 'Group Activities', desc: 'Collaborative learning in action' },
-  { src: '/culture-program.jpg', category: 'Cultural', title: 'Cultural Program', desc: 'Celebrating arts and heritage' },
-  { src: '/science-exhibition.jpg', category: 'Events', title: 'Science Exhibition', desc: 'Students showcase innovative projects' },
-];
+/* ─── Types ─────────────────────────────────────────────────── */
+interface GalleryItem {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  media_type: 'photo' | 'video';
+  url: string;
+  thumbnail_url: string | null;
+  created_at: string;
+  sort_order: number;
+}
+type MediaTab = 'all' | 'photo' | 'video';
 
-const categories = ['All', 'Campus', 'Events', 'Sports', 'Classroom', 'Cultural'];
-
-interface LightboxProps {
-  photos: typeof photos;
+/* ─── Lightbox ───────────────────────────────────────────────── */
+const Lightbox = ({
+  items,
+  index,
+  onClose,
+}: {
+  items: GalleryItem[];
   index: number;
   onClose: () => void;
-}
-
-const Lightbox = ({ photos, index, onClose }: LightboxProps) => {
+}) => {
   const [current, setCurrent] = useState(index);
+  const item = items[current];
 
-  const prev = () => setCurrent((c) => (c - 1 + photos.length) % photos.length);
-  const next = () => setCurrent((c) => (c + 1) % photos.length);
+  const prev = () => setCurrent((c) => (c - 1 + items.length) % items.length);
+  const next = () => setCurrent((c) => (c + 1) % items.length);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -43,164 +51,454 @@ const Lightbox = ({ photos, index, onClose }: LightboxProps) => {
     };
   }, []);
 
-  const photo = photos[current];
-
   return (
     <div
-      className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: 'rgba(0,0,0,0.97)' }}
       onClick={onClose}
     >
-      {/* Close */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
-      >
-        <X className="w-5 h-5" />
-      </button>
+      {/* Blurred bg image */}
+      {item.media_type === 'photo' && (
+        <div
+          className="absolute inset-0 opacity-20 blur-2xl scale-110"
+          style={{ backgroundImage: `url(${item.url})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+      )}
 
-      {/* Counter */}
-      <div className="absolute top-4 left-4 text-white/60 text-sm font-medium">
-        {current + 1} / {photos.length}
+      {/* Top bar */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4 z-10"
+        style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)' }}>
+        <div className="flex items-center gap-3">
+          <span className="text-white/40 text-sm tabular-nums">{current + 1} / {items.length}</span>
+          <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide ${
+            item.media_type === 'video'
+              ? 'bg-purple-500/30 text-purple-300 border border-purple-500/40'
+              : 'bg-sky-500/30 text-sky-300 border border-sky-500/40'
+          }`}>
+            {item.media_type === 'video' ? '▶ VIDEO' : '◉ PHOTO'}
+          </span>
+        </div>
+        <button
+          onClick={onClose}
+          className="w-9 h-9 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
-      {/* Prev / Next */}
+      {/* Nav: Prev */}
       <button
         onClick={(e) => { e.stopPropagation(); prev(); }}
-        className="absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+        className="absolute left-4 z-10 w-11 h-11 rounded-full bg-white/8 hover:bg-white/18 border border-white/10 flex items-center justify-center text-white transition-all hover:scale-105"
       >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); next(); }}
-        className="absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
-      >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronLeft className="w-5 h-5" />
       </button>
 
-      {/* Image */}
-      <div className="max-w-4xl w-full mx-16" onClick={(e) => e.stopPropagation()}>
-        <img
-          src={photo.src}
-          alt={photo.title}
-          className="w-full max-h-[75vh] object-contain rounded-xl"
-        />
-        <div className="text-center mt-4">
-          <p className="text-white font-semibold text-lg">{photo.title}</p>
-          <p className="text-white/60 text-sm mt-1">{photo.desc}</p>
+      {/* Nav: Next */}
+      <button
+        onClick={(e) => { e.stopPropagation(); next(); }}
+        className="absolute right-4 z-10 w-11 h-11 rounded-full bg-white/8 hover:bg-white/18 border border-white/10 flex items-center justify-center text-white transition-all hover:scale-105"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+
+      {/* Media */}
+      <div className="relative z-10 max-w-5xl w-full mx-16" onClick={(e) => e.stopPropagation()}>
+        {item.media_type === 'photo' ? (
+          <img
+            key={item.id}
+            src={item.url}
+            alt={item.title}
+            className="w-full max-h-[72vh] object-contain rounded-2xl"
+            style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)' }}
+          />
+        ) : (
+          <video
+            key={item.id}
+            src={item.url}
+            controls
+            autoPlay
+            className="w-full max-h-[72vh] rounded-2xl"
+            style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)' }}
+          />
+        )}
+
+        {/* Caption */}
+        <div className="text-center mt-4 px-4">
+          <span className="inline-block text-xs text-white/40 uppercase tracking-widest mb-1">{item.category}</span>
+          <p className="text-white font-semibold text-lg leading-snug">{item.title}</p>
+          {item.description && <p className="text-white/45 text-sm mt-1">{item.description}</p>}
         </div>
       </div>
 
-      {/* Thumbnails */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 overflow-x-auto max-w-sm px-2">
-        {photos.map((p, i) => (
-          <button
-            key={i}
-            onClick={(e) => { e.stopPropagation(); setCurrent(i); }}
-            className={`w-12 h-12 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${i === current ? 'border-secondary scale-110' : 'border-white/20 opacity-60 hover:opacity-100'}`}
-          >
-            <img src={p.src} alt={p.title} className="w-full h-full object-cover" />
-          </button>
-        ))}
+      {/* Thumbnail strip */}
+      <div
+        className="absolute bottom-0 left-0 right-0 flex justify-center px-4 pb-4 pt-10 z-10"
+        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex gap-2 overflow-x-auto max-w-lg">
+          {items.map((p, i) => (
+            <button
+              key={p.id}
+              onClick={() => setCurrent(i)}
+              className={`w-11 h-11 rounded-lg overflow-hidden shrink-0 transition-all duration-200 ring-2 ${
+                i === current
+                  ? 'ring-white scale-110'
+                  : 'ring-transparent opacity-40 hover:opacity-80 hover:scale-105'
+              }`}
+            >
+              {p.media_type === 'photo' ? (
+                <img src={p.url} alt={p.title} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full bg-purple-900/80 flex items-center justify-center">
+                  <Play className="w-3 h-3 text-white" />
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
+/* ─── Empty State ────────────────────────────────────────────── */
+const EmptyState = () => (
+  <div className="flex flex-col items-center justify-center py-28 px-6 text-center">
+    <div className="relative mb-6">
+      <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+        <Camera className="w-10 h-10 text-primary/50" />
+      </div>
+      <div className="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-secondary/20 flex items-center justify-center">
+        <Sparkles className="w-3.5 h-3.5 text-secondary/60" />
+      </div>
+    </div>
+    <h3 className="text-xl font-bold text-foreground mb-2">Gallery Coming Soon</h3>
+    <p className="text-muted-foreground max-w-xs leading-relaxed">
+      Photos and videos from school events will appear here once uploaded by the admin.
+    </p>
+  </div>
+);
+
+/* ─── Skeleton Loader ────────────────────────────────────────── */
+const SkeletonGrid = () => (
+  <div className="columns-2 sm:columns-3 lg:columns-4 gap-4 space-y-4">
+    {[180, 240, 160, 220, 200, 260, 150, 190].map((h, i) => (
+      <div
+        key={i}
+        className="w-full rounded-2xl bg-muted animate-pulse break-inside-avoid mb-4"
+        style={{ height: h }}
+      />
+    ))}
+  </div>
+);
+
+/* ─── Gallery Card ───────────────────────────────────────────── */
+const GalleryCard = ({
+  item,
+  onClick,
+}: {
+  item: GalleryItem;
+  onClick: () => void;
+}) => (
+  <div
+    className="group relative rounded-2xl overflow-hidden cursor-pointer break-inside-avoid mb-4"
+    style={{
+      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+      transition: 'transform 0.35s ease, box-shadow 0.35s ease',
+    }}
+    onClick={onClick}
+    onMouseEnter={(e) => {
+      (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)';
+      (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 48px rgba(0,0,0,0.18)';
+    }}
+    onMouseLeave={(e) => {
+      (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+      (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+    }}
+  >
+    {/* Image / Video */}
+    {item.media_type === 'photo' ? (
+      <img
+        src={item.url}
+        alt={item.title}
+        className="w-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+        loading="lazy"
+      />
+    ) : (
+      <div
+        className="w-full flex items-center justify-center"
+        style={{
+          background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #0f0a3c 100%)',
+          minHeight: 160,
+        }}
+      >
+        {item.thumbnail_url ? (
+          <img src={item.thumbnail_url} alt={item.title} className="w-full object-cover absolute inset-0" />
+        ) : null}
+        <div className="relative z-10 flex items-center justify-center py-10">
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center border-2 border-white/30 group-hover:scale-110 transition-transform duration-300"
+            style={{ background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(4px)' }}
+          >
+            <Play className="w-7 h-7 text-white ml-1" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Video badge */}
+    {item.media_type === 'video' && (
+      <span
+        className="absolute top-3 left-3 flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-white rounded-full"
+        style={{ background: 'rgba(147,51,234,0.85)', backdropFilter: 'blur(8px)' }}
+      >
+        <Film className="w-3 h-3" /> VIDEO
+      </span>
+    )}
+
+    {/* Hover overlay */}
+    <div
+      className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)' }}
+    >
+      <div className="translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+        <span
+          className="inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full mb-1.5"
+          style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(4px)' }}
+        >
+          {item.category}
+        </span>
+        <p className="text-white font-semibold text-sm leading-snug line-clamp-2">{item.title}</p>
+        {item.description && (
+          <p className="text-white/55 text-xs mt-0.5 line-clamp-1">{item.description}</p>
+        )}
+      </div>
+    </div>
+
+    {/* Corner icon */}
+    <div
+      className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110"
+      style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(4px)' }}
+    >
+      {item.media_type === 'video'
+        ? <Play className="w-3.5 h-3.5 text-white ml-0.5" />
+        : <ZoomIn className="w-3.5 h-3.5 text-white" />
+      }
+    </div>
+  </div>
+);
+
+/* ─── Main Gallery Page ──────────────────────────────────────── */
 const Gallery = () => {
   const { t } = useLanguage();
-  const { ref, isVisible } = useScrollReveal();
+  const [items, setItems] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCat, setActiveCat] = useState('All');
+  const [activeTab, setActiveTab] = useState<MediaTab>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const filtered = activeCat === 'All' ? photos : photos.filter((p) => p.category === activeCat);
+  const fetchItems = useCallback(async () => {
+    const { data } = await supabase
+      .from('gallery_items')
+      .select('*')
+      .order('sort_order', { ascending: false })
+      .order('created_at', { ascending: false });
+    setItems(data ?? []);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => { fetchItems(); }, [fetchItems]);
+
+  const allCategories = ['All', ...Array.from(new Set(items.map((i) => i.category))).sort()];
+
+  const filtered = items.filter(
+    (item) =>
+      (activeTab === 'all' || item.media_type === activeTab) &&
+      (activeCat === 'All' || item.category === activeCat)
+  );
+
+  const photoCount = items.filter((i) => i.media_type === 'photo').length;
+  const videoCount = items.filter((i) => i.media_type === 'video').length;
 
   return (
     <Layout>
-      {/* Hero */}
-      <section className="bg-primary py-20 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-secondary blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-secondary blur-3xl" />
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section
+        className="relative py-28 overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.85) 60%, hsl(var(--secondary)/0.5) 100%)',
+        }}
+      >
+        {/* Animated rings */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+          {[400, 600, 800].map((s, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full border border-white/5"
+              style={{ width: s, height: s, animationDuration: `${8 + i * 4}s` }}
+            />
+          ))}
         </div>
-        <div className="container-school text-center relative">
-          <div className="inline-flex items-center gap-2 bg-secondary/20 text-secondary px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
-            <Camera className="w-4 h-4" /> Photo Gallery
+
+        {/* Glows */}
+        <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full opacity-20 blur-[100px]"
+          style={{ background: 'hsl(var(--secondary))' }} />
+        <div className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full opacity-15 blur-[80px]"
+          style={{ background: 'hsl(var(--secondary))' }} />
+
+        {/* Grid texture */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
+          }}
+        />
+
+        <div className="container-school text-center relative z-10">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-white/20 text-sm font-semibold text-white/80"
+            style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)' }}>
+            <Sparkles className="w-3.5 h-3.5" />
+            School Gallery
           </div>
-          <h1 className="text-3xl sm:text-5xl font-display font-bold text-primary-foreground mb-4">{t('gallery.title')}</h1>
-          <p className="text-primary-foreground/70 max-w-xl mx-auto">Moments of joy, learning, and achievement captured from our school life</p>
+
+          <h1 className="text-5xl sm:text-7xl font-display font-bold text-white mb-5 leading-[1.1]">
+            {t('gallery.title')}
+          </h1>
+          <p className="text-white/55 max-w-lg mx-auto text-lg leading-relaxed">
+            Moments of joy, learning, and achievement — captured from our vibrant school life.
+          </p>
+
+          {/* Stats pills */}
+          {!loading && items.length > 0 && (
+            <div className="flex flex-wrap items-center justify-center gap-3 mt-10">
+              {[
+                { icon: ImageIcon, label: 'Photos', count: photoCount, color: 'sky' },
+                { icon: Film, label: 'Videos', count: videoCount, color: 'purple' },
+                { icon: LayoutGrid, label: 'Total', count: items.length, color: 'emerald' },
+              ].map(({ icon: Icon, label, count, color }) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 text-sm"
+                  style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}
+                >
+                  <Icon className="w-4 h-4 text-white/60" />
+                  <span className="font-bold text-white">{count}</span>
+                  <span className="text-white/45">{label}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Gallery */}
-      <section className="py-16 bg-background" ref={ref}>
+      {/* ── Gallery Body ─────────────────────────────────────── */}
+      <section className="py-14 bg-background">
         <div className="container-school">
-          {/* Category Filter */}
-          <div className={`flex flex-wrap justify-center gap-2 mb-10 ${isVisible ? 'animate-reveal-up' : 'opacity-0'}`}>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCat(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                  activeCat === cat
-                    ? 'bg-primary text-primary-foreground shadow-lg scale-105'
-                    : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
 
-          {/* Photo Count */}
-          <p className={`text-center text-muted-foreground text-sm mb-8 ${isVisible ? 'animate-reveal-up' : 'opacity-0'}`}>
-            Showing <span className="font-semibold text-foreground">{filtered.length}</span> photos
-            {activeCat !== 'All' && <> in <span className="font-semibold text-secondary">{activeCat}</span></>}
-          </p>
-
-          {/* Masonry-style Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filtered.map((photo, i) => {
-              const globalIndex = photos.indexOf(photo);
-              return (
-                <div
-                  key={photo.src}
-                  className={`group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 ${
-                    isVisible ? `animate-reveal-up delay-${Math.min((i + 1) * 100, 600)}` : 'opacity-0'
-                  } ${i % 5 === 0 ? 'sm:col-span-2' : ''}`}
-                  onClick={() => setLightboxIndex(globalIndex)}
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
+            {/* Media type tabs */}
+            <div
+              className="flex p-1 rounded-xl gap-0.5"
+              style={{ background: 'hsl(var(--muted))' }}
+            >
+              {([
+                { key: 'all' as MediaTab, label: 'All', icon: LayoutGrid },
+                { key: 'photo' as MediaTab, label: `Photos`, icon: Camera },
+                { key: 'video' as MediaTab, label: `Videos`, icon: Film },
+              ]).map(({ key, label, icon: Icon }) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200"
+                  style={
+                    activeTab === key
+                      ? {
+                          background: 'hsl(var(--background))',
+                          color: 'hsl(var(--primary))',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        }
+                      : { color: 'hsl(var(--muted-foreground))' }
+                  }
                 >
-                  <div className={`w-full overflow-hidden ${i % 5 === 0 ? 'h-56' : 'h-48'}`}>
-                    <img
-                      src={photo.src}
-                      alt={photo.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                  </div>
+                  <Icon className="w-3.5 h-3.5" />
+                  {label}
+                </button>
+              ))}
+            </div>
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <span className="text-xs font-semibold text-secondary bg-secondary/20 px-2 py-0.5 rounded-full mb-2 inline-block">{photo.category}</span>
-                      <p className="text-white font-semibold text-sm">{photo.title}</p>
-                      <p className="text-white/70 text-xs mt-0.5">{photo.desc}</p>
-                    </div>
-                  </div>
-
-                  {/* Zoom icon */}
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <ZoomIn className="w-4 h-4 text-white" />
-                  </div>
-                </div>
-              );
-            })}
+            {/* Category chips */}
+            {allCategories.length > 1 && (
+              <div className="flex flex-wrap justify-center sm:justify-end gap-1.5">
+                {allCategories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCat(cat)}
+                    className="px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200"
+                    style={
+                      activeCat === cat
+                        ? {
+                            background: 'hsl(var(--primary))',
+                            color: 'hsl(var(--primary-foreground))',
+                            boxShadow: '0 4px 12px hsl(var(--primary)/0.35)',
+                            transform: 'scale(1.05)',
+                          }
+                        : {
+                            background: 'hsl(var(--muted))',
+                            color: 'hsl(var(--muted-foreground))',
+                          }
+                    }
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
+
+          {/* Result count */}
+          {!loading && filtered.length > 0 && (
+            <p className="text-muted-foreground text-xs text-center mb-8 tracking-wide uppercase">
+              Showing{' '}
+              <span className="font-bold text-foreground">{filtered.length}</span>{' '}
+              {filtered.length === 1 ? 'item' : 'items'}
+              {activeCat !== 'All' && (
+                <> in <span className="text-primary font-bold">{activeCat}</span></>
+              )}
+            </p>
+          )}
+
+          {/* Content */}
+          {loading ? (
+            <SkeletonGrid />
+          ) : filtered.length === 0 ? (
+            <EmptyState />
+          ) : (
+            /* Masonry columns layout */
+            <div className="columns-2 sm:columns-3 lg:columns-4 gap-4">
+              {filtered.map((item, i) => (
+                <GalleryCard
+                  key={item.id}
+                  item={item}
+                  onClick={() => setLightboxIndex(i)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
-        <Lightbox photos={photos} index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
+        <Lightbox
+          items={filtered}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
       )}
     </Layout>
   );

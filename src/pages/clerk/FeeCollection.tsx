@@ -4,7 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Printer } from 'lucide-react';
+import { Printer, Search } from 'lucide-react';
+
+const CLASSES = ['LKG', 'UKG', ...Array.from({ length: 10 }, (_, i) => `Class ${i + 1}`)];
 
 interface Student { id: string; name: string; class: string; }
 interface FeeInfo {
@@ -16,6 +18,8 @@ interface FeeInfo {
 
 export default function FeeCollection() {
   const [students, setStudents] = useState<Student[]>([]);
+  const [search, setSearch] = useState('');
+  const [classFilter, setClassFilter] = useState('all');
   const [selectedStudentId, setSelectedStudentId] = useState('');
   const [feeInfo, setFeeInfo] = useState<FeeInfo | null>(null);
   const [paymentForm, setPaymentForm] = useState({
@@ -34,11 +38,7 @@ export default function FeeCollection() {
 
   useEffect(() => { fetchStudents(); }, [fetchStudents]);
 
-  const handleStudentSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const sid = e.target.value;
-    setSelectedStudentId(sid);
-    setFeeInfo(null);
-    setReceipt(null);
+  const loadFeeInfo = useCallback(async (sid: string) => {
     if (!sid) return;
     setLoading(true);
     try {
@@ -48,7 +48,6 @@ export default function FeeCollection() {
         .select('amount')
         .eq('student_id', sid);
       const paid = (payments ?? []).reduce((sum, p) => sum + (p.amount ?? 0), 0);
-      // Fetch fee structure for the student's class
       const { data: feeStructure } = await supabase
         .from('fee_structure')
         .select('total_fee')
@@ -61,7 +60,21 @@ export default function FeeCollection() {
     } finally {
       setLoading(false);
     }
+  }, [students]);
+
+  const handleStudentPick = (sid: string) => {
+    setSelectedStudentId(sid);
+    setFeeInfo(null);
+    setReceipt(null);
+    loadFeeInfo(sid);
   };
+
+  const filteredStudents = students.filter((s) => {
+    const q = search.toLowerCase();
+    const matchSearch = !search || s.name.toLowerCase().includes(q);
+    const matchClass = classFilter === 'all' || s.class === classFilter;
+    return matchSearch && matchClass;
+  });
 
   const handlePaySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,8 +101,8 @@ export default function FeeCollection() {
         studentClass: feeInfo?.student.class,
       });
       // Refresh fee info
-      await handleStudentSelect({ target: { value: selectedStudentId } } as any);
       setPaymentForm({ amount: '', date: new Date().toISOString().slice(0, 10), mode: 'cash' });
+      await loadFeeInfo(selectedStudentId);
     } catch (err: any) {
       toast.error(err.message || 'Payment failed');
     } finally {
@@ -116,15 +129,55 @@ export default function FeeCollection() {
         <p className="text-gray-500 mt-1">Select a student to view fee status and record payments.</p>
       </div>
 
-      <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6">
-        <div className="max-w-sm">
-          <Label className={labelClass}>Select Student</Label>
-          <select value={selectedStudentId} onChange={handleStudentSelect} className={selectClass}>
-            <option value="">-- Choose Student --</option>
-            {students.map((s) => (
-              <option key={s.id} value={s.id}>{s.name} ({s.class})</option>
-            ))}
+      <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+
+        {/* Search + Class filter */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Input
+              placeholder="Search student by name…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <select
+            value={classFilter}
+            onChange={(e) => { setClassFilter(e.target.value); setSelectedStudentId(''); setFeeInfo(null); setReceipt(null); }}
+            className="rounded-md border border-gray-300 px-3 py-2 text-sm w-40 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          >
+            <option value="all">All Classes</option>
+            {CLASSES.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
+        </div>
+
+        {/* Scrollable student list */}
+        <div>
+          <Label className={labelClass}>
+            Select Student
+            {selectedStudentId && feeInfo && (
+              <span className="ml-2 text-emerald-600 font-semibold text-xs">✓ {feeInfo.student.name}</span>
+            )}
+          </Label>
+          <div className="mt-1 max-h-52 overflow-y-auto rounded-lg border border-gray-200 divide-y">
+            {filteredStudents.length === 0 ? (
+              <p className="text-center py-6 text-gray-400 text-sm">No students found</p>
+            ) : filteredStudents.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => handleStudentPick(s.id)}
+                className={`w-full flex items-center justify-between px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors text-left ${
+                  selectedStudentId === s.id
+                    ? 'bg-emerald-50 text-emerald-700 font-semibold'
+                    : 'text-gray-700'
+                }`}
+              >
+                <span>{s.name}</span>
+                <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full shrink-0">{s.class}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {loading && <div className="flex justify-center py-6"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600" /></div>}

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import SEOHead from '@/components/SEOHead';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
@@ -43,14 +44,54 @@ const HeroSection = () => {
   const heroSubtitle = getContentValue('hero.subtitle', t('hero.subtitle'));
   const heroImageBg = getContentValue('hero.image', heroImg);
 
+  // Array of images for the carousel
+  const carouselImages = [
+    heroImageBg,
+    'https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop', // Classroom
+    'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=2232&auto=format&fit=crop'  // Kids playing
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(timer);
+  }, [carouselImages.length]);
+
   return (
     <section className="relative min-h-[88vh] flex items-center overflow-hidden">
-      <img src={heroImageBg} alt="Gurukul Vidyalay & Jr. College campus" className="absolute inset-0 w-full h-full object-cover scale-105" />
+      {/* Carousel Backgrounds */}
+      {carouselImages.map((src, idx) => (
+        <img 
+          key={src}
+          src={src} 
+          alt="School campus" 
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+            idx === currentSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+          }`} 
+        />
+      ))}
+      
       {/* Multi-layered overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/70 to-primary/40" />
-      <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/85 via-primary/70 to-primary/40 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent z-10" />
 
-      <div className="relative container-school py-24">
+      {/* Slide Indicators */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+        {carouselImages.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => setCurrentSlide(idx)}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              idx === currentSlide ? 'w-8 bg-secondary' : 'w-2 bg-white/50 hover:bg-white/80'
+            }`}
+          />
+        ))}
+      </div>
+
+      <div className="relative container-school py-24 z-20">
         <div className="max-w-2xl">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-secondary/25 backdrop-blur-sm border border-secondary/30 text-secondary px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6 animate-reveal-up">
